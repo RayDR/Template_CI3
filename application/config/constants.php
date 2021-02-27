@@ -85,9 +85,10 @@ defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automat
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
 // GLOBALES PERSONALIZABLES
-defined('APLICACION')           OR define('APLICACION', 'APLICACION');	// Nombre de la aplicación
-defined('EMPRESA')              OR define('EMPRESA', 'EMPRESA');		// Nombre de la empresa
+defined('APLICACION')           OR define('APLICACION', 'SIPAT');	// Nombre de la aplicación
+defined('EMPRESA')              OR define('EMPRESA', 'ISSET');		// Nombre de la empresa
 defined('CRIPTO')               OR define('CRIPTO', 'H4rDC0mpr3sS.');	// Cadena de encriptación
 // GLOBALES DE TEMAS
 defined('TEMA_ACTIVO')          OR define('TEMA_ACTIVO', 'dashboard');	// Tipo de tema
-defined('RUTA_TEMA')          	OR define('RUTA_TEMA', 'template/'. TEMA_ACTIVO);	// Ruta del tema
+defined('BASE_TEMA')          	OR define('BASE_TEMA', 'template/');	// Ruta base del tema
+defined('RUTA_TEMA')          	OR define('RUTA_TEMA', BASE_TEMA . TEMA_ACTIVO . '/');	// Ruta del tema

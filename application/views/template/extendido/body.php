@@ -2,11 +2,11 @@
 <?php $this->load->view($template.'header'); ?>
 
 <body id="body-extendido">
-	<div class="container-fluid">
+	<main class="container-fluid">
 		<!-- Vista dinámica -->
 		<?php $this->load->view($view);?>
 		<!-- Fin vista dinámica -->
-	</div>
+	</main>
 
 	<input type="hidden" id="base_url" value="<?=base_url()?>">
 

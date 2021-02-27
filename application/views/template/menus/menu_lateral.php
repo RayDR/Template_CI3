@@ -1,137 +1,48 @@
-<?php $Dashboard = 'Administracion'; // URL index de Adminsitración?>
-<a id="show-sidebar" class="btn btn-sm" href="javascript:void(0)" data-toggle="tooltip" data-title="Abrir menú" data-placement="right">
-   <i class="fas fa-ellipsis-h text-center texto-rojo" style="font-size: 2rem;"></i>
-</a>
-<nav id="sidebar" class="sidebar-wrapper">
-   <div class="sidebar-content">
-      <div class="sidebar-brand">
-         <a href="<?= $Dashboard ?>" class="inicio"><?= SISTEMA ?></a>
-         <div id="close-sidebar">
-            <i class="fas fa-times"></i>
-         </div>
-      </div>
-
-      <div class="sidebar-header">
-         <a href="Usuarios" class="perfil">
-            <div class="user-pic">
-               <img class="img-responsive img-rounded" src="https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg" alt="User picture">
+<nav id="sidebarMenu" class="sidebar d-md-block bg-dark text-white collapse" data-simplebar>
+   <div class="sidebar-inner px-4 pt-3">
+      <div class="user-card d-flex d-md-none align-items-center justify-content-between justify-content-md-center pb-4">
+         <div class="d-flex align-items-center">
+            <div class="user-avatar lg-avatar me-4">
+               <img src="<?= base_url('assets/img/team/profile-picture-3.jpg') ?>" class="card-img-top rounded-circle border-white"
+               alt="Raymundo Dominguez">
             </div>
-            <div class="user-info">
-               <span class="user-name"><?= $usuario->nombres ?>
-                  <strong><?= $usuario->primer_apellido ?></strong>
-               </span>
-               <span class="user-role">
-                  <span class="badge badge-secondary fondo-rojo"><?= $usuario->tipo_usuario ?></span>
-               </span>
-               <span class="user-status">
-                  <div id="progress">
-                     <i class="fas fa-circle text-danger"></i>
-                  </div>
-               </span>
-            </div>
-         </a>
-      </div>
-      <!-- sidebar-header  -->
-      <div class="sidebar-search">
-         <div>
-            <div class="input-group">
-               <input type="text" class="form-control search-menu" placeholder="Buscar...">
-               <div class="input-group-append">
-                  <span class="input-group-text">
-                     <i class="fa fa-search" aria-hidden="true"></i>
-                  </span>
-               </div>
+            <div class="d-block">
+               <h2 class="h6">Hi, Marco</h2>
+               <a href="<?= base_url('html&css/pages/examples/sign-in.html') ?>" class="btn btn-secondary text-dark btn-xs"><span
+                  class="me-2"><span class="fas fa-sign-out-alt"></span></span>Sign Out</a>
             </div>
          </div>
+         <div class="collapse-close d-md-none">
+            <a href="#sidebarMenu" class="fas fa-times" data-bs-toggle="collapse" data-bs-target="#sidebarMenu"
+            aria-controls="sidebarMenu" aria-expanded="true" aria-label="Toggle navigation"></a>
+         </div>
       </div>
-      <!-- sidebar-search  -->
-      <div class="sidebar-menu">
-         <ul>
-            <li class="header-menu">
-               <span>General</span>
-            </li>
-            <li>
-               <a href="<?= $Dashboard ?>">
-                  <i class="fa fa-tachometer-alt"></i>
-                  <span>Dashboard</span>
-               </a>
-            </li>
-            <li>
-               <a id="listado-titulo">
-                  <i class="fas fa-graduation-cap"></i>
-                  <span>Títulos</span>
-               </a>
-            </li>
-            <li>
-               <a id="listado-lotes">
-                  <i class="fas fa-clipboard-list"></i>
-                  <span>Lotes</span>
-               </a>
-            </li>
-            <li class="header-menu">
-               <span>Administración</span>
-            </li>
-            <li>
-               <a id="listado-usuarios">
-                  <i class="fa fa-users"></i>
-                  <span>Usuarios</span>
-               </a>
-            </li>
-            <li class="sidebar-dropdown">
-               <a>
-                  <i class="fas fa-tools"></i>
-                  <span>Configuración</span>
-               </a>
-               <div class="sidebar-submenu">
-                  <ul>                     
-                     <li>
-                        <a id="listado-instituciones">
-                           <span>Instituciones</span>
-                        </a>
-                     </li>
-                     <li>
-                        <a id="listado-carreras">
-                           <span>Carreras</span>
-                        </a>
-                     </li>
-                     <li>
-                        <a id="listado-autorizaciones">
-                           <span>Autorizaciones</span>
-                        </a>
-                     </li>
-                     <li>
-                        <a id="listado-rvoes">
-                           <span>RVOEs</span>
-                        </a>
-                     </li>
-                     <li>
-                        <a id="listado-firmantes">
-                           <span>Firmantes</span>
-                        </a>
-                     </li>
-                  </ul>
-               </div>
-            </li>
-         </ul>
-      </div>
-      <!-- sidebar-menu  -->
-   </div>
-   <!-- sidebar-content  -->
-   <div class="sidebar-footer">
-      <a id="ml-notificaciones" class="notificaciones">
-         <i class="fa fa-bell"></i>
-         <span class="badge badge-pill badge-warning notification">3</span>
-      </a>
-      <!-- <a>
-         <i class="fa fa-envelope"></i>
-         <span class="badge badge-pill badge-success notification">7</span>
-      </a> -->
-      <a href="Usuarios" class="perfil">
-         <i class="fa fa-users-cog"></i>
-      </a>
-      <a href="Usuarios/logout/true" class="logout">
-         <i class="fa fa-power-off"></i>
-         <span class="badge-sonar"></span>
-      </a>
+      <ul class="nav flex-column pt-3 pt-md-0">
+         <li class="nav-item active">
+            <a href="<?= base_url() ?>" class="nav-link">
+               <span class="sidebar-icon"><span class="fas fa-chart-pie"></span></span>
+               <span class="sidebar-text">Dashboard</span>
+            </a>
+         </li>
+         <li class="nav-item">
+            <a href="<?= base_url('index.php/Programas') ?>" class="nav-link">
+               <span class="sidebar-icon"><span class="fas fa-chart-pie"></span></span>
+               <span class="sidebar-text">Programas</span>
+            </a>
+         </li>
+         <li class="nav-item">
+            <a href="<?= base_url('index.php/Actividades') ?>" class="nav-link">
+               <span class="sidebar-icon"><span class="fas fa-chart-pie"></span></span>
+               <span class="sidebar-text">Actividades</span>
+            </a>
+         </li>
+         <li role="separator" class="dropdown-divider mt-4 mb-3 border-black"></li>
+         <li class="nav-item ">
+            <a href="#Configurador" class="nav-link">
+               <span class="sidebar-icon"><span class="fas fa-cog"></span></span>
+               <span class="sidebar-text">Configuración</span>
+            </a>
+         </li>
+      </ul>
    </div>
 </nav>

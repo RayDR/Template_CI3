@@ -1,33 +1,61 @@
-<?php
-	$this->output->set_header('Last-Modified:'.gmdate('D, d M Y H:i:s').'GMT');
-	$this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate');
-	$this->output->set_header('Cache-Control: post-check=0, pre-check=0',false);
-	$this->output->set_header('Pragma: no-cache');
-?>
-<!DOCTYPE html>
-<html lang="es">
-	<head>
-		<!-------------------- Declaración de METAS -------------------->
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<meta name="keywords" content=""/>
-		<meta name="rights" content=""/>
-		<meta name="description" content=""/>
+<!--
+=========================================================
+* Volt Free - Bootstrap 5 Dashboard
+=========================================================
 
-		<link rel="icon" type="image/png" href="" sizes="64x64">
-		<!---------------------- Título Dinámico ----------------------->
-		<title><?=$titulo?></title>
-		<!----------------------- Hojas de Estilo ----------------------->
-		<!-- Bootstrap Core CSS -->
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-		<!------------------------- Scripts JS ------------------------->
-		<!-- jQuery Js -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-		<!-- Bootstrap Core JS -->		
-		<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous"></script>
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js" integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" crossorigin="anonymous"></script>
-		<!-- Fontawesome JS -->
-		<script src="https://kit.fontawesome.com/8cca2ecc5a.js" crossorigin="anonymous"></script>
-		<!--------------- Estilos Globales Personalizados --------------->
-		<!--------------- Scripts Globales Personalizados --------------->
-	</head>
+* Product Page: https://themesberg.com/product/admin-dashboard/volt-premium-bootstrap-5-dashboard
+* Copyright 2020 Themesberg (https://www.themesberg.com)
+
+* Designed and coded by https://themesberg.com
+
+=========================================================
+-->
+<!DOCTYPE html>
+<html lang="es_MX">
+
+<head> 
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- Primary Meta Tags -->
+    <title><?= $titulo ?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="title" content="<?= APLICACION ?> <?= EMPRESA ?>">
+    <meta name="author" content="Domodigital">
+    <meta name="description" content="SIPAT">
+    <meta name="keywords" content="sipat,isset" />
+    <link rel="canonical" href="https://domodigital.com.mx">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://demo.themesberg.com/volt-pro">
+    <meta property="og:title" content="Volt - Free Bootstrap 5 Admin Dashboard">
+    <meta property="og:description" content="Volt Pro is a Premium Bootstrap 5 Admin Dashboard featuring over 800 components, 10+ plugins and 20 example pages using Vanilla JS.">
+    <meta property="og:image" content="https://themesberg.s3.us-east-2.amazonaws.com/public/products/volt-pro-bootstrap-5-dashboard/volt-pro-preview.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://demo.themesberg.com/volt-pro">
+    <meta property="twitter:title" content="Volt - Free Bootstrap 5 Admin Dashboard">
+    <meta property="twitter:description" content="Volt Pro is a Premium Bootstrap 5 Admin Dashboard featuring over 800 components, 10+ plugins and 20 example pages using Vanilla JS.">
+    <meta property="twitter:image" content="https://themesberg.s3.us-east-2.amazonaws.com/public/products/volt-pro-bootstrap-5-dashboard/volt-pro-preview.jpg">
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="120x120" href="<?= base_url('assets/img/favicon/apple-touch-icon.png') ?>">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url('assets/img/favicon/favicon-32x32.png') ?>">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url('assets/img/favicon/favicon-16x16.png') ?>">
+    <link rel="manifest" href="<?= base_url('assets/img/favicon/site.webmanifest') ?>">
+    <link rel="mask-icon" href="<?= base_url('assets/img/favicon/safari-pinned-tab.svg') ?>" color="#ffffff">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Fontawesome JS -->
+    <script src="https://kit.fontawesome.com/8cca2ecc5a.js" crossorigin="anonymous"></script>
+
+    <!-- Sweet Alert -->
+    <link type="text/css" href="<?= base_url('vendor/sweetalert2/dist/sweetalert2.min.css') ?>" rel="stylesheet">
+
+    <!-- Notyf -->
+    <link type="text/css" href="<?= base_url('vendor/notyf/notyf.min.css') ?>" rel="stylesheet">
+
+    <!-- Volt CSS -->
+    <link type="text/css" href="<?= base_url('css/volt.css') ?>" rel="stylesheet">
+</head>
