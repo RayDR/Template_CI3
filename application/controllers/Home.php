@@ -3,6 +3,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Home extends CI_Controller {
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->model('model_catalogos');
+    }
+
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +19,7 @@ class Home extends CI_Controller {
     {
         $data = array(
             'titulo'    => 'Home ' . APLICACION  . ' | ' . EMPRESA,
+            'menu'      => $this->model_catalogos->get_menus(),
             'view'      => 'index'
         );
         $this->load->view( RUTA_TEMA . 'body', $data, FALSE );
@@ -39,7 +46,7 @@ class Home extends CI_Controller {
 
 /*
 |--------------------------------------------------------------------------
-| VISTAS AJAX
+| FUNCIONES AJAX
 |--------------------------------------------------------------------------
 */
 
@@ -51,6 +58,24 @@ class Home extends CI_Controller {
     // Función para verificar que el usuario y contrato matcheen para el recovery
     public function rVerificar(){
 
+    }
+
+    // Función de cierre de sesión
+    public function logout(){
+        redirect(base_url('index.php/Home/login'),'refresh');
+    }
+
+
+/*
+|--------------------------------------------------------------------------
+| FUNCIONES RESERVADAS PARA EL SISTEMA
+|--------------------------------------------------------------------------
+*/ 
+
+    public function crypt_decrypt($encrypt = 'localhost'){
+        $this->load->library('encryption');
+        $encriptado =  $this->encryption->encrypt($encrypt);
+        echo $encriptado . '<hr>';
     }
 }
 

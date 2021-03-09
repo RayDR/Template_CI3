@@ -2,17 +2,17 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
             <li class="breadcrumb-item"><a href="<?= base_url() ?>"><span class="fas fa-home"></span></a></li>
-            <li class="breadcrumb-item active" aria-current="page">Actividades</li>
+            <li class="breadcrumb-item active" aria-current="page">Programas</li>
         </ol>
     </nav>
     <div class="d-flex justify-content-between w-100 flex-wrap">
         <div class="mb-3 mb-lg-0">
-            <h1 class="h4">Actividades registradas</h1>
+            <h1 class="h4">Programas registrados</h1>
         </div>
     </div>
     <div class="btn-toolbar dropdown">
-      <a href="<?= base_url('index.php/Actividades/registrar') ?>" class="btn btn-dark btn-sm me-2 dropdown-toggle">
-        <span class="fas fa-plus me-2"></span>Nueva Actividad
+      <a href="<?= base_url('index.php/Programas/registrar') ?>" class="btn btn-dark btn-sm me-2 dropdown-toggle">
+        <span class="fas fa-plus me-2"></span>Nuevo Programa
       </a>
     </div>
 </div>
@@ -22,11 +22,12 @@
             <table class="table table-centered table-nowrap mb-0 rounded">
                 <thead class="thead-light">
                     <tr>
-                        <th class="border-0">#</th>                        
-                        <th class="border-0">Programa Presupuestario</th>
-                        <th class="border-0">Actividad</th>
+                        <th class="border-0">#</th>
                         <th class="border-0">Unidad Administrativa</th>
                         <th class="border-0">Departamento</th>
+                        <th class="border-0">Programa Presupuestario</th>
+                        <th class="border-0">Objetivo</th>
+                        <th class="border-0">Estrategia</th>
                         <th class="border-0">Progreso</th>                        
                         <th class="border-0">Porcentaje de Avance</th>
                     </tr>
@@ -34,15 +35,18 @@
                 <tbody>
                     <tr>
                         <td class="border-0"><a href="#" class="text-primary fw-bold">1</a> </td>
-                        <td class="border-0 fw-bold">Programa 1</td>
+                        <td class="border-0 fw-bold">Departamento de Contabilidad</td>
                         <td class="border-0">
-                            E058 - Prestaciones médicas para la seguridad social
+                            --
                         </td>
                         <td class="border-0">
-                            Departamento de Contabilidad
+                            ----
                         </td>
                         <td class="border-0">
-                            UA
+                            --
+                        </td>
+                        <td class="border-0">
+                            --
                         </td>
                         <td class="border-0">
                             <div class="row d-flex align-items-center">
@@ -63,15 +67,18 @@
                     </tr>
                     <tr>
                         <td><a href="#" class="text-primary fw-bold">2</a> </td>
-                        <td class="fw-bold">Programa 2</td>
+                        <td class="fw-bold">Otro Departamento</td>
                         <td>
-                           E059 - Prestaciones sociales para servidores públicos
+                           ---------
                         </td>
                         <td>
-                            Otro Departamento
+                            -
                         </td>
                         <td>
-                            UA
+                            --
+                        </td>
+                        <td>
+                            --
                         </td>
                         <td>
                             <div class="row d-flex align-items-center">
@@ -92,15 +99,18 @@
                     </tr>
                     <tr>
                         <td><a href="#" class="text-primary fw-bold">4</a> </td>
-                        <td class="fw-bold">Programa 3</td>
+                        <td class="fw-bold">Último Departamento</td>
                         <td>
-                            K013 - Tecnologías de la Información y Comunicación
+                            ----
                         </td>
                         <td>
-                           Último Departamento
+                           ----
                         </td>
                         <td>
-                           Otro UA
+                            --
+                        </td>
+                        <td>
+                            --
                         </td>
                         <td>
                             <div class="row d-flex align-items-center">

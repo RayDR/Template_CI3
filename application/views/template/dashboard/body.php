@@ -1,10 +1,10 @@
 <?php $this->load->view( RUTA_TEMA . 'header' ); ?>
 
 <body id="body-dashboard">
-    <?php $this->load->view( BASE_TEMA . 'menus/menu_movil' ); ?>
+    <?php $this->load->view( BASE_TEMA . 'menus/menu_movil', ['menu' => $menu] ); ?>
     <main class="content" style="min-height: 70vh;">
         <?php $this->load->view( BASE_TEMA . 'menus/menu_superior' ); ?>
-        <?php $this->load->view( BASE_TEMA . 'menus/menu_lateral' ); ?>
+        <?php $this->load->view( BASE_TEMA . 'menus/menu_lateral', ['menu' => $menu] ); ?>
         <!-- Vista dinámica -->
         <?php $this->load->view($view); ?>
         <!-- Fin vista dinámica -->

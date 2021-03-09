@@ -7,9 +7,10 @@
                alt="Raymundo Dominguez">
             </div>
             <div class="d-block">
-               <h2 class="h6">Hi, Marco</h2>
-               <a href="<?= base_url('html&css/pages/examples/sign-in.html') ?>" class="btn btn-secondary text-dark btn-xs"><span
-                  class="me-2"><span class="fas fa-sign-out-alt"></span></span>Sign Out</a>
+               <h2 class="h6">Hola, Marco</h2>
+               <a href="<?= base_url('index.php/Home/logout') ?>" class="btn btn-secondary text-dark btn-xs">
+                  <span class="me-2"><span class="fas fa-sign-out-alt"></span></span>Cerrar sesión
+               </a>
             </div>
          </div>
          <div class="collapse-close d-md-none">
@@ -18,31 +19,75 @@
          </div>
       </div>
       <ul class="nav flex-column pt-3 pt-md-0">
-         <li class="nav-item active">
-            <a href="<?= base_url() ?>" class="nav-link">
-               <span class="sidebar-icon"><span class="fas fa-chart-pie"></span></span>
-               <span class="sidebar-text">Dashboard</span>
-            </a>
-         </li>
-         <li class="nav-item">
-            <a href="<?= base_url('index.php/Programas') ?>" class="nav-link">
-               <span class="sidebar-icon"><span class="fas fa-chart-pie"></span></span>
-               <span class="sidebar-text">Programas</span>
-            </a>
-         </li>
-         <li class="nav-item">
-            <a href="<?= base_url('index.php/Actividades') ?>" class="nav-link">
-               <span class="sidebar-icon"><span class="fas fa-chart-pie"></span></span>
-               <span class="sidebar-text">Actividades</span>
-            </a>
-         </li>
-         <li role="separator" class="dropdown-divider mt-4 mb-3 border-black"></li>
-         <li class="nav-item ">
-            <a href="#Configurador" class="nav-link">
-               <span class="sidebar-icon"><span class="fas fa-cog"></span></span>
-               <span class="sidebar-text">Configuración</span>
-            </a>
-         </li>
+         <?php $submenuActivo = FALSE; ?>
+         <?php foreach ($menu as $key => $opcion): ?>
+            <?php // Validar el tipo del menú
+            if ( ! $opcion->submenu_id && $submenuActivo ){
+               echo '      </ul>
+                        </div>
+                     </li>';
+               $submenuActivo = FALSE;
+            }
+
+            switch ($opcion->clave) {
+               case 'EL':
+                  ?>
+                  <li class="nav-item">
+                     <a href="<?= base_url($opcion->url) ?>" class="nav-link">
+                        <span class="sidebar-icon"><span class="<?= $opcion->icono ?>"></span></span>
+                        <span class="sidebar-text"><?= $opcion->menu ?></span>
+                     </a>
+                  </li>
+                  <?php
+                  break;
+               case 'EE':
+                  ?>
+                  <li class="nav-item">
+                     <a href="$opcion->url" class="nav-link">
+                        <span class="sidebar-icon"><span class="<?= $opcion->icono ?>"></span></span>
+                        <span class="sidebar-text"><?= $opcion->menu ?></span>
+                     </a>
+                  </li>
+                  <?php
+                  break;
+               case 'SM':
+                  ?>
+                  <li class="nav-item">
+                     <span class="nav-link collapsed d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#submenu-<?= $opcion->menu_id ?>">
+                        <span>
+                           <span class="sidebar-icon"><span class="<?= $opcion->icono ?>"></span></span>
+                           <span class="sidebar-text"><?= $opcion->menu ?></span>
+                        </span>
+                        <span class="link-arrow"><span class="fas fa-chevron-right"></span></span>
+                     </span>
+                     <div class="multi-level collapse" role="list" id="submenu-<?= $opcion->menu_id ?>" aria-expanded="false">
+                        <ul class="flex-column nav">
+                  <?php $submenuActivo = TRUE;
+                  break;
+               case 'AP':
+                  ?>
+                  <li class="nav-item">
+                     <a href="#<?= $opcion->url ?>" data-url="<?= $opcion->url ?>" class="nav-link link-personalizado">
+                        <span class="sidebar-icon"><span class="<?= $opcion->icono ?>"></span></span>
+                        <span class="sidebar-text"><?= $opcion->menu ?></span>
+                     </a>
+                  </li>
+                  <?php
+                  break;
+               case 'SP':
+                  ?>
+                  <li role="separator" class="dropdown-divider mt-4 mb-3 border-black"></li>
+                  <?php 
+                  break;
+            }?>            
+         <?php endforeach;
+            if ( $submenuActivo ){
+               echo '      </ul>
+                        </div>
+                     </li>';
+               $submenuActivo = FALSE;
+            }
+         ?>
       </ul>
    </div>
 </nav>
