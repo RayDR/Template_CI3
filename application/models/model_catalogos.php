@@ -60,6 +60,87 @@ class Model_catalogos extends CI_Model {
 			return [];
 		}
 	}
+
+	/**
+		* Devuelve el catalogo de áreas ( Dirección, Subdirección , Departamento )
+		*
+		* @access public
+		* @param  array   $filtros 			filtros a iterar
+		* @param  boolean $tipo_retorno 	Modo de retonro: 
+		*								 		TRUE - Objeto
+		*								 		FALSE - Array
+		* @return areas
+	*/
+	public function get_areas($filtros = NULL, $tipo_retorno = TRUE){
+		try {			
+			if ( is_array($filtros) ){
+				foreach ($filtros as $key => $filtro) {
+					$this->db->where($key, $filtro);
+				}
+			}
+			$areas = $this->db->get('vw_areas');
+			if ( $tipo_retorno )
+				return $areas->result();
+			else
+				return $areas->result_array();
+		} catch (Exception $e) {
+			return [];
+		}
+	}
+
+	/**
+		* Devuelve el catalogo de programas
+		*
+		* @access public
+		* @param  array   $filtros 			filtros a iterar
+		* @param  boolean $tipo_retorno 	Modo de retonro: 
+		*								 		TRUE - Objeto
+		*								 		FALSE - Array
+		* @return programas
+	*/
+	public function get_programas($filtros = NULL, $tipo_retorno = TRUE){
+		try {			
+			if ( is_array($filtros) ){
+				foreach ($filtros as $key => $filtro) {
+					$this->db->where($key, $filtro);
+				}
+			}
+			$programas = $this->db->get('programas_presupuestarios');
+			if ( $tipo_retorno )
+				return $programas->result();
+			else
+				return $programas->result_array();
+		} catch (Exception $e) {
+			return [];
+		}
+	}
+
+	/**
+		* Devuelve el catalogo de Líneas de Acción
+		*
+		* @access public
+		* @param  array   $filtros 			filtros a iterar
+		* @param  boolean $tipo_retorno 	Modo de retonro: 
+		*								 		TRUE - Objeto
+		*								 		FALSE - Array
+		* @return lineas_accion
+	*/
+	public function get_lineas_accion($filtros = NULL, $tipo_retorno = TRUE){
+		try {			
+			if ( is_array($filtros) ){
+				foreach ($filtros as $key => $filtro) {
+					$this->db->where($key, $filtro);
+				}
+			}
+			$lineas_accion = $this->db->get('lineas_accion');
+			if ( $tipo_retorno )
+				return $lineas_accion->result();
+			else
+				return $lineas_accion->result_array();
+		} catch (Exception $e) {
+			return [];
+		}
+	}
 }
 
 /* End of file model_catalogos.php */

@@ -19,6 +19,35 @@
                 <!-- <h2 class="h5 mb-4">Programa seleccionado: <strong>Programa Presupuestario</strong> - Ejercicio 2021</h2> -->
                 <form>
                     <div class="row">
+                        <div class="col-6 mb-3">
+                            <label class="my-1 me-2" for="areas">Áreas</label>
+                            <select class="form-select" id="areas" aria-label="Áreas">
+                                <option selected disabled>Seleccione una opción</option>
+                                <?php foreach ($areas as $key => $area): ?>
+                                <option value="<?= $area->cve_area ?>"><?= $area->descripcion ?> (<?= $area->cve_area ?>)</option>
+                                <?php endforeach; ?>  
+                            </select>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label class="my-1 me-2" for="um">Programa</label>
+                            <select class="form-select" id="um" aria-label="Programas">
+                                <option selected disabled>Seleccione una opción</option>
+                                <?php foreach ($programas as $key => $programa): ?>
+                                <option value="<?= $programa->programa_presupuestario_id ?>">(<?= $programa->cve_programa ?>) <?= $programa->nombre ?></option>
+                                <?php endforeach; ?>  
+                            </select>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label class="my-1 me-2" for="um">Línea de Acción</label>
+                            <select class="form-select" id="um" aria-label="Líneas de Acción">
+                                <option selected disabled>Seleccione una opción</option>
+                                <?php foreach ($l_accion as $key => $linea): ?>
+                                <option value="<?= $linea->linea_accion_id ?>"><?= $linea->descripcion ?></option>
+                                <?php endforeach; ?>  
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-12 mb-3">
                             <div>
                                 <label for="detalle_actividad">Detalle la Actividad</label>
@@ -32,7 +61,7 @@
                             <select class="form-select" id="um" aria-label="Default select example">
                                 <option selected disabled>Seleccione una opción</option>
                                 <?php foreach ($u_medida as $key => $um): ?>
-                                <option selected="<?= $um->unidad_medida_id ?>"><?= $um->descripcion ?> (<?= $um->cve_medida ?>)</option>
+                                <option value="<?= $um->unidad_medida_id ?>"><?= $um->descripcion ?> (<?= $um->cve_medida ?>)</option>
                                 <?php endforeach; ?>  
                             </select>
                         </div>
