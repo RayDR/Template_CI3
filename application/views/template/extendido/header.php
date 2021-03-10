@@ -47,6 +47,9 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="theme-color" content="#ffffff">
 
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <!-- Fontawesome JS -->
     <script src="https://kit.fontawesome.com/8cca2ecc5a.js" crossorigin="anonymous"></script>
 

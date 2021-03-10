@@ -459,8 +459,68 @@ CREATE TABLE `menu` (
 
 LOCK TABLES `menu` WRITE;
 /*!40000 ALTER TABLE `menu` DISABLE KEYS */;
-INSERT INTO `menu` VALUES (1,'Tablero','fas fa-chart-pie','',1,NULL,1,'2021-03-09 19:32:29','2021-03-09 21:06:38',1),(2,'Actividades','far fa-calendar-alt','index.php/Actividades',1,NULL,2,'2021-03-09 19:32:29','2021-03-09 21:06:38',1),(3,'Acuerdos','far fa-handshake','index.php/Acuerdos',1,NULL,3,'2021-03-09 19:32:29','2021-03-09 21:06:38',1),(4,'Separador',NULL,'',5,NULL,4,'2021-03-09 19:32:29','2021-03-09 21:06:38',1),(5,'Configurador','fas fa-cogs',NULL,3,NULL,5,'2021-03-09 19:32:29','2021-03-09 21:05:26',1),(6,'Programas','fas fa-clipboard-list','index.php/Programas',1,5,5.1,'2021-03-09 19:32:29','2021-03-09 21:06:38',1);
+INSERT INTO `menu` VALUES (1,'Tablero','fas fa-chart-pie','',1,NULL,1,'2021-03-09 19:32:29','2021-03-09 21:06:38',1),(2,'Actividades','far fa-calendar-alt','index.php/Actividades',1,NULL,2,'2021-03-09 19:32:29','2021-03-09 21:06:38',1),(3,'Acuerdos','far fa-handshake','index.php/Acuerdos',1,NULL,3,'2021-03-09 19:32:29','2021-03-09 21:06:38',1),(4,'Separador',NULL,'',5,NULL,4,'2021-03-09 19:32:29','2021-03-09 21:06:38',1),(5,'Configurador','fas fa-cogs',NULL,3,NULL,5,'2021-03-09 19:32:29','2021-03-09 21:05:26',1),(6,'Programas','fas fa-clipboard-list','index.php/Configurador/programas',1,5,5.1,'2021-03-09 19:32:29','2021-03-10 14:03:12',1);
 /*!40000 ALTER TABLE `menu` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `objetivos_institucionales`
+--
+
+DROP TABLE IF EXISTS `objetivos_institucionales`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `objetivos_institucionales` (
+  `objetivo_institucional` int(11) NOT NULL AUTO_INCREMENT,
+  `direccion_id` int(11) DEFAULT NULL,
+  `subdireccion_id` int(11) DEFAULT NULL,
+  `area_id` int(11) DEFAULT NULL,
+  `departamento_id` int(11) DEFAULT NULL,
+  `cve_objetivo` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `descripcion` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `ejercicio` varchar(4) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `status` int(11) DEFAULT '1',
+  PRIMARY KEY (`objetivo_institucional`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `objetivos_institucionales`
+--
+
+LOCK TABLES `objetivos_institucionales` WRITE;
+/*!40000 ALTER TABLE `objetivos_institucionales` DISABLE KEYS */;
+/*!40000 ALTER TABLE `objetivos_institucionales` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `objetivos_presupuestarios`
+--
+
+DROP TABLE IF EXISTS `objetivos_presupuestarios`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `objetivos_presupuestarios` (
+  `objetivo_presupuestario_id` int(11) NOT NULL AUTO_INCREMENT,
+  `direccion_id` int(11) DEFAULT NULL,
+  `subdireccion_id` int(11) DEFAULT NULL,
+  `area_id` int(11) DEFAULT NULL,
+  `departamento_id` int(11) DEFAULT NULL,
+  `cve_objetivo` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `descripcion` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `ejercicio` varchar(4) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `status` int(11) DEFAULT '1',
+  PRIMARY KEY (`objetivo_presupuestario_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `objetivos_presupuestarios`
+--
+
+LOCK TABLES `objetivos_presupuestarios` WRITE;
+/*!40000 ALTER TABLE `objetivos_presupuestarios` DISABLE KEYS */;
+/*!40000 ALTER TABLE `objetivos_presupuestarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -488,6 +548,51 @@ LOCK TABLES `objetivos_programas` WRITE;
 /*!40000 ALTER TABLE `objetivos_programas` DISABLE KEYS */;
 INSERT INTO `objetivos_programas` VALUES (1,'2.19.8.1.','2.19.8.1. GARANTIZAR LA ESTABILIDAD Y SEGURIDAD FINANCIERA DEL INSTITUTO, PARA FORTALECER EL SISTEMA DE PRESTACIONES MÉDICAS, ECONÓMICAS, SOCIALES, CULTURALES Y DEPORTIVAS.',1,NULL),(2,'2.19.8.2.','2.19.8.2. MEJORAR EL SISTEMA DE SEGURIDAD SOCIAL DE LA CLASE TRABAJADORA DEL ESTADO DE TABASCO Y EN PARTICULAR DE LOS TRABAJADORES DEL ISSET PARA CONTRIBUIR EN LA VIDA DIGNA EN UN MARCO DE IGUALDAD DE OPORTUNIDADES.',1,NULL),(3,'2.19.8.3.','2.19.8.3. ESTABLECER UN ANÁLISIS DE PROCESOS DE ATENCIÓN MÉDICA, QUE PERMITA IDENTIFICAR LAS ÁREAS DE OPORTUNIDAD, QUE DETONEN EN UNA MAYOR CALIDAD EN EL SERVICIO DEL INSTITUTO.',1,NULL),(4,'2.19.8.4.','2.19.8.4. INCREMENTAR LA CAPACIDAD EN CAPITAL HUMANO, TÉCNICO Y FÍSICO DEL INSTITUTO, QUE CONTRIBUYAN EN UNA MAYOR CALIDAD EN EL SERVICIO MÉDICO EN BENEFICIO DE LOS DERECHOHABIENTES.',1,NULL);
 /*!40000 ALTER TABLE `objetivos_programas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `programas_actividades`
+--
+
+DROP TABLE IF EXISTS `programas_actividades`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `programas_actividades` (
+  `programa_actividad_id` int(11) NOT NULL AUTO_INCREMENT,
+  `direccion_id` int(11) DEFAULT NULL,
+  `subdireccion_id` int(11) DEFAULT NULL,
+  `departamento_id` int(11) DEFAULT NULL,
+  `programa_presupuestario_id` int(11) DEFAULT NULL,
+  `objetivo_institucional_id` int(11) DEFAULT NULL,
+  `estrategia_programa_id` int(11) DEFAULT NULL,
+  `fuente_finaciamiento_id` int(11) NOT NULL,
+  `objetivo_presupuestario_id` int(11) DEFAULT NULL,
+  `fecha_creacion` datetime DEFAULT CURRENT_TIMESTAMP,
+  `fecha_actualizacion` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `ejercicio` varchar(4) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `estatus` int(11) DEFAULT '1',
+  `usuario_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`programa_actividad_id`) USING BTREE,
+  KEY `programa_presupuestario_id` (`programa_presupuestario_id`),
+  KEY `fuente_finaciamiento_id` (`fuente_finaciamiento_id`),
+  KEY `usuario_id` (`usuario_id`),
+  KEY `estrategia_programa_id` (`estrategia_programa_id`),
+  KEY `objetivo_institucional_id` (`objetivo_institucional_id`),
+  KEY `objetivo_presupuestario_id` (`objetivo_presupuestario_id`),
+  CONSTRAINT `programas_actividades_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`usuario_id`),
+  CONSTRAINT `programas_actividades_ibfk_2` FOREIGN KEY (`estrategia_programa_id`) REFERENCES `estrategias_programa` (`estrategia_programa_id`),
+  CONSTRAINT `programas_actividades_ibfk_3` FOREIGN KEY (`objetivo_institucional_id`) REFERENCES `objetivos_institucionales` (`objetivo_institucional`),
+  CONSTRAINT `programas_actividades_ibfk_4` FOREIGN KEY (`objetivo_presupuestario_id`) REFERENCES `objetivos_presupuestarios` (`objetivo_presupuestario_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `programas_actividades`
+--
+
+LOCK TABLES `programas_actividades` WRITE;
+/*!40000 ALTER TABLE `programas_actividades` DISABLE KEYS */;
+/*!40000 ALTER TABLE `programas_actividades` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1055,4 +1160,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-03-09 16:02:46
+-- Dump completed on 2021-03-10  8:11:57

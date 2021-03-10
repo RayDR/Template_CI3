@@ -4,10 +4,10 @@
       <span class="fas fa-plus me-2"></span>Acceso rápido
       </button>
       <div class="dropdown-menu dashboard-dropdown dropdown-menu-start mt-2 py-0">
-        <a class="dropdown-item fw-normal" href="#"><span class="fas fa-cloud-upload-alt"></span>Nueva Actividad</a>
-        <a class="dropdown-item fw-normal rounded-top" href="#"><span class="fas fa-tasks"></span>Nuevo Acuerdo</a>
+        <a class="dropdown-item fw-normal" href="#"><span class="far fa-calendar-plus"></span>Nueva Actividad</a>
+        <a class="dropdown-item fw-normal rounded-top" href="#"><span class="fas fa-file-signature"></span>Nuevo Acuerdo</a>
         <div role="separator" class="dropdown-divider my-0"></div>
-        <a class="dropdown-item fw-normal rounded-bottom" href="#"><span class="fas fa-rocket text-danger"></span>Reportes</a>
+        <a class="dropdown-item fw-normal rounded-bottom" href="#"><span class="fas fa-file-import"></span>Reportes</a>
       </div>
     </div>
   </div>

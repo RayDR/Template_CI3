@@ -43,7 +43,6 @@
                         ?>
                         <li class="nav-item">
                             <a href="<?= base_url($opcion->url) ?>" class="nav-link">
-                                <span class="sidebar-icon"><span class="<?= $opcion->icono ?>"></span></span>
                                 <span class="sidebar-text"><?= $opcion->menu ?></span>
                             </a>
                         </li>
@@ -53,8 +52,7 @@
                         ?>
                         <li class="nav-item">
                             <a href="$opcion->url" class="nav-link">
-                                <span class="sidebar-icon"><span class="<?= $opcion->icono ?>"></span></span>
-                            <span class="sidebar-text"><?= $opcion->menu ?></span>
+                                <span class="sidebar-text"><?= $opcion->menu ?></span>
                             </a>
                         </li>
                         <?php
@@ -63,8 +61,7 @@
                         ?>
                             <li class="nav-item">
                                 <span class="nav-link collapsed d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#submenu-<?= $opcion->menu_id ?>">
-                                    <span>
-                                        <span class="sidebar-icon"><span class="<?= $opcion->icono ?>"></span></span>
+                                    <span>                                        
                                         <span class="sidebar-text"><?= $opcion->menu ?></span>
                                     </span>
                                     <span class="link-arrow"><span class="fas fa-chevron-right"></span></span>
@@ -77,7 +74,6 @@
                         ?>
                             <li class="nav-item">
                                 <a href="#<?= $opcion->url ?>" data-url="<?= $opcion->url ?>" class="nav-link link-personalizado">
-                                    <span class="sidebar-icon"><span class="<?= $opcion->icono ?>"></span></span>
                                     <span class="sidebar-text"><?= $opcion->menu ?></span>
                                 </a>
                             </li>

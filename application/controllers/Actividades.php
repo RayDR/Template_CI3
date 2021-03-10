@@ -7,6 +7,7 @@ class Actividades extends CI_Controller {
     {
         parent::__construct();
         $this->load->model('model_catalogos');
+        $this->load->model('model_actividades');
     }
 
 /*
@@ -18,20 +19,24 @@ class Actividades extends CI_Controller {
     public function index()
     {
         $data = array(
-            'titulo'    => 'Actividades ' . APLICACION  . ' | ' . EMPRESA,
-            'menu'      => $this->model_catalogos->get_menus(),
-            'view'      => 'actividades/index'
+            'titulo'        => 'Actividades ' . APLICACION  . ' | ' . EMPRESA,
+            'menu'          => $this->model_catalogos->get_menus(),
+            'actividades'   => $this->model_actividades->get_actividades(),
+            'view'          => 'actividades/index'
         );
         $this->load->view( RUTA_TEMA . 'body', $data, FALSE );
     }
 
     public function registrar()
     {
+        $json = array('exito' => TRUE);
         $data = array(
-            'titulo'    => 'Nueva Actividad ' . APLICACION  . ' | ' . EMPRESA,
+            'titulo'    => 'Nueva Actividad ',
+            'u_medida'  =>  $this->model_catalogos->get_unidades_medida(),
             'view'      => 'actividades/registrar'
         );
-        $this->load->view( RUTA_TEMA . 'body', $data, FALSE );
+        $json['html'] = $this->load->view( $data['view'], $data, TRUE );
+        return print(json_encode($json));
     }
 
 }

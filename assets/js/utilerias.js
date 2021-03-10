@@ -1,0 +1,383 @@
+/*
+|--------------------------------------------------------------------------
+| FUNCIONES GENERALES
+|--------------------------------------------------------------------------
+*/
+
+// Función de animación de carga del sistema
+function loader(opcion = true){
+  // let loader = $("#loader");
+  // if ( opcion == true ){
+  //   if ( loader.is(":visible") == false )
+  //     loader.fadeIn('fast');
+  // }
+  // else 
+  //   loader.fadeOut(1500);  
+}
+
+// Función para reducir la llamada a la url base del sistema
+function url(url = "", comodin = true, hash = true){
+  url = (comodin)? "index.php/" + url : url;
+  if ( hash )
+    return $("#base_url").val() + url + fu_cache_buster();
+  else
+    return $("#base_url").val() + url;
+}
+
+function fu_cache_buster(){
+  var hash = ( new Date() ).getTime();
+  return `?${hash}`;
+}
+
+/**
+|   Función que muestra alertas si se incluye el apartado en el HTML
+|     Parámetros:
+|               @param mensaje    -   Contenido de la alerta
+|               @param color      -   Color de la alerta
+|               @param contenedor -   Padre del objeto alert
+|               @param apilar     -   Activa/descativa el apilar de las alertas
+*/
+function fu_alerta(mensaje = '', color = '', contenedor = '', apilar = false){
+  let alerta  = $(`${contenedor} #alertas`);
+  color       = ( color == '' )? 'info' : color;
+
+  if ( mensaje == '' ){ // Eliminar alertas
+    alerta.html('');
+    return;
+  }
+
+  let html    = `
+    <div tabindex="-1" class="alert alert-${color}" role="alert">    
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <span>${mensaje}</span>
+    </div>
+  `;
+  if ( apilar )
+    alerta.append(html);
+  else 
+    alerta.html(html);
+}
+
+/**
+|   Función que habilita las notificaciones tipo toast
+|       Recibe:
+|               Encabezado     -   Cabecera
+|               Notificacion   -   Cuerpo
+|               Tipo           -   Color
+|               Duracion       -   3.5 segundos por defecto
+|   Cambia el estilo si solo se ingresa la Cabecera
+|   Apilable si se invoca más de 1 vez
+*/
+function fu_toast(encabezado = "", notificacion = "", tipo = "danger", duracion = 5){
+  let notificaciones = $("#notificaciones");
+
+  let color   = (tipo == "rojo")?   "fondo-rojo": 
+                (tipo == "verde")?  "fondo-verde": 
+                (tipo == "dorado")? "fondo-dorado": 
+                "bg-" + tipo;
+  let texto   = (tipo == "muted" || tipo == "light" || tipo == "white")? "texto-rojo" : 
+                "text-white";
+
+  let titulo  = "";
+
+  if ( ( notificacion == "" || notificacion == null ) && encabezado != "" ){
+    notificacion     = encabezado;
+    encabezado  = "";
+  }
+
+  if ( encabezado != "" )
+    titulo = `
+      <div class="toast-header">
+        <div class="`+ color +` rounded mr-2" style="width: 20px; height: 20px;"></div>
+        <strong class="mr-auto">`+ encabezado +`</strong>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>`;
+
+  var toast_html = `
+    <div class="toast `+ color +`" role="alert" aria-live="assertive" aria-atomic="true" data-delay="`+ duracion * 1000 +`" style="min-width: 350px;">
+      `+ titulo +`
+      <div class="toast-body `+ texto +`">
+      `+ notificacion +`
+      </div>
+    </div>
+  `;
+  notificaciones.append(toast_html);
+
+  $(".toast").toast('show');
+
+  setTimeout(function() {
+      $('.toast').each(function(index, tostada) {
+        if ( index > 0 )
+          notificaciones.append(tostada);
+        else 
+          notificaciones.html('');
+      });
+  }, duracion * 1000);
+}
+
+function fu_close_toast(){ $(this).hide(100); }
+
+/*
+|--------------------------------------------------------------------------
+| FUNCIONES CONTROLLER
+|--------------------------------------------------------------------------
+*/
+
+// Función que permite abrir/recargar una ventana de nombre único para evitar otras del mismo nombre
+function fu_abrir_ventana(vUrl, nombre, opciones = "", objetoVentana){
+  var ventana;
+  if ( objetoVentana != null ){
+    if ( ! objetoVentana.closed ){
+      objetoVentana.focus();
+      objetoVentana.location.href = vUrl;
+      return objetoVentana;
+    }
+  }
+  ventana = window.open( vUrl, nombre, opciones );
+  return ventana;
+}
+
+// Función que dada un URL o propiedad data, carga una vista modo ajax
+function fu_muestra_vista(vUrl, datos = []){
+  vUrl = ( $(this).data("url") )? $(this).data("url") : vUrl;
+  var html = "";
+  if ( vUrl ){
+  	$.ajax({
+  		url:    vUrl,
+  		type:   'POST',
+  		cache:  true,
+  		async:  false,
+  		global: false,
+  		data:   datos,
+  		success: function(data, textStatus, xhr) {
+  			try {
+          data = JSON.parse(data);
+          if ( data.exito )
+            html = data.html;
+        } catch(e) {
+          fu_toast('Falló el cargar la vista.');
+        }
+  		},
+  		fail: function(xhr, textStatus, errorThrown){ 
+  			fu_toast('Falló carga de la vista. Petición fallida.');
+  		},
+  		error: function(xhr, textStatus, errorThrown){ 
+  			fu_toast('Ha ocurrido un problema al cargar la vista');
+  		}, 
+  		complete: function(){
+  			setTimeout(function() { cargandoVista = false; }, 500);
+  		}
+  	});
+  }
+  return html;
+}
+
+// Función de consulta con json, retornando un arreglo
+function fn_json_query(vUrl, datos = []){
+  vUrl = ( $(this).data("url") )? $(this).data("url") : vUrl;
+  var json;
+  if ( vUrl ){
+    $.ajax({
+      url:    vUrl,
+      type:   'POST',
+      cache:  true,
+      async:  false,
+      global: false,
+      data:   datos,
+      success: function(data, textStatus, xhr) {
+        try {
+          data = JSON.parse(data);
+          if ( data.exito )
+            json = data.datos;
+        } catch(e) {
+          fu_toast('Falló el cargar la vista.');
+        }
+      },
+      fail: function(xhr, textStatus, errorThrown){ 
+        fu_toast('Falló carga de la vista. Petición fallida.');
+      },
+      error: function(xhr, textStatus, errorThrown){ 
+        fu_toast('Ha ocurrido un problema al cargar la vista');
+      }, 
+      complete: function(){
+        setTimeout(function() { cargandoVista = false; }, 500);
+      }
+    });
+  }
+  return json;
+}
+
+function fu_form_controller(fUrl, formconf = [], inputs = [], contenedor = "main" ){
+  if ( ! formconf || formconf == null )
+    formconf = {
+    	id:     `form-${contenedor}`,
+    	name:   `form-${contenedor}`,
+    	action: fUrl,
+    	method: 'POST'
+    }
+  else {
+    formconf.id     = ( formconf.id     ) ? formconf.id     : 
+                      ( formconf.name   ) ? formconf.name   : `form-${contenedor}`;
+    formconf.name   = ( formconf.name   ) ? formconf.name   : 
+                      ( formconf.id     ) ? formconf.id     : `form-${contenedor}`;
+    formconf.action = ( formconf.action ) ? formconf.action : fUrl;
+    formconf.method = ( formconf.method ) ? formconf.method : `POST`;
+  }
+
+  if ( inputs == null || inputs == undefined )
+    inputs = [];
+
+  var form = $("<form/>", formconf );
+
+  inputs.forEach( function(input, index) {
+    form.append( 
+      $("<input>", 
+        {
+          id:     ( input.id    ) ? input.id    :   
+                  ( input.name  ) ? input.name  :   `input${index + 1}`,
+          name:   ( input.name  ) ? input.name  :   
+                  ( input.id    ) ? input.id    :   `input${index + 1}`,
+          type:   ( input.type  ) ? input.type  :   `hidden`,
+          value:  ( input.value ) ? input.value :  '',
+        }
+      )
+    );
+  });
+
+  $(contenedor).html(form);
+  return {'id': formconf.id, 'name': formconf.name};
+}
+
+/**
+|   Función que habilita el modal
+|       Recibe:
+|               Titulo      -   Cabezara
+|               Contenido   -   Cuerpo
+|               Botones     -   Pie
+|   Requiere un contenido para motrarse
+|   Parametro html = true para insertar código HTML
+ */
+function fu_modal(titulo, contenido = "", botones = "salir", anchura = "sm", html = true){
+  let modal   = $("#modal");
+  let tiempo  = 50;
+
+  modal.on('hidden.bs.modal', function (event) {
+      $("#modal-titulo").html('');
+      $("#modal-contenido").html('');
+      $('#modal').modal('dispose');
+  });
+
+  if( modal.is(':visible') ){
+    $("#modal").modal('hide');
+    tiempo = 500;
+  }
+  setTimeout(function() {
+    if ( titulo == "ERR"){
+      titulo    = "ERROR NO CONTROLADO";
+      contenido = (contenido != "")? contenido: "Ha ocurrido un error al intentar ingresar al sistema, por favor, comunique al administrador del sistema.";
+    }
+    else if ( titulo == "CNX"){
+      titulo    = "FALLÓ LA CONEXIÓN";
+      contenido = "No se pudo contectar al servidor, por favor verifique su conexión a internet.";
+    }
+    else if ( titulo == "404"){
+      titulo    = "404 - Página no encontrada";
+      contenido = "No se localizó la página que estaba consultado.";
+    }
+    
+    if( contenido == "" )
+      return;
+
+    if ( anchura == "lg" ){
+      $("#modal .modal-dialog").removeClass('modal-xl');
+      $("#modal .modal-dialog").addClass('modal-lg');
+    } else if ( anchura == "xl" ){
+      $("#modal .modal-dialog").removeClass('modal-lg');
+      $("#modal .modal-dialog").addClass('modal-xl');
+    } else {
+      $("#modal .modal-dialog").removeClass('modal-xl');
+      $("#modal .modal-dialog").removeClass('modal-lg');
+    }
+
+    if ( html ){
+      $("#modal-titulo").html(titulo);
+      $("#modal-contenido").html(contenido);
+    } else {
+      $("#modal-titulo").text(titulo);
+      $("#modal-contenido").text(contenido);
+    }
+
+    if ( botones == "" )
+      $("#modal-botones").html('<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>');
+    else if ( botones == "salir" )
+      $("#modal-botones").html(`<a href="${ url() }" class="btn btn-secondary">Salir</a>`);
+    else 
+      $("#modal-botones").html(botones);  
+
+    modal.modal('show');
+  }, tiempo);
+}
+
+/*
+|--------------------------------------------------------------------------
+| FUNCIONES VALIDADORAS/RESTRICTORAS DE DATOS
+|--------------------------------------------------------------------------
+*/
+
+// Función que valida que una CURP cumpla con el formato obligatorio
+function fu_valida_curp(curp) {
+  if ( curp.length < 18 )
+    return false;
+
+  var re = /^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0\d|1[0-2])(?:[0-2]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$/,
+      validado = curp.match(re);
+  
+  if (! validado )
+    return false;
+
+  if (validado[2] != digitoVerificador(validado[1])) 
+    return false;
+        
+  return true; //Validado
+}
+
+// Dígito de validación de CURPS
+function digitoVerificador(digito) {
+  var diccionario  = "0123456789ABCDEFGHIJKLMNÑOPQRSTUVWXYZ",
+      lngSuma      = 0.0,
+      lngDigito    = 0.0;
+  for(var i=0; i<17; i++)
+      lngSuma= lngSuma + diccionario.indexOf(digito.charAt(i)) * (18 - i);
+  lngDigito = 10 - lngSuma % 10;
+  if(lngDigito == 10)
+      return 0;
+  return lngDigito;
+}
+
+// Functión que dado un evento transforma un diccionario de caracteres a un diccionario normalizado
+function fu_normaliza_caracteres(){
+    let cadena_normalizar = $(this).val();
+    let cadena_normalizada = normalizar(cadena_normalizar);
+    $(this).val(cadena_normalizada.trim().toUpperCase());
+}
+
+// Función que permite el ingreso de dígitos únicamente
+function fu_solo_numeros( e ){
+  if( e.keyCode < 48 || e.keyCode > 57 )
+    return false;
+}
+
+// Función para validar estructura general de correos
+function fu_validar_correo(email) {
+  return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(email);
+}
+
+// Función para validar estructura general de correos V2
+function fu_validar_correo_2(correo_electronico) {
+  var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+  return regex.test(correo_electronico);
+}

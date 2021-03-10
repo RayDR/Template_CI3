@@ -19,7 +19,7 @@ class Acuerdos extends CI_Controller {
 	public function index()
 	{
 		$data = array(
-            'titulo'    => 'Home ' . APLICACION  . ' | ' . EMPRESA,
+            'titulo'    => 'Acuerdos ' . APLICACION  . ' | ' . EMPRESA,
             'menu'      => $this->model_catalogos->get_menus(),
             'view'      => 'acuerdos/index'
         );
@@ -29,10 +29,10 @@ class Acuerdos extends CI_Controller {
 	public function registrar()
     {
         $data = array(
-            'titulo'    => 'Nuevo Programa ' . APLICACION  . ' | ' . EMPRESA,
+            'titulo'    => 'Nuevo Acuerdo',
             'view'      => 'acuerdos/registrar'
         );
-        $this->load->view( RUTA_TEMA . 'body', $data, FALSE );
+        $this->load->view( $data['view'], $data, FALSE );
     }
 
 }

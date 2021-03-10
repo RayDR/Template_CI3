@@ -26,17 +26,17 @@
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://demo.themesberg.com/volt-pro">
-    <meta property="og:title" content="Volt - Free Bootstrap 5 Admin Dashboard">
-    <meta property="og:description" content="Volt Pro is a Premium Bootstrap 5 Admin Dashboard featuring over 800 components, 10+ plugins and 20 example pages using Vanilla JS.">
-    <meta property="og:image" content="https://themesberg.s3.us-east-2.amazonaws.com/public/products/volt-pro-bootstrap-5-dashboard/volt-pro-preview.jpg">
+    <meta property="og:url" content="">
+    <meta property="og:title" content="<?= APLICACION ?> <?= EMPRESA ?>">
+    <meta property="og:description" content="<?= APLICACION ?> <?= EMPRESA ?>">
+    <meta property="og:image" content="">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://demo.themesberg.com/volt-pro">
-    <meta property="twitter:title" content="Volt - Free Bootstrap 5 Admin Dashboard">
-    <meta property="twitter:description" content="Volt Pro is a Premium Bootstrap 5 Admin Dashboard featuring over 800 components, 10+ plugins and 20 example pages using Vanilla JS.">
-    <meta property="twitter:image" content="https://themesberg.s3.us-east-2.amazonaws.com/public/products/volt-pro-bootstrap-5-dashboard/volt-pro-preview.jpg">
+    <meta property="twitter:url" content="">
+    <meta property="twitter:title" content="<?= APLICACION ?> <?= EMPRESA ?>">
+    <meta property="twitter:description" content="<?= APLICACION ?> <?= EMPRESA ?>">
+    <meta property="twitter:image" content="">
 
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="120x120" href="<?= base_url('assets/img/favicon/apple-touch-icon.png') ?>">
@@ -46,16 +46,22 @@
     <link rel="mask-icon" href="<?= base_url('assets/img/favicon/safari-pinned-tab.svg') ?>" color="#ffffff">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="theme-color" content="#ffffff">
-
+    
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Fontawesome JS -->
     <script src="https://kit.fontawesome.com/8cca2ecc5a.js" crossorigin="anonymous"></script>
+    <!-- Datatable JS -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.22/af-2.3.5/b-1.6.5/b-colvis-1.6.5/b-flash-1.6.5/b-html5-1.6.5/b-print-1.6.5/cr-1.5.2/fc-3.3.1/fh-3.1.7/kt-2.5.3/r-2.2.6/rg-1.1.2/rr-1.2.7/sc-2.0.3/sb-1.0.0/sp-1.2.1/sl-1.3.1/datatables.min.js"></script>  
 
     <!-- Sweet Alert -->
     <link type="text/css" href="<?= base_url('vendor/sweetalert2/dist/sweetalert2.min.css') ?>" rel="stylesheet">
-
     <!-- Notyf -->
     <link type="text/css" href="<?= base_url('vendor/notyf/notyf.min.css') ?>" rel="stylesheet">
-
     <!-- Volt CSS -->
     <link type="text/css" href="<?= base_url('css/volt.css') ?>" rel="stylesheet">
+    <!-- Datatable CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.22/af-2.3.5/b-1.6.4/b-colvis-1.6.4/b-flash-1.6.4/b-html5-1.6.4/b-print-1.6.4/cr-1.5.2/fc-3.3.1/fh-3.1.7/kt-2.5.3/r-2.2.6/rg-1.1.2/rr-1.2.7/sc-2.0.3/sb-1.0.0/sp-1.2.0/sl-1.3.1/datatables.min.css"/>
 </head>
