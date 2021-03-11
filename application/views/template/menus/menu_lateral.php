@@ -3,8 +3,8 @@
       <div class="user-card d-flex d-md-none align-items-center justify-content-between justify-content-md-center pb-4">
          <div class="d-flex align-items-center">
             <div class="user-avatar lg-avatar me-4">
-               <img src="<?= base_url('assets/img/team/profile-picture-3.jpg') ?>" class="card-img-top rounded-circle border-white"
-               alt="Raymundo Dominguez">
+               <img src="" class="card-img-top rounded-circle border-white"
+               alt="Perfil">
             </div>
             <div class="d-block">
                <h2 class="h6">Hola, Marco</h2>
@@ -15,7 +15,7 @@
          </div>
          <div class="collapse-close d-md-none">
             <a href="#sidebarMenu" class="fas fa-times" data-bs-toggle="collapse" data-bs-target="#sidebarMenu"
-            aria-controls="sidebarMenu" aria-expanded="true" aria-label="Toggle navigation"></a>
+            aria-controls="sidebarMenu" aria-expanded="true" aria-label="Ocultar/mostrar navegación"></a>
          </div>
       </div>
       <ul class="nav flex-column pt-3 pt-md-0">

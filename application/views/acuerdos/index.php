@@ -19,6 +19,19 @@
 <div class="card border-light shadow-sm mb-4">
     <div class="card-body">
         <div class="table-responsive">
+            <table id="dtAcuerdos" class="table table-centered table-nowrap mb-0 rounded">
+                <thead class="thead-light">
+                    <tr>
+                        <th class="">#</th>
+                        <th class="">Acuerdo</th>
+                        <th class="">Origen</th>
+                        <th class="">Destino</th>
+                        <th class="">Estatus</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

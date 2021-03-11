@@ -7,6 +7,7 @@ class Acuerdos extends CI_Controller {
     {
         parent::__construct();
         $this->load->model('model_catalogos');
+        $this->load->model('model_acuerdos');
     }
 
 
@@ -21,6 +22,7 @@ class Acuerdos extends CI_Controller {
 		$data = array(
             'titulo'    => 'Acuerdos ' . APLICACION  . ' | ' . EMPRESA,
             'menu'      => $this->model_catalogos->get_menus(),
+            'acuerdos'  => $this->model_acuerdos->get_acuerdos(),
             'view'      => 'acuerdos/index'
         );
         $this->load->view( RUTA_TEMA . 'body', $data, FALSE );
