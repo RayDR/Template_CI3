@@ -33,7 +33,10 @@ function fCargar_DataTable(){
 	}
 }
 
-function fnueva_actividad(){
+function fnueva_actividad(e){
+	if ( e == null || e == undefined )
+        return;
 	var vista = fu_muestra_vista('Actividades/registrar');
-	$('#ajax-html').html(vista);
+	if ( vista )
+		$('#ajax-html').html(vista);
 }

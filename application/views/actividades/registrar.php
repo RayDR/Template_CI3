@@ -3,7 +3,7 @@
         <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
             <li class="breadcrumb-item"><a href="<?= base_url() ?>"><span class="fas fa-home"></span></a></li>
             <li class="breadcrumb-item"><a href="<?= base_url('index.php/Actividades') ?>">Actividades</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Registrar</li>
+            <li class="breadcrumb-item active" aria-current="page"><?= $titulo ?></li>
         </ol>
     </nav>
     <div class="d-flex justify-content-between w-100 flex-wrap">
@@ -16,7 +16,7 @@
     <div class="col-12 mb-4">
         <div class="card border-light shadow-sm components-section">
             <div class="card-body">
-                <!-- <h2 class="h5 mb-4">Programa seleccionado: <strong>Programa Presupuestario</strong> - Ejercicio 2021</h2> -->
+                <?php $this->load->view(RUTA_TEMA_UTIL . '/alertas'); ?>
                 <form>
                     <div class="row">
                         <div class="col-6 mb-3">
@@ -24,7 +24,7 @@
                             <select class="form-select" id="areas" aria-label="Áreas">
                                 <option selected disabled>Seleccione una opción</option>
                                 <?php foreach ($areas as $key => $area): ?>
-                                <option value="<?= $area->cve_area ?>"><?= $area->descripcion ?> (<?= $area->cve_area ?>)</option>
+                                <option value="<?= $area->area_id ?>"><?= $area->area ?> (<?= $area->cve_area ?>)</option>
                                 <?php endforeach; ?>  
                             </select>
                         </div>
@@ -181,3 +181,5 @@
         </div>
     </div>
 </div>
+
+<script src="<?= base_url('assets/js/actividades/registrar.js') ?>" type="text/javascript" charset="utf-8" async defer></script>

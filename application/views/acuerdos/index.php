@@ -6,11 +6,11 @@
         </ol>
     </nav>
     <div class="d-flex justify-content-between w-100 flex-wrap">
-        <div class="mb-3 mb-lg-0">
-            <h1 class="h4">Seguimiento</h1>
+        <div class="mb-5 mb-lg-0">
+            <h1 class="h4">Seguimiento de Acuerdos</h1>
         </div>
     </div>
-    <div class="btn-toolbar dropdown">
+    <div class="btn-toolbar dropdown pt-2">
       <a id="nuevo_acuerdo" href="#registrar" class="btn btn-dark btn-sm me-2 dropdown-toggle">
         <span class="fas fa-plus me-2"></span>Nuevo Acuerdo
       </a>
@@ -19,19 +19,20 @@
 <div class="card border-light shadow-sm mb-4">
     <div class="card-body">
         <div class="table-responsive">
-            <table id="dtAcuerdos" class="table table-centered table-nowrap mb-0 rounded">
+            <table id="dtAcuerdos" class="table table-centered table-nowrap mb-0 rounded w-100">
                 <thead class="thead-light">
                     <tr>
-                        <th class="">#</th>
-                        <th class="">Acuerdo</th>
-                        <th class="">Origen</th>
-                        <th class="">Destino</th>
-                        <th class="">Estatus</th>
+                        <th class="align-middle">#</th>
+                        <th class="align-middle">Acuerdo</th>
+                        <th class="align-middle">Origen</th>
+                        <th class="align-middle">Destino</th>
+                        <th class="align-middle">Comentarios</th>
+                        <th class="align-middle">Estatus</th>
                     </tr>
                 </thead>
-                <tbody>
-                </tbody>
             </table>
         </div>
     </div>
 </div>
+
+<script src="<?= base_url('assets/js/acuerdos/acuerdos.js') ?>" type="text/javascript" charset="utf-8" async defer></script>

@@ -3,6 +3,45 @@
 | FUNCIONES GENERALES
 |--------------------------------------------------------------------------
 */
+const notyf = new Notyf({
+  position: {
+      x: 'right',
+      y: 'top',
+  },
+  types: [
+    {
+      type: 'danger',
+      background: 'red',
+      icon: {
+          className: 'fas fa-info-circle',
+          tagName: 'span',
+          color: '#fff'
+      },
+      dismissible: true
+    },
+    {
+      type: 'info',
+      background: 'black',
+      icon: {
+          className: 'fas fa-comment-dots',
+          tagName: 'span',
+          color: '#fff'
+      },
+      dismissible: true
+    },
+    {
+      type: 'success',
+      background: 'green',
+      icon: {
+          className: 'fas fa-check',
+          tagName: 'span',
+          color: '#fff'
+      },
+      dismissible: true
+    }
+  ]
+}); 
+
 
 // Función de animación de carga del sistema
 function loader(opcion = true){
@@ -39,7 +78,7 @@ function fu_cache_buster(){
 */
 function fu_alerta(mensaje = '', color = '', contenedor = '', apilar = false){
   let alerta  = $(`${contenedor} #alertas`);
-  color       = ( color == '' )? 'info' : color;
+  color       = ( color == '' )? 'primary' : color;
 
   if ( mensaje == '' ){ // Eliminar alertas
     alerta.html('');
@@ -47,17 +86,20 @@ function fu_alerta(mensaje = '', color = '', contenedor = '', apilar = false){
   }
 
   let html    = `
-    <div tabindex="-1" class="alert alert-${color}" role="alert">    
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-      <span>${mensaje}</span>
-    </div>
+  <div tabindex="-1" class="alert alert-${color} alert-dismissible fade show" role="alert">
+    ${mensaje}
+    <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
   `;
   if ( apilar )
     alerta.append(html);
   else 
     alerta.html(html);
+  
+  // Scroll al alert
+  $([document.documentElement, document.body]).animate({
+      scrollTop: $(alerta).offset().top
+  }, 300);
 }
 
 /**
@@ -119,6 +161,13 @@ function fu_toast(encabezado = "", notificacion = "", tipo = "danger", duracion 
   }, duracion * 1000);
 }
 
+function fu_notificacion(notificacion, tipo ){  
+  notyf.open({
+    type: tipo,
+    message: notificacion
+  });
+}
+
 function fu_close_toast(){ $(this).hide(100); }
 
 /*
@@ -177,7 +226,7 @@ function fu_muestra_vista(vUrl, datos = []){
 }
 
 // Función de consulta con json, retornando un arreglo
-function fn_json_query(vUrl, datos = []){
+function fu_json_query(vUrl, datos = []){
   vUrl = ( $(this).data("url") )? $(this).data("url") : vUrl;
   var json;
   if ( vUrl ){

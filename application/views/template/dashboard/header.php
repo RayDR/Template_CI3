@@ -12,7 +12,6 @@
 -->
 <!DOCTYPE html>
 <html lang="es_MX">
-
 <head> 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <!-- Primary Meta Tags -->
@@ -49,12 +48,42 @@
     
     <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Vendor JS -->
+    <script src="<?= base_url('vendor/onscreen/dist/on-screen.umd.min.js') ?>"></script>
+    <!-- Slider -->
+    <script src="<?= base_url('vendor/nouislider/distribute/nouislider.min.js') ?>"></script>
+    <!-- Smooth scroll -->
+    <script src="<?= base_url('vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js') ?>"></script>
+    <!-- Charts -->
+    <script src="<?= base_url('vendor/chartist/dist/chartist.min.js') ?>"></script>
+    <script src="<?= base_url('vendor/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js') ?>"></script>
+    <!-- Datepicker -->
+    <script src="<?= base_url('vendor/vanillajs-datepicker/dist/js/datepicker.min.js') ?>"></script>
+    <!-- Sweet Alerts 2 -->
+    <script src="<?= base_url('vendor/sweetalert2/dist/sweetalert2.all.min.js') ?>"></script>
+    <!-- Moment JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>
+    <!-- Vanilla JS Datepicker -->
+    <script src="<?= base_url('vendor/vanillajs-datepicker/dist/js/datepicker.min.js') ?>"></script>
+    <!-- Notyf -->
+    <script src="<?= base_url('vendor/notyf/notyf.min.js') ?>"></script>
+    <!-- Simplebar -->
+    <script src="<?= base_url('vendor/simplebar/dist/simplebar.min.js') ?>"></script>
+    <!-- Github buttons -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!-- Volt JS -->
+    <script src="<?= base_url('assets/js/volt.js') ?>"></script>
+    <!-- Core -->
+    <script src="<?= base_url('vendor/@popperjs/core/dist/umd/popper.min.js') ?>"></script>
+    <script src="<?= base_url('vendor/bootstrap/dist/js/bootstrap.min.js') ?>"></script>
     <!-- Fontawesome JS -->
     <script src="https://kit.fontawesome.com/8cca2ecc5a.js" crossorigin="anonymous"></script>
     <!-- Datatable JS -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.22/af-2.3.5/b-1.6.5/b-colvis-1.6.5/b-flash-1.6.5/b-html5-1.6.5/b-print-1.6.5/cr-1.5.2/fc-3.3.1/fh-3.1.7/kt-2.5.3/r-2.2.6/rg-1.1.2/rr-1.2.7/sc-2.0.3/sb-1.0.0/sp-1.2.1/sl-1.3.1/datatables.min.js"></script>  
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.22/af-2.3.5/b-1.6.5/b-colvis-1.6.5/b-flash-1.6.5/b-html5-1.6.5/b-print-1.6.5/cr-1.5.2/fc-3.3.1/fh-3.1.7/kt-2.5.3/r-2.2.6/rg-1.1.2/rr-1.2.7/sc-2.0.3/sb-1.0.0/sp-1.2.1/sl-1.3.1/datatables.min.js"></script> 
+    <!-- Utilerias JS -->
+    <script src="<?= base_url('assets/js/utilerias.js') ?>" type="text/javascript" charset="utf-8" async defer></script> 
 
     <!-- Sweet Alert -->
     <link type="text/css" href="<?= base_url('vendor/sweetalert2/dist/sweetalert2.min.css') ?>" rel="stylesheet">

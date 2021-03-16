@@ -22,19 +22,40 @@ class Acuerdos extends CI_Controller {
 		$data = array(
             'titulo'    => 'Acuerdos ' . APLICACION  . ' | ' . EMPRESA,
             'menu'      => $this->model_catalogos->get_menus(),
-            'acuerdos'  => $this->model_acuerdos->get_acuerdos(),
             'view'      => 'acuerdos/index'
         );
         $this->load->view( RUTA_TEMA . 'body', $data, FALSE );
 	}
 
-	public function registrar()
+    public function registrar()
     {
+        $json = array('exito' => TRUE);
         $data = array(
-            'titulo'    => 'Nuevo Acuerdo',
+            'titulo'    =>  'Registrar',
+            'areas'     =>  $this->model_catalogos->get_areas(),
             'view'      => 'acuerdos/registrar'
         );
-        $this->load->view( $data['view'], $data, FALSE );
+        $json['html'] = $this->load->view( $data['view'], $data, TRUE );
+        return print(json_encode($json));
+    }
+
+/*
+|--------------------------------------------------------------------------
+| AJAX 
+|--------------------------------------------------------------------------
+*/
+    
+    // -------------- VISTAS
+
+
+    // -------------- DATOS
+
+    public function datatable_acuerdos(){
+        return print(json_encode( $this->model_acuerdos->get_acuerdos() ));
+    }
+
+    public function registrar_acuerdo(){
+        
     }
 
 }

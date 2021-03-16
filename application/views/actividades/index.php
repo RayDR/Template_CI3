@@ -7,7 +7,7 @@
     </nav>
     <div class="d-flex justify-content-between w-100 flex-wrap">
         <div class="mb-3 mb-lg-0">
-            <h1 class="h4">Actividades registradas</h1>
+            <h1 class="h4">Detalle de Actividades</h1>
         </div>
     </div>
     <div class="btn-toolbar dropdown">
