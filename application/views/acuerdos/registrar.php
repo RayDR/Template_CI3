@@ -23,21 +23,21 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-6 mb-3">
+                        <div class="col-12 mb-3">
                             <label class="my-1 me-2" for="area_origen">Área Origen</label>
                             <select class="form-select" id="area_origen" name="area_origen" aria-label="Áreas">
                                 <option selected disabled>Seleccione una opción</option>
                                 <?php foreach ($areas as $key => $area): ?>
-                                <option value="<?= $area->area_id ?>"><?= $area->area ?> (<?= $area->cve_area ?>)</option>
+                                <option value="<?= $area->direccion_id ?>,<?= $area->subdireccion_id ?>,<?= $area->departamento_id ?>,<?= $area->area_id ?>">[<?= $area->cve_direccion  ?> | <?= $area->cve_subdireccion ?> | (<?= $area->cve_area ?>)]  <?= ($area->direccion == 'NINGUNA')? '': $area->direccion . ' - '  ?><?= ($area->subdireccion == 'NINGUNA')? '': $area->subdireccion . ' - '  ?><?= ($area->departamento == 'NINGUNA')? '': $area->departamento . ' - ' ?><?= ($area->area == 'NINGUNA')? '': $area->area ?></option>
                                 <?php endforeach; ?>  
                             </select>
                         </div>
-                        <div class="col-6 mb-3">
+                        <div class="col-12 mb-3">
                             <label class="my-1 me-2" for="area_destino">Área a Turnar</label>
                             <select class="form-select" id="area_destino" name="area_destino" aria-label="Áreas">
                                 <option selected disabled>Seleccione una opción</option>
                                 <?php foreach ($areas as $key => $area): ?>
-                                <option value="<?= $area->area_id ?>"><?= $area->area ?> (<?= $area->cve_area ?>)</option>
+                                <option value="<?= $area->direccion_id ?>,<?= $area->subdireccion_id ?>,<?= $area->departamento_id ?>,<?= $area->area_id ?>">[<?= $area->cve_direccion  ?> | <?= $area->cve_subdireccion ?> | (<?= $area->cve_area ?>)]  <?= ($area->direccion == 'NINGUNA')? '': $area->direccion . ' - '  ?><?= ($area->subdireccion == 'NINGUNA')? '': $area->subdireccion . ' - '  ?><?= ($area->departamento == 'NINGUNA')? '': $area->departamento . ' - ' ?><?= ($area->area == 'NINGUNA')? '': $area->area ?></option>
                                 <?php endforeach; ?>  
                             </select>
                         </div>

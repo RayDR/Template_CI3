@@ -161,7 +161,7 @@ function fu_toast(encabezado = "", notificacion = "", tipo = "danger", duracion 
   }, duracion * 1000);
 }
 
-function fu_notificacion(notificacion, tipo ){  
+function fu_notificacion(notificacion, tipo='info' ){  
   notyf.open({
     type: tipo,
     message: notificacion
@@ -239,9 +239,7 @@ function fu_json_query(vUrl, datos = []){
       data:   datos,
       success: function(data, textStatus, xhr) {
         try {
-          data = JSON.parse(data);
-          if ( data.exito )
-            json = data.datos;
+          json = JSON.parse(data);
         } catch(e) {
           fu_toast('Falló el cargar la vista.');
         }
