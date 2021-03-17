@@ -45,7 +45,6 @@ function fguardar(e){
             url('Acuerdos/registrar_acuerdo', true, false),
             datos 
         );
-        console.log(respuesta);
         if ( respuesta.exito ){
             fu_notificacion('Se ha registrado el acuerdo exitosamente.', 'success'); 
         } else
