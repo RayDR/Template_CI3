@@ -9,6 +9,13 @@ $(document).ready(function() {
 
     finicia_datatable();
     fmuestra_registro();
+
+    $(`${dtNombre} tbody`).on('click', 'tr', function () {
+        fu_notificacion('Mostaremos el detalle de los acuerdo');
+        setTimeout(function() {
+            var data = dt.row( this ).data();
+        }, 250);
+    });
 });
 
 function finicia_datatable(){
@@ -43,12 +50,24 @@ function finicia_datatable(){
             dataSrc: ''
         },
         columns: [
-            { data: 'acuerdo_id'      },
-            { data: 'seguimiento'     },
-            { data: 'area_origen_id'  },
-            { data: 'area_destino_id' },
-            { data: 'comentarios'     },
-            { data: 'estatus_acuerdo' }            
+            { data: 'acuerdo_id'  },
+            { data: 'descripcion' },
+            { 
+                data: null,
+                render: function(data){
+                    return `<span class="badge badge-lg bg-primary">${data.direccion_origen} 
+                            [${data.cve_direccion_origen},${data.cve_subdireccion_origen},
+                            ${data.cve_departamento_origen},${data.cve_area_origen} ]</span>`;
+                }  
+            },
+            { 
+                data: null,
+                render: function(data){
+                    return `<span class="badge badge-lg bg-info">${data.direccion_destino} 
+                            [${data.cve_direccion_destino},${data.cve_subdireccion_destino},
+                            ${data.cve_departamento_destino},${data.cve_area_destino} ]</span>`;
+                }  
+            }          
         ],
         drawCallback: function (settings) {
             $('[data-toggle="tooltip"]').tooltip({ boundary: 'window' });

@@ -26,8 +26,6 @@
                         <th class="align-middle">Acuerdo</th>
                         <th class="align-middle">Origen</th>
                         <th class="align-middle">Destino</th>
-                        <th class="align-middle">Comentarios</th>
-                        <th class="align-middle">Estatus</th>
                     </tr>
                 </thead>
             </table>

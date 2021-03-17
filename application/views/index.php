@@ -4,8 +4,8 @@
     <span class="fas fa-plus me-2"></span>Acceso rápido
     </button>
     <div class="dropdown-menu dashboard-dropdown dropdown-menu-start mt-2 py-0">
-      <a id="nuevo_actividad" class="dropdown-item fw-normal" href="#nueva_actividad"><span class="far fa-calendar-plus"></span>Nueva Actividad</a>
-      <a id="nuevo_acuerdo" class="dropdown-item fw-normal rounded-top" href="#nuevo_acuerdo"><span class="fas fa-file-signature"></span>Nuevo Acuerdo</a>
+      <a id="nuevo_actividad" onclick="fnueva_actividad()" class="dropdown-item fw-normal" href="#nueva_actividad"><span class="far fa-calendar-plus"></span>Nueva Actividad</a>
+      <a id="nuevo_acuerdo" onclick="fnuevo_acuerdo()" class="dropdown-item fw-normal rounded-top" href="#nuevo_acuerdo"><span class="fas fa-file-signature"></span>Nuevo Acuerdo</a>
       <div role="separator" class="dropdown-divider my-0"></div>
       <a class="dropdown-item fw-normal rounded-bottom" href="#"><span class="fas fa-file-import"></span>Reportes</a>
     </div>

@@ -78,7 +78,9 @@ class Model_catalogos extends CI_Model {
 					$this->db->where($key, $filtro);
 				}
 			}
-			$areas = $this->db->get('vw_areas');
+
+			$this->db->order_by('cve_direccion', 'asc');
+			$areas = $this->db->get('vw_direcciones_dptos_todos');
 			if ( $tipo_retorno )
 				return $areas->result();
 			else

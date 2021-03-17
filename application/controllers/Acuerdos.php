@@ -51,11 +51,39 @@ class Acuerdos extends CI_Controller {
     // -------------- DATOS
 
     public function datatable_acuerdos(){
-        return print(json_encode( $this->model_acuerdos->get_acuerdos() ));
+        return print(json_encode( $this->model_acuerdos->get_acuerdos_master() ));
     }
 
     public function registrar_acuerdo(){
-        
+        $json           = array('exito' => TRUE);
+
+        $area_origen    = $this->input->post('area_origen');
+        $area_destino   = $this->input->post('area_destino');
+        $acuerdos       = $this->input->post('acuerdos');
+
+        if ( ! $area_origen || ! $area_destino || ! $acuerdos ){
+            $json['exito']   = FALSE;
+            $json['mensaje'] = 'Falló al recibir los datos del acuerdo';
+        } else {
+            if ( is_string($area_destino) ){                
+                $datos_acuerdo  = array(
+                    'area_origen'   => explode(',', $area_origen),
+                    'area_destino'  => explode(',', $area_destino),
+                    'acuerdos'      => $acuerdos,
+                    'ejercicio'     => 2021,
+                    'usuario_id'    => 1
+                );
+                $resultado     = $this->model_acuerdos->set_nuevo_acuerdo($datos_acuerdo);
+                $json['exito'] = $resultado['exito'];
+                if ( $json['exito'] == FALSE )
+                    $json['mensaje'] = $resultado['error'];
+            } else {
+                $json['exito']   = FALSE;
+                $json['mensaje'] = 'Configuración incorrecta en <b>Área a Turnar</b>.';
+            }
+        }
+
+        return print(json_encode($json));
     }
 
 }
