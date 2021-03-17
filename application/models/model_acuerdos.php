@@ -68,7 +68,7 @@ class Model_acuerdos extends CI_Model {
 		*
 		* @return resultado[]
 	*/
-	public function set_nuevo_acuerdo($acuerdo_id, $datos){
+	public function set_seguimiento($acuerdo_id, $datos){
 		$resultado = array('exito' => TRUE);
 		try {
 			$this->db->trans_begin();
