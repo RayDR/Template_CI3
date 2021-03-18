@@ -28,7 +28,7 @@
                             <select class="form-select" id="area_origen" name="area_origen" aria-label="Áreas">
                                 <option selected disabled>Seleccione una opción</option>
                                 <?php foreach ($areas as $key => $area): ?>
-                                <option value="<?= $area->direccion_id ?>,<?= $area->subdireccion_id ?>,<?= $area->departamento_id ?>,<?= $area->area_id ?>">[<?= $area->cve_direccion  ?> | <?= $area->cve_subdireccion ?> | (<?= $area->cve_area ?>)]  <?= ($area->direccion == 'NINGUNA')? '': $area->direccion . ' - '  ?><?= ($area->subdireccion == 'NINGUNA')? '': $area->subdireccion . ' - '  ?><?= ($area->departamento == 'NINGUNA')? '': $area->departamento . ' - ' ?><?= ($area->area == 'NINGUNA')? '': $area->area ?></option>
+                                <option value="<?= $area->direccion_id ?>,<?= $area->subdireccion_id ?>,<?= $area->departamento_id ?>,<?= $area->area_id ?>">[<?= $area->cve_direccion  ?> | <?= $area->cve_subdireccion ?> | <?= $area->cve_departamento ?> | <?= $area->cve_area ?>]  <?= ($area->direccion == 'NINGUNA')? '': $area->direccion . ' - '  ?><?= ($area->subdireccion == 'NINGUNA')? '': $area->subdireccion . ' - '  ?><?= ($area->departamento == 'NINGUNA')? '': $area->departamento . ' - ' ?><?= ($area->area == 'NINGUNA')? '': $area->area ?></option>
                                 <?php endforeach; ?>  
                             </select>
                         </div>

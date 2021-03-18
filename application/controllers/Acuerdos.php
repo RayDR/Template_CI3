@@ -47,6 +47,32 @@ class Acuerdos extends CI_Controller {
     
     // -------------- VISTAS
 
+    public function detalles_acuerdo(){
+        $json           = array('exito' => TRUE);
+
+        $acuerdo_id     = $this->input->post('acuerdo');
+        $data = array(
+            'titulo'    =>  'Seguimiento de Acuerdo',
+            'acuerdos'  =>  $this->model_acuerdos->get_acuerdos_detalle($acuerdo_id),
+            'view'      => 'acuerdos/ajax/detalles_acuerdo'
+        );
+        $json['html'] = $this->load->view( $data['view'], $data, TRUE );
+        return print(json_encode( $json ));
+    }
+
+    public function seguimiento_detallado(){
+        $json           = array('exito' => TRUE);
+
+        $acuerdo_id     = $this->input->post('acuerdo');
+        $data = array(
+            'titulo'       =>  'Seguimiento de Acuerdo',
+            'acuerdo'      =>  $this->model_acuerdos->get_acuerdos([ 'acuerdo_id' => $acuerdo_id ]),
+            'seguimiento'  =>  $this->model_acuerdos->get_acuerdos_detalle($acuerdo_id),
+            'view'         => 'acuerdos/ajax/seguimiento_detallado'
+        );
+        $json['html'] = $this->load->view( $data['view'], $data, TRUE );
+        return print(json_encode( $json ));
+    }
 
     // -------------- DATOS
 

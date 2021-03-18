@@ -4,18 +4,14 @@ var dt,
     dtAjaxUrl = 'Acuerdos/datatable_acuerdos'
     vRegistro = 'Acuerdos/registrar';
 
+$(document).off('click','.seguimiento-detallado').on('click','.seguimiento-detallado', fseguimiento_detallado);
 $(document).ready(function() {
     $('#nuevo_acuerdo').click(fmuestra_registro);
 
     finicia_datatable();
     fmuestra_registro();
 
-    $(`${dtNombre} tbody`).on('click', 'tr', function () {
-        fu_notificacion('Mostaremos el detalle de los acuerdo');
-        setTimeout(function() {
-            var data = dt.row( this ).data();
-        }, 250);
-    });
+    $(`${dtNombre} tbody`).on('click', 'tr td', fdetalle_acuerdo);
 });
 
 function finicia_datatable(){
@@ -50,24 +46,42 @@ function finicia_datatable(){
             dataSrc: ''
         },
         columns: [
-            { data: 'acuerdo_id'  },
-            { data: 'descripcion' },
             { 
                 data: null,
                 render: function(data){
-                    return `<span class="badge badge-lg bg-primary">${data.direccion_origen} 
-                            [${data.cve_direccion_origen},${data.cve_subdireccion_origen},
-                            ${data.cve_departamento_origen},${data.cve_area_origen} ]</span>`;
+                    return `<a href="#seguimiento-${data.acuerdo_id}" 
+                                class="detalles">
+                            ${data.folio}</a>`;
+                }
+            },
+            {
+                data: null,
+                render: function(data){
+                    return `<a href="#seguimiento-${data.acuerdo_id}" 
+                                class="detalles">
+                            ${data.folio}</a>`;
+                }
+            },
+            { data: 'asunto'      },
+            { 
+                data: null,
+                render: function(data){
+                    return `<span class="badge badge-lg bg-primary">${data.cve_direccion_actividad},${data.cve_subdireccion_actividad},${data.cve_departamento_actividad},${data.cve_area_actividad}</span> 
+                            ${data.direccion_actividad},${data.subdireccion_actividad},${data.departamento_actividad},${data.area_actividad}`;
                 }  
             },
             { 
                 data: null,
                 render: function(data){
-                    return `<span class="badge badge-lg bg-info">${data.direccion_destino} 
-                            [${data.cve_direccion_destino},${data.cve_subdireccion_destino},
-                            ${data.cve_departamento_destino},${data.cve_area_destino} ]</span>`;
+                    return `<span class="badge badge-lg bg-primary">${data.cve_direccion_act},${data.cve_subdireccion_act},${data.cve_departamento_act},${data.cve_area_act}</span> 
+                            ${data.direccion_act},${data.subdireccion_act},${data.departamento_act},${data.area_act}`;
                 }  
-            }          
+            },
+            { data: 'seguimiento_act'    },
+            { data: 'ejercicio_actividad_act' },
+            { data: 'fecha_creacion'     },
+            { data: 'fecha_modificacion' },
+            { data: 'estatus_acuerdo_ad' }
         ],
         drawCallback: function (settings) {
             $('[data-toggle="tooltip"]').tooltip({ boundary: 'window' });
@@ -87,10 +101,42 @@ function factualiza_datatable(mensaje = '', tipo = ''){
     }
 }
 
+function fdetalle_acuerdo(){
+    var tr   = $(this).closest('tr');
+        row  = dt.row( tr );
+
+    var data = dt.row( tr ).data();
+
+    if ( row.child.isShown() ) {
+        row.child.hide();
+        tr.removeClass('shown dt-detalles');
+    } else {
+        if ( data ){
+            row.child( fseguimiento_acuerdo(data) ).show();
+            tr.addClass('shown dt-detalles');
+        }
+    }
+}
+
+function fseguimiento_acuerdo(data){ 
+   var contenido = $('<div/>')
+        .addClass( 'cargando' )
+        .text( 'Cargando...' );
+
+   var html = fu_muestra_vista(url('Acuerdos/detalles_acuerdo'), {acuerdo: data.acuerdo_id} );
+   return html;
+}
+
 function fmuestra_registro(e){
     if ( e == null || e == undefined )
         return;
     var vista = fu_muestra_vista( url(vRegistro, true, false) );
     if ( vista )
         $('#ajax-html').html(vista);
+}
+
+function fseguimiento_detallado(){
+    var acuerdo = $(this).data('acuerdo');
+    var html    = fu_muestra_vista(url('Acuerdos/seguimiento_detallado'), {acuerdo: acuerdo});
+    fu_modal('',html);
 }

@@ -1,26 +1,19 @@
-	<div class="modal fade" id="modal" tabindex="-1" role="dialog">
-		<div class="modal-dialog modal-dialog-centered" role="document">
-			<div class="modal-content">
-				<div class="modal-header fondo-rojo text-white">
-					<h5 class="modal-title" id="modal-titulo">Título</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+        <div class="modal-dialog modal-tertiary modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content bg-dark text-white">
+                <div class="modal-header">
+                    <button type="button" class="btn-close btn-close-white text-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
 
-				<div class="modal-body">
-					<div id="modal-contenido">
-					</div>
-				</div>
+                <div class="modal-body">
+                    <div id="modal-contenido">
+                    </div>
+                </div>
 
-				<div class="modal-footer">
-					<div id="modal-botones">						
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-
-<script src="https://www.google.com/recaptcha/api.js"></script>
+                <div class="modal-footer z-2 mx-auto text-center">
+                    <div id="modal-botones">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -13,14 +13,13 @@ class Model_acuerdos extends CI_Model {
 		*								 		FALSE - Array
 		* @return acuerdos
 	*/
-	public function get_acuerdos_master($filtros = NULL, $tipo_retorno = TRUE){
+	public function get_acuerdos($filtros = NULL, $tipo_retorno = TRUE){
 		try {
 			if ( is_array($filtros) ){
 				foreach ($filtros as $key => $filtro) {
 					$this->db->where($key, $filtro);
 				}
 			}
-
 			$acuerdos = $this->db->get('vw_acuerdos');
 
 			if ( $tipo_retorno )
@@ -33,7 +32,37 @@ class Model_acuerdos extends CI_Model {
 	}
 
 	/**
-		* Seguimiento de un acuerdo
+		* Obtener el listado de acuerdos maestros
+		*
+		* @access public
+		* @param  array   $filtros 			filtros a iterar
+		* @param  boolean $tipo_retorno 	Modo de retonro: 
+		*								 		TRUE - Objeto
+		*								 		FALSE - Array
+		* @return acuerdos
+	*/
+	public function get_acuerdos_master($filtros = NULL, $tipo_retorno = TRUE){
+		try {
+			if ( is_array($filtros) ){
+				foreach ($filtros as $key => $filtro) {
+					$this->db->where($key, $filtro);
+				}
+			}
+			$this->db->order_by('seguimiento_acuerdo_id', 'desc');
+			$this->db->group_by('acuerdo_id');
+			$acuerdos = $this->db->get('vw_seguimientos_acuerdos');
+
+			if ( $tipo_retorno )
+				return $acuerdos->result();
+			else
+				return $acuerdos->result_array();
+		} catch (Exception $e) {
+			return [];
+		}
+	}
+
+	/**
+		* Obtener el listado de acuerdos detallados
 		*
 		* @access public
 		* @param  array   $filtros 			filtros a iterar
@@ -51,7 +80,7 @@ class Model_acuerdos extends CI_Model {
 			}
 			$this->db->where('acuerdo_id', $acuerdo_id);
 
-			$acuerdos = $this->db->get('vw_seguimientos_acuerdos');
+			$acuerdos = $this->db->get('vw_seguimientos_acuerdos_detalle');
 
 			if ( $tipo_retorno )
 				return $acuerdos->result();
@@ -79,20 +108,33 @@ class Model_acuerdos extends CI_Model {
 			if ( is_array($datos) ){
 				$datos_db = array(
 					'descripcion' 				=> $datos['acuerdos'],
-					'direccion_origen_id' 		=> $datos['area_origen'][0],
-					'subdireccion_origen_id' 	=> $datos['area_origen'][1],
-					'departamento_origen_id'	=> $datos['area_origen'][2],
-					'area_origen_id' 			=> $datos['area_origen'][3],
+					'direccion_id' 				=> $datos['area_origen'][0],
+					'subdireccion_id' 			=> $datos['area_origen'][1],
+					'departamento_id'			=> $datos['area_origen'][2],
+					'area_id' 					=> $datos['area_origen'][3],
 					'usuario_registra_id' 		=> $datos['usuario_id'],
-					'direccion_destino_id' 		=> $datos['area_destino'][0],
-					'subdireccion_destino_id' 	=> $datos['area_destino'][1],
-					'departamento_destino_id'	=> $datos['area_destino'][2],
-					'area_destino_id' 			=> $datos['area_destino'][3],
 					'ejercicio' 				=> $datos['ejercicio'],
 					'fecha_inicio' 				=> date('Y-m-d H:i:s'),
-					'estatus_acuerdos' 			=> 1
+					'estatus_acuerdo' 			=> 1
 				);
 				$this->db->insert('acuerdos', $datos_db);
+
+				$acuerdo_id = $this->db->insert_id();
+
+				$datos_db = array(
+					'acuerdo_id'				=> $acuerdo_id,
+					'seguimiento' 				=> $datos['acuerdos'],
+					'direccion_id' 				=> $datos['area_destino'][0],
+					'subdireccion_id' 			=> $datos['area_destino'][1],
+					'departamento_id'			=> $datos['area_destino'][2],
+					'area_id' 					=> $datos['area_destino'][3],
+					'usuario_acuerda_id' 		=> $datos['usuario_id'],
+					'ejercicio' 				=> $datos['ejercicio'],
+					'fecha' 					=> date('Y-m-d H:i:s'),
+					'estatus_acuerdo' 			=> 1
+				);
+
+				$this->db->insert('seguimientos_acuerdos', $datos_db);
 
 			} else
 				throw new Exception('La estructura de los datos es incorrecta.');

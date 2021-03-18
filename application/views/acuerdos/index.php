@@ -18,14 +18,20 @@
 </div>
 <div class="card border-light shadow-sm mb-4">
     <div class="card-body">
-        <div class="table-responsive">
+        <div class="table-responsive py-1">
             <table id="dtAcuerdos" class="table table-centered table-nowrap mb-0 rounded w-100">
                 <thead class="thead-light">
                     <tr>
                         <th class="align-middle">#</th>
-                        <th class="align-middle">Acuerdo</th>
+                        <th class="align-middle">Folio</th>
+                        <th class="align-middle">Asunto</th>
                         <th class="align-middle">Origen</th>
                         <th class="align-middle">Destino</th>
+                        <th class="align-middle">Último Acuerdo</th>
+                        <th class="align-middle">Ejercicio</th>
+                        <th class="align-middle">Fecha Creación</th>
+                        <th class="align-middle">Última Modificación</th>
+                        <th class="align-middle">Estatus</th>
                     </tr>
                 </thead>
             </table>
