@@ -1,4 +1,4 @@
-    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+    <div id="modal" class="modal fade" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-tertiary modal-dialog-centered modal-lg" role="document">
             <div class="modal-content bg-dark text-white">
                 <div class="modal-header">

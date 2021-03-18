@@ -73,8 +73,8 @@ function finicia_datatable(){
             { 
                 data: null,
                 render: function(data){
-                    return `<span class="badge badge-lg bg-primary">${data.cve_direccion_act},${data.cve_subdireccion_act},${data.cve_departamento_act},${data.cve_area_act}</span> 
-                            ${data.direccion_act},${data.subdireccion_act},${data.departamento_act},${data.area_act}`;
+                    return `<span class="badge badge-lg bg-primary">${data.cve_direccion_ad},${data.cve_subdireccion_ad},${data.cve_departamento_ad},${data.cve_area_ad}</span> 
+                            ${data.direccion_ad},${data.subdireccion_ad},${data.departamento_ad},${data.area_ad}`;
                 }  
             },
             { data: 'seguimiento_act'    },
@@ -138,5 +138,8 @@ function fmuestra_registro(e){
 function fseguimiento_detallado(){
     var acuerdo = $(this).data('acuerdo');
     var html    = fu_muestra_vista(url('Acuerdos/seguimiento_detallado'), {acuerdo: acuerdo});
-    fu_modal('',html);
+    if ( html ){
+        fu_modal('Seguimiento de Acuerdos', html);
+    } else 
+        fu_modal('404');
 }

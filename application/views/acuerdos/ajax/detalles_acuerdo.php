@@ -32,8 +32,8 @@
 				<td><?= $acuerdo->folio ?></td>
 				<td><?= $acuerdo->seguimiento_act ?></td>
 				<td>
-					<?= $acuerdo->cve_direccion_ad ?>,<?= $acuerdo->cve_subdireccion_ad ?>,<?= $acuerdo->cve_departamento_ad ?>,<?= $acuerdo->cve_area_ad ?> - 
-					<?= ($acuerdo->direccion_ad == 'NINGUNA')? '00': $acuerdo->direccion_ad ?>, <?= ($acuerdo->subdireccion_ad == 'NINGUNA')? '00': $acuerdo->subdireccion_ad ?>, <?= ($acuerdo->departamento_ad == 'NINGUNA')? '00': $acuerdo->departamento_ad ?>, <?= ($acuerdo->area_ad == 'NINGUNA')? '00': $acuerdo->area_ad ?>
+					<?= $acuerdo->cve_direccion_actividad ?>,<?= $acuerdo->cve_subdireccion_actividad ?>,<?= $acuerdo->cve_departamento_actividad ?>,<?= $acuerdo->cve_area_actividad ?> - 
+					<?= ($acuerdo->direccion_actividad == 'NINGUNA')? '00': $acuerdo->direccion_actividad ?>, <?= ($acuerdo->subdireccion_actividad == 'NINGUNA')? '00': $acuerdo->subdireccion_actividad ?>, <?= ($acuerdo->departamento_actividad == 'NINGUNA')? '00': $acuerdo->departamento_actividad ?>, <?= ($acuerdo->area_actividad == 'NINGUNA')? '00': $acuerdo->area_actividad ?>
 				</td>
 				<td>
 					<?= $acuerdo->cve_direccion_ad ?>,<?= $acuerdo->cve_subdireccion_ad ?>,<?= $acuerdo->cve_departamento_ad ?>,<?= $acuerdo->cve_area_ad ?> - 

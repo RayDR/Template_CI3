@@ -308,65 +308,82 @@ function fu_form_controller(fUrl, formconf = [], inputs = [], contenedor = "main
 |   Requiere un contenido para motrarse
 |   Parametro html = true para insertar código HTML
  */
-function fu_modal(titulo, contenido = "", botones = "salir", anchura = "sm", html = true){
-  let modal   = $("#modal");
-  let tiempo  = 50;
+function fu_modal(titulo, contenido = "", botones = "", anchura = "lg", tipo = '', static = true){
+  var contenedor  = $("#modales"),
+      modal       = $("#modal"),
+      tiempo      = 100;
 
   modal.on('hidden.bs.modal', function (event) {
-      $("#modal-titulo").html('');
-      $("#modal-contenido").html('');
-      $('#modal').modal('dispose');
+      $("#modal #modal-title-notification").html('');
+      $("#modal #modal-contenido").html('');
+      modal.modal('dispose');
   });
 
   if( modal.is(':visible') ){
     $("#modal").modal('hide');
     tiempo = 500;
   }
-  setTimeout(function() {
-    if ( titulo == "ERR"){
-      titulo    = "ERROR NO CONTROLADO";
-      contenido = (contenido != "")? contenido: "Ha ocurrido un error al intentar ingresar al sistema, por favor, comunique al administrador del sistema.";
-    }
-    else if ( titulo == "CNX"){
-      titulo    = "FALLÓ LA CONEXIÓN";
-      contenido = "No se pudo contectar al servidor, por favor verifique su conexión a internet.";
-    }
-    else if ( titulo == "404"){
-      titulo    = "404 - Página no encontrada";
-      contenido = "No se localizó la página que estaba consultado.";
-    }
-    
-    if( contenido == "" )
-      return;
 
-    if ( anchura == "lg" ){
-      $("#modal .modal-dialog").removeClass('modal-xl');
-      $("#modal .modal-dialog").addClass('modal-lg');
-    } else if ( anchura == "xl" ){
-      $("#modal .modal-dialog").removeClass('modal-lg');
-      $("#modal .modal-dialog").addClass('modal-xl');
-    } else {
-      $("#modal .modal-dialog").removeClass('modal-xl');
-      $("#modal .modal-dialog").removeClass('modal-lg');
-    }
+  if ( titulo == "ERR"){
+    titulo    = "ERROR NO CONTROLADO";
+    contenido = (contenido != "")? contenido: "Ha ocurrido un error al intentar ingresar al sistema, por favor, comunique al administrador del sistema.";
+    tipo      = 'notificacion';
+    static    = false;
+  }
+  else if ( titulo == "CNX"){
+    titulo    = "FALLÓ LA CONEXIÓN";
+    contenido = "Falló la conexión con el servidor.<br>Por favor, verifique su conexión a internet.";
+    tipo      = 'notificacion';
+    static    = false;
+  }
+  else if ( titulo == "404"){
+    titulo    = "404 - Página no encontrada";
+    contenido = "La página no es accesible o no existe.";
+    tipo      = 'notificacion';
+    static    = false;
+  }
 
-    if ( html ){
-      $("#modal-titulo").html(titulo);
-      $("#modal-contenido").html(contenido);
-    } else {
-      $("#modal-titulo").text(titulo);
-      $("#modal-contenido").text(contenido);
-    }
+  if( contenido == "" )
+    return;
 
-    if ( botones == "" )
-      $("#modal-botones").html('<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>');
-    else if ( botones == "salir" )
-      $("#modal-botones").html(`<a href="${ url() }" class="btn btn-secondary">Salir</a>`);
-    else 
-      $("#modal-botones").html(botones);  
+  contenedor.html(fu_muestra_vista( url('Home/modales'), {tipo: tipo} ));
 
-    modal.modal('show');
-  }, tiempo);
+  contenedor  = $("#modales"),
+  modal       = $("#modal");
+
+  if ( contenedor ){
+    setTimeout(function() {
+      if ( anchura == "lg" ){
+        $("#modal .modal-dialog").removeClass('modal-xl');
+        $("#modal .modal-dialog").addClass('modal-lg');
+      } else if ( anchura == "xl" ){
+        $("#modal .modal-dialog").removeClass('modal-lg');
+        $("#modal .modal-dialog").addClass('modal-xl');
+      } else {
+        $("#modal .modal-dialog").removeClass('modal-xl');
+        $("#modal .modal-dialog").removeClass('modal-lg');
+      }
+
+      $("#modal #modal-title-notification").html(titulo);
+      $("#modal #modal-contenido").html(contenido);
+
+      let color = (tipo != 'login' && tipo != 'notificacion' )? 'text-secondary' : 'text-primary';
+      if ( botones == "" )
+        $("#modal #modal-botones").html(`<button type="button" class="btn btn-link ${color} ms-auto" data-bs-dismiss="modal">Cerrar</button>`);
+      else if ( botones == "salir" )
+        $("#modal #modal-botones").html(`<a href="${ url() }" class="btn btn-secondary">Salir</a>`);
+      else 
+        $("#modal #modal-botones").html(botones);  
+
+      if ( static )
+        modal.modal({
+          backdrop: 'static',
+          keyboard: false
+        });
+      
+      modal.modal('show');
+    }, tiempo);
+  }
 }
 
 /*

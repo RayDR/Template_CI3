@@ -48,9 +48,7 @@ class Model_acuerdos extends CI_Model {
 					$this->db->where($key, $filtro);
 				}
 			}
-			$this->db->order_by('seguimiento_acuerdo_id', 'desc');
-			$this->db->group_by('acuerdo_id');
-			$acuerdos = $this->db->get('vw_seguimientos_acuerdos');
+			$acuerdos = $this->db->get('vw_seguimiento_acuerdos_master');
 
 			if ( $tipo_retorno )
 				return $acuerdos->result();
@@ -107,11 +105,8 @@ class Model_acuerdos extends CI_Model {
 
 			if ( is_array($datos) ){
 				$datos_db = array(
-					'descripcion' 				=> $datos['acuerdos'],
-					'direccion_id' 				=> $datos['area_origen'][0],
-					'subdireccion_id' 			=> $datos['area_origen'][1],
-					'departamento_id'			=> $datos['area_origen'][2],
-					'area_id' 					=> $datos['area_origen'][3],
+					'asunto' 					=> $datos['acuerdos'],
+					'combinacion_area_id' 		=> $datos['area_origen'],
 					'usuario_registra_id' 		=> $datos['usuario_id'],
 					'ejercicio' 				=> $datos['ejercicio'],
 					'fecha_inicio' 				=> date('Y-m-d H:i:s'),
@@ -124,10 +119,7 @@ class Model_acuerdos extends CI_Model {
 				$datos_db = array(
 					'acuerdo_id'				=> $acuerdo_id,
 					'seguimiento' 				=> $datos['acuerdos'],
-					'direccion_id' 				=> $datos['area_destino'][0],
-					'subdireccion_id' 			=> $datos['area_destino'][1],
-					'departamento_id'			=> $datos['area_destino'][2],
-					'area_id' 					=> $datos['area_destino'][3],
+					'direccion_id' 				=> $datos['area_destino'],
 					'usuario_acuerda_id' 		=> $datos['usuario_id'],
 					'ejercicio' 				=> $datos['ejercicio'],
 					'fecha' 					=> date('Y-m-d H:i:s'),

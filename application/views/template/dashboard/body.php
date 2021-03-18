@@ -11,6 +11,9 @@
         </div>
         <?php $this->load->view( RUTA_TEMA_UTIL . '/toast'); ?>
         <!-- Fin vista dinámica -->
+        <div id="modales">
+            <?php $this->load->view(RUTA_TEMA_EXTRAS .'/modales/modal_generico'); ?>
+        </div>
     </main>
 
     <input type="hidden" id="base_url" value="<?=base_url()?>">

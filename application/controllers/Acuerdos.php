@@ -77,7 +77,18 @@ class Acuerdos extends CI_Controller {
     // -------------- DATOS
 
     public function datatable_acuerdos(){
-        return print(json_encode( $this->model_acuerdos->get_acuerdos_master() ));
+        $datos = $this->model_acuerdos->get_acuerdos_master();
+        $aux   = [];
+        foreach ($datos as $key => $dato) {
+            $dato->seguimiento = json_decode($dato->seguimiento);
+            foreach ($dato->seguimiento as $idx => $seguimiento) {
+                foreach ($seguimiento as $campo => $valor) {
+                    $datos[$key]->$campo = $valor;
+                }
+            }
+        }
+            
+        return print(json_encode( $datos ));
     }
 
     public function registrar_acuerdo(){

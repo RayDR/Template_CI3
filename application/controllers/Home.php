@@ -49,6 +49,23 @@ class Home extends CI_Controller {
 | FUNCIONES AJAX
 |--------------------------------------------------------------------------
 */
+    // ----------------- VISTAS
+    public function modales(){
+        $json = array('exito' => TRUE);
+        $tipo = $this->input->post('tipo');
+        switch ($tipo) {
+            case 'login':
+                $json['html'] = $this->load->view(RUTA_TEMA_EXTRAS .'/modales/modal_login', NULL, TRUE);
+                break;
+            case 'notificacion':
+                $json['html'] = $this->load->view(RUTA_TEMA_EXTRAS .'/modales/modal_notificacion', NULL, TRUE);
+                break;
+            default:
+                $json['html'] = $this->load->view(RUTA_TEMA_EXTRAS .'/modales/modal_generico', NULL, TRUE);
+                break;
+        }
+        return print(json_encode($json));
+    }
 
     // Función para verificar usuario y contraseña del login
     public function lVerificar(){
