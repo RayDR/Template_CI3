@@ -52,7 +52,7 @@ function fguardar(e){
 
         if ( ! errores ){
             respuesta   = fu_json_query(
-                url('Acuerdos/registrar_acuerdo', true, false),
+                url('Acuerdos/registrar_seguimiento', true, false),
                 datos 
             );
             if ( respuesta.exito ){

@@ -17,5 +17,8 @@
     </main>
 
     <input type="hidden" id="base_url" value="<?=base_url()?>">
+    
+    <!-- Custom JS -->
+    <script src="<?= base_url('assets/js/custom.js') ?>" type="text/javascript" charset="utf-8" async defer></script>
 </body>
 </html>

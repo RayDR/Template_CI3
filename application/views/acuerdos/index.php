@@ -23,12 +23,11 @@
                 <thead class="thead-light">
                     <tr>
                         <th class="align-middle">#</th>
-                        <th class="align-middle">Folio</th>
                         <th class="align-middle">Asunto</th>
                         <th class="align-middle">Origen</th>
                         <th class="align-middle">Destino</th>
+                        <th class="align-middle">Folio</th>
                         <th class="align-middle">Último Acuerdo</th>
-                        <th class="align-middle">Ejercicio</th>
                         <th class="align-middle">Fecha Creación</th>
                         <th class="align-middle">Última Modificación</th>
                         <th class="align-middle">Estatus</th>

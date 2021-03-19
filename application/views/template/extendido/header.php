@@ -49,16 +49,18 @@
 
     <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
     <!-- Fontawesome JS -->
     <script src="https://kit.fontawesome.com/8cca2ecc5a.js" crossorigin="anonymous"></script>
-
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- Sweet Alert -->
     <link type="text/css" href="<?= base_url('vendor/sweetalert2/dist/sweetalert2.min.css') ?>" rel="stylesheet">
-
     <!-- Notyf -->
     <link type="text/css" href="<?= base_url('vendor/notyf/notyf.min.css') ?>" rel="stylesheet">
-
     <!-- Volt CSS -->
     <link type="text/css" href="<?= base_url('css/volt.css') ?>" rel="stylesheet">
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- Global CSS -->
+    <link href="<?= base_url('assets/css/global.css') ?>" rel="stylesheet" />
 </head>

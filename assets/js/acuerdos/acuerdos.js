@@ -1,15 +1,16 @@
 // Variables globales
 var dt, 
-    dtNombre  = '#dtAcuerdos', 
-    dtAjaxUrl = 'Acuerdos/datatable_acuerdos'
-    vRegistro = 'Acuerdos/registrar';
+    dtNombre     = '#dtAcuerdos', 
+    dtAjaxUrl    = 'Acuerdos/datatable_acuerdos'
+    vRegistro    = 'Acuerdos/registrar',
+    vSeguimiento = 'Acuerdos/seguimiento';
 
 $(document).off('click','.seguimiento-detallado').on('click','.seguimiento-detallado', fseguimiento_detallado);
+$(document).off('click','#nuevo_seguimiento').on('click','#nuevo_seguimiento', fnuevo_seguimiento);
 $(document).ready(function() {
     $('#nuevo_acuerdo').click(fmuestra_registro);
 
     finicia_datatable();
-    fmuestra_registro();
 
     $(`${dtNombre} tbody`).on('click', 'tr td', fdetalle_acuerdo);
 });
@@ -46,42 +47,15 @@ function finicia_datatable(){
             dataSrc: ''
         },
         columns: [
-            { 
-                data: null,
-                render: function(data){
-                    return `<a href="#seguimiento-${data.acuerdo_id}" 
-                                class="detalles">
-                            ${data.folio}</a>`;
-                }
-            },
-            {
-                data: null,
-                render: function(data){
-                    return `<a href="#seguimiento-${data.acuerdo_id}" 
-                                class="detalles">
-                            ${data.folio}</a>`;
-                }
-            },
-            { data: 'asunto'      },
-            { 
-                data: null,
-                render: function(data){
-                    return `<span class="badge badge-lg bg-primary">${data.cve_direccion_actividad},${data.cve_subdireccion_actividad},${data.cve_departamento_actividad},${data.cve_area_actividad}</span> 
-                            ${data.direccion_actividad},${data.subdireccion_actividad},${data.departamento_actividad},${data.area_actividad}`;
-                }  
-            },
-            { 
-                data: null,
-                render: function(data){
-                    return `<span class="badge badge-lg bg-primary">${data.cve_direccion_ad},${data.cve_subdireccion_ad},${data.cve_departamento_ad},${data.cve_area_ad}</span> 
-                            ${data.direccion_ad},${data.subdireccion_ad},${data.departamento_ad},${data.area_ad}`;
-                }  
-            },
-            { data: 'seguimiento_act'    },
-            { data: 'ejercicio_actividad_act' },
-            { data: 'fecha_creacion'     },
-            { data: 'fecha_modificacion' },
-            { data: 'estatus_acuerdo_ad' }
+            { data: 'acuerdo_id' },
+            { data: 'asunto' },
+            { data: 'area_acuerdo' },
+            { data: 'area_seguimiento' },            
+            { data: 'folio' },
+            { data: 'seguimiento' },
+            { data: 'fecha_creacion_acuerdo' },
+            { data: 'fecha_creacion_seguimiento' },
+            { data: 'estatus_seguimiento' }
         ],
         drawCallback: function (settings) {
             $('[data-toggle="tooltip"]').tooltip({ boundary: 'window' });
@@ -130,6 +104,7 @@ function fseguimiento_acuerdo(data){
 function fmuestra_registro(e){
     if ( e == null || e == undefined )
         return;
+    e.preventDefault();
     var vista = fu_muestra_vista( url(vRegistro, true, false) );
     if ( vista )
         $('#ajax-html').html(vista);
@@ -139,7 +114,19 @@ function fseguimiento_detallado(){
     var acuerdo = $(this).data('acuerdo');
     var html    = fu_muestra_vista(url('Acuerdos/seguimiento_detallado'), {acuerdo: acuerdo});
     if ( html ){
-        fu_modal('Seguimiento de Acuerdos', html);
+        fu_modal('Seguimiento de Acuerdos', 
+                html, 
+                `<button id="nuevo_seguimiento" type="button" class="btn btn-pill btn-outline-secondary" data-bs-dismiss="modal">Nuevo Seguimiento</button>
+                 <button type="button" class="btn btn-pill btn-outline-danger" data-bs-dismiss="modal">Cerrar</button>`);
     } else 
         fu_modal('404');
+}
+
+function fnuevo_seguimiento(e){
+    if ( e == null || e == undefined )
+        return;
+    e.preventDefault();
+    var vista = fu_muestra_vista( url(vSeguimiento, true, false) );
+    if ( vista )
+        $('#ajax-html').html(vista);
 }

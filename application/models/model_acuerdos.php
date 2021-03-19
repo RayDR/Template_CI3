@@ -48,7 +48,7 @@ class Model_acuerdos extends CI_Model {
 					$this->db->where($key, $filtro);
 				}
 			}
-			$acuerdos = $this->db->get('vw_seguimiento_acuerdos_master');
+			$acuerdos = $this->db->get('vw_ultimo_seguimiento');
 
 			if ( $tipo_retorno )
 				return $acuerdos->result();
@@ -78,7 +78,7 @@ class Model_acuerdos extends CI_Model {
 			}
 			$this->db->where('acuerdo_id', $acuerdo_id);
 
-			$acuerdos = $this->db->get('vw_seguimientos_acuerdos_detalle');
+			$acuerdos = $this->db->get('vw_seguimiento_acuerdo_ag');
 
 			if ( $tipo_retorno )
 				return $acuerdos->result();
@@ -108,9 +108,9 @@ class Model_acuerdos extends CI_Model {
 					'asunto' 					=> $datos['acuerdos'],
 					'combinacion_area_id' 		=> $datos['area_origen'],
 					'usuario_registra_id' 		=> $datos['usuario_id'],
+					'tema_id' 					=> $datos['tema'],
 					'ejercicio' 				=> $datos['ejercicio'],
-					'fecha_inicio' 				=> date('Y-m-d H:i:s'),
-					'estatus_acuerdo' 			=> 1
+					'estatus' 					=> 1
 				);
 				$this->db->insert('acuerdos', $datos_db);
 
@@ -119,11 +119,10 @@ class Model_acuerdos extends CI_Model {
 				$datos_db = array(
 					'acuerdo_id'				=> $acuerdo_id,
 					'seguimiento' 				=> $datos['acuerdos'],
-					'direccion_id' 				=> $datos['area_destino'],
+					'combinacion_area_id' 		=> $datos['area_destino'],
 					'usuario_acuerda_id' 		=> $datos['usuario_id'],
 					'ejercicio' 				=> $datos['ejercicio'],
-					'fecha' 					=> date('Y-m-d H:i:s'),
-					'estatus_acuerdo' 			=> 1
+					'estatus_acuerdo_id' 		=> 1
 				);
 
 				$this->db->insert('seguimientos_acuerdos', $datos_db);
@@ -156,7 +155,16 @@ class Model_acuerdos extends CI_Model {
 
 			if ( is_int($acuerdo_id) ){
 				if ( is_array($datos) ){
+					$datos_db = array(
+					'acuerdo_id'				=> $acuerdo_id,
+					'seguimiento' 				=> $datos['acuerdos'],
+					'combinacion_area_id' 		=> $datos['area_destino'],
+					'usuario_acuerda_id' 		=> $datos['usuario_id'],
+					'ejercicio' 				=> $datos['ejercicio'],
+					'estatus_acuerdo_id' 		=> $datos['estatus_acuerdo']
+				);
 
+				$this->db->insert('seguimientos_acuerdos', $datos_db);
 				} else 
 					throw new Exception('La estructura de los datos es incorrecta.');
 			} else

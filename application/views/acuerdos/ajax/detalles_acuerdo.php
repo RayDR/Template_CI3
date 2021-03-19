@@ -19,9 +19,7 @@
 			<tr>
 				<th>Folio</th>
 				<th>Acuerdo</th>
-				<th>Origen</th>
 				<th>Destino</th>
-				<th>Ejercicio</th>
 				<th>Fecha</th>
 				<th>Estatus</th>
 			</tr>
@@ -30,21 +28,12 @@
 		<?php foreach ($acuerdos as $key => $acuerdo): ?>
 			<tr>
 				<td><?= $acuerdo->folio ?></td>
-				<td><?= $acuerdo->seguimiento_act ?></td>
-				<td>
-					<?= $acuerdo->cve_direccion_actividad ?>,<?= $acuerdo->cve_subdireccion_actividad ?>,<?= $acuerdo->cve_departamento_actividad ?>,<?= $acuerdo->cve_area_actividad ?> - 
-					<?= ($acuerdo->direccion_actividad == 'NINGUNA')? '00': $acuerdo->direccion_actividad ?>, <?= ($acuerdo->subdireccion_actividad == 'NINGUNA')? '00': $acuerdo->subdireccion_actividad ?>, <?= ($acuerdo->departamento_actividad == 'NINGUNA')? '00': $acuerdo->departamento_actividad ?>, <?= ($acuerdo->area_actividad == 'NINGUNA')? '00': $acuerdo->area_actividad ?>
-				</td>
-				<td>
-					<?= $acuerdo->cve_direccion_ad ?>,<?= $acuerdo->cve_subdireccion_ad ?>,<?= $acuerdo->cve_departamento_ad ?>,<?= $acuerdo->cve_area_ad ?> - 
-					<?= ($acuerdo->direccion_ad == 'NINGUNA')? '00': $acuerdo->direccion_ad ?>, <?= ($acuerdo->subdireccion_ad == 'NINGUNA')? '00': $acuerdo->subdireccion_ad ?>, <?= ($acuerdo->departamento_ad == 'NINGUNA')? '00': $acuerdo->departamento_ad ?>, <?= ($acuerdo->area_ad == 'NINGUNA')? '00': $acuerdo->area_ad ?>
-				</td>
-				<td><?= $acuerdo->ejercicio_actividad_act ?></td>
-				<td><?= $acuerdo->fecha_modificacion ?></td>
-				<td><?= $acuerdo->estatus_acuerdo_ad ?></td>
+				<td><?= $acuerdo->seguimiento ?></td>
+				<td><?= $acuerdo->area_acuerdo ?></td>
+				<td><?= $acuerdo->fecha_actualizacion_seguimiento ?></td>
+				<td><?= $acuerdo->estatus_seguimiento ?></td>
 			</tr>
-		<?php endforeach ?>		
-		<caption>Seguimiento al acuerdo: <?= $acuerdos[0]->acuerdo_id ?> - <?= $acuerdos[0]->asunto ?></caption>
+		<?php endforeach ?>
 		</tbody>
 	</table>
 </div>

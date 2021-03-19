@@ -32,8 +32,18 @@ class Acuerdos extends CI_Controller {
         $json = array('exito' => TRUE);
         $data = array(
             'titulo'    =>  'Registrar',
-            'areas'     =>  $this->model_catalogos->get_areas(),
             'view'      => 'acuerdos/registrar'
+        );
+        $json['html'] = $this->load->view( $data['view'], $data, TRUE );
+        return print(json_encode($json));
+    }
+
+    public function seguimiento()
+    {
+        $json = array('exito' => TRUE);
+        $data = array(
+            'titulo'    => 'Seguimiento',
+            'view'      => 'acuerdos/seguimiento'
         );
         $json['html'] = $this->load->view( $data['view'], $data, TRUE );
         return print(json_encode($json));
@@ -77,18 +87,7 @@ class Acuerdos extends CI_Controller {
     // -------------- DATOS
 
     public function datatable_acuerdos(){
-        $datos = $this->model_acuerdos->get_acuerdos_master();
-        $aux   = [];
-        foreach ($datos as $key => $dato) {
-            $dato->seguimiento = json_decode($dato->seguimiento);
-            foreach ($dato->seguimiento as $idx => $seguimiento) {
-                foreach ($seguimiento as $campo => $valor) {
-                    $datos[$key]->$campo = $valor;
-                }
-            }
-        }
-            
-        return print(json_encode( $datos ));
+        return print(json_encode( $this->model_acuerdos->get_acuerdos_master() ));
     }
 
     public function registrar_acuerdo(){
@@ -101,23 +100,46 @@ class Acuerdos extends CI_Controller {
         if ( ! $area_origen || ! $area_destino || ! $acuerdos ){
             $json['exito']   = FALSE;
             $json['mensaje'] = 'Falló al recibir los datos del acuerdo';
-        } else {
-            if ( is_string($area_destino) ){                
-                $datos_acuerdo  = array(
-                    'area_origen'   => explode(',', $area_origen),
-                    'area_destino'  => explode(',', $area_destino),
-                    'acuerdos'      => $acuerdos,
-                    'ejercicio'     => 2021,
-                    'usuario_id'    => 1
-                );
-                $resultado     = $this->model_acuerdos->set_nuevo_acuerdo($datos_acuerdo);
-                $json['exito'] = $resultado['exito'];
-                if ( $json['exito'] == FALSE )
-                    $json['mensaje'] = $resultado['error'];
-            } else {
-                $json['exito']   = FALSE;
-                $json['mensaje'] = 'Configuración incorrecta en <b>Área a Turnar</b>.';
-            }
+        } else {               
+            $datos_acuerdo  = array(
+                'area_origen'   => $area_origen,
+                'area_destino'  => $area_destino,
+                'acuerdos'      => $acuerdos,
+                'tema'          => 1,
+                'ejercicio'     => 2021,
+                'usuario_id'    => 1
+            );
+            $resultado     = $this->model_acuerdos->set_nuevo_acuerdo($datos_acuerdo);
+            $json['exito'] = $resultado['exito'];
+            if ( $json['exito'] == FALSE )
+                $json['mensaje'] = $resultado['error'];
+        }
+
+        return print(json_encode($json));
+    }
+
+    public function registrar_seguimiento(){
+        $json           = array('exito' => TRUE);
+
+        $acuerdo_id     = $this->input->post('acuerdo_id');
+        $area_destino   = $this->input->post('area_destino');
+        $acuerdos       = $this->input->post('acuerdos');
+
+        if ( ! $acuerdo_id || ! $area_destino || ! $acuerdos ){
+            $json['exito']   = FALSE;
+            $json['mensaje'] = 'Falló al recibir los datos para seguimiento al acuerdo';
+        } else {               
+            $datos_seguimiento  = array(
+                'area_destino'  => $area_destino,
+                'acuerdos'      => $acuerdos,
+                'ejercicio'     => 2021,
+                'usuario_id'    => 1,                
+                'estatus_acuerdo' => 2
+            );
+            $resultado     = $this->model_acuerdos->set_seguimiento_acuerdo($acuerdo_id, $datos_seguimiento);
+            $json['exito'] = $resultado['exito'];
+            if ( $json['exito'] == FALSE )
+                $json['mensaje'] = $resultado['error'];
         }
 
         return print(json_encode($json));

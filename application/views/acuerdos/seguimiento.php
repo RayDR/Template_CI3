@@ -8,7 +8,7 @@
     </nav>
     <div class="d-flex justify-content-between w-100 flex-wrap">
         <div class="mb-3 mb-lg-0">
-            <h1 class="h4">Registrar Acuerdo</h1>
+            <h1 class="h4">Registro de Seguimiento</h1>
         </div>
     </div>
 </div>
@@ -23,12 +23,6 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-12 mb-3">
-                            <label class="my-1 me-2" for="area_origen">Área Origen</label>
-                            <select class="form-select areas_select2" id="area_origen" name="area_origen" aria-label="Área Origen">
-                                <option selected disabled>Seleccione una opción</option>  
-                            </select>
-                        </div>
                         <div class="col-12 mb-3">
                             <label class="my-1 me-2" for="area_destino">Área Destino</label>
                             <select class="form-select areas_select2" id="area_destino" name="area_destino" aria-label="Área Destino">
@@ -58,4 +52,4 @@
         </div>
     </div>
 </div>
-<script src="<?= base_url('assets/js/acuerdos/registrar.js') ?>" type="text/javascript" charset="utf-8" async defer></script>
+<script src="<?= base_url('assets/js/acuerdos/seguimiento.js') ?>" type="text/javascript" charset="utf-8" async defer></script>
