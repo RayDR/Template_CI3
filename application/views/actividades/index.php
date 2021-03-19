@@ -31,21 +31,6 @@
                         <th class="">Estatus</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <?php foreach ($actividades as $key => $actividad): ?>
-                    <tr>
-                        <td class="">
-                            <a href="#" class="text-primary fw-bold"><?= $actividad->proyecto_actividad_id ?></a>
-                        </td>
-                        <td class="fw-bold"><?= $actividad->actividad_general ?></td>
-                        <td class="fw-bold"><?= $actividad->act_detallada ?></td>
-                        <td class=""><?= $actividad->programado_fisico ?></td>
-                        <td class=""><?= $actividad->realizado_fisico ?></td>
-                        <td class=""><?= $actividad->unidad_medicion ?></td>
-                        <td class=""><?= $actividad->estatus ?></td>
-                    </tr>    
-                    <?php endforeach ?>
-                </tbody>
             </table>
         </div>
     </div>

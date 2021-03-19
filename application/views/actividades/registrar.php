@@ -19,13 +19,10 @@
                 <?php $this->load->view(RUTA_TEMA_UTIL . '/alertas'); ?>
                 <form>
                     <div class="row">
-                        <div class="col-6 mb-3">
+                        <div class="col-12 mb-3">
                             <label class="my-1 me-2" for="areas">Áreas</label>
-                            <select class="form-select" id="areas" aria-label="Áreas">
+                            <select class="form-select areas_select2" id="area" aria-label="Áreas">
                                 <option selected disabled>Seleccione una opción</option>
-                                <?php foreach ($areas as $key => $area): ?>
-                                <option value="<?= $area->area_id ?>"><?= $area->area ?> (<?= $area->cve_area ?>)</option>
-                                <?php endforeach; ?>  
                             </select>
                         </div>
                         <div class="col-12 mb-3">

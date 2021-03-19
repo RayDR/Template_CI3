@@ -55,7 +55,7 @@ class Configurador extends CI_Controller {
                     $guardar_dir    = TRUE;
                 }
                 // Almacenar el hijo
-                if ( $guardar_dir ){                    
+                if ( $guardar_dir ){
                     array_push($children, array(
                         'id'    => $grupos_areas->combinacion_area_id,
                         'text'  => $grupos_areas->direccion

@@ -32,7 +32,6 @@ class Actividades extends CI_Controller {
         $json = array('exito' => TRUE);
         $data = array(
             'titulo'    => 'Registrar',
-            'areas'     =>  $this->model_catalogos->get_areas(),
             'programas' =>  $this->model_catalogos->get_programas(),
             'l_accion'  =>  $this->model_catalogos->get_lineas_accion(),
             'u_medida'  =>  $this->model_catalogos->get_unidades_medida(),
