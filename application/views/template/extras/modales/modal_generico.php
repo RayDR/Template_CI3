@@ -10,7 +10,7 @@
                     </div>
                 </div>
 
-                <div class="modal-footer z-2 mx-auto text-center">
+                <div class="modal-footer z-2 mr-auto text-right">
                     <div id="modal-botones">
                     </div>
                 </div>

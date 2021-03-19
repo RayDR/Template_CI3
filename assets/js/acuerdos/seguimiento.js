@@ -27,8 +27,7 @@ function fguardar(e){
         datos   = {},
         inputs  = [
         {
-            'nombre': 'area_origen',
-            'texto' : 'Área de Origen'
+            'nombre': 'acuerdo_id'
         },
         {
             'nombre': 'area_destino',
@@ -45,9 +44,12 @@ function fguardar(e){
         inputs.forEach( function(input, index) {
             let valor           = $(`#${input.nombre}`).val();
             datos[input.nombre] = valor;
-
-            if (  valor == '' )
-                errores += `El campo <a href="#${input.nombre}">${input.texto}</a> es requerido.`;
+            if (  valor == '' ){
+                if ( input.nombre == 'acuerdo_id' )
+                    errores += 'No se recibió el número de acuerdo, por favor recargue la página';
+                else
+                    errores += `El campo <a href="#${input.nombre}">${input.texto}</a> es requerido.`;
+            }
         });
 
         if ( ! errores ){

@@ -153,7 +153,7 @@ class Model_acuerdos extends CI_Model {
 		try {
 			$this->db->trans_begin();
 
-			if ( is_int($acuerdo_id) ){
+			if ( $acuerdo_id ){
 				if ( is_array($datos) ){
 					$datos_db = array(
 					'acuerdo_id'				=> $acuerdo_id,

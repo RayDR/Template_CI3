@@ -6,7 +6,7 @@ var dt,
     vSeguimiento = 'Acuerdos/seguimiento';
 
 $(document).off('click','.seguimiento-detallado').on('click','.seguimiento-detallado', fseguimiento_detallado);
-$(document).off('click','#nuevo_seguimiento').on('click','#nuevo_seguimiento', fnuevo_seguimiento);
+$(document).off('click','.nuevo-seguimiento').on('click','.nuevo-seguimiento', fnuevo_seguimiento);
 $(document).ready(function() {
     $('#nuevo_acuerdo').click(fmuestra_registro);
 
@@ -116,8 +116,11 @@ function fseguimiento_detallado(){
     if ( html ){
         fu_modal('Seguimiento de Acuerdos', 
                 html, 
-                `<button id="nuevo_seguimiento" type="button" class="btn btn-pill btn-outline-secondary" data-bs-dismiss="modal">Nuevo Seguimiento</button>
-                 <button type="button" class="btn btn-pill btn-outline-danger" data-bs-dismiss="modal">Cerrar</button>`);
+                `<button data-acuerdo="${acuerdo}" 
+                    type="button" class="btn btn-pill btn-outline-secondary nuevo-seguimiento" 
+                    data-bs-dismiss="modal">Nuevo Seguimiento</button>
+                 <button type="button" class="btn btn-pill btn-outline-danger" 
+                    data-bs-dismiss="modal">Cerrar</button>`);
     } else 
         fu_modal('404');
 }
@@ -126,7 +129,8 @@ function fnuevo_seguimiento(e){
     if ( e == null || e == undefined )
         return;
     e.preventDefault();
-    var vista = fu_muestra_vista( url(vSeguimiento, true, false) );
+    var acuerdo = $(this).data('acuerdo'),
+        vista   = fu_muestra_vista( url(`${vSeguimiento}/${acuerdo}`, true, false) );
     if ( vista )
         $('#ajax-html').html(vista);
 }

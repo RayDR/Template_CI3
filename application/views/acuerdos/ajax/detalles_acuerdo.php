@@ -7,7 +7,7 @@
         <span class="sr-only">Mostrar más</span>
     </button>
     <div class="dropdown-menu">
-        <a class="dropdown-item seguimiento-contestacion" href="#contestacion" data-acuerdo="<?= $acuerdos[0]->acuerdo_id ?>">Contestación</a>
+        <a class="dropdown-item nuevo-seguimiento" href="#contestacion" data-acuerdo="<?= $acuerdos[0]->acuerdo_id ?>">Nuevo Seguimiento</a>
         <a class="dropdown-item seguimiento-detallado" href="#seguimiento-detallado" data-acuerdo="<?= $acuerdos[0]->acuerdo_id ?>">Ver Detalle</a>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item seguimiento-finalizar" href="#finalizar" data-acuerdo="<?= $acuerdos[0]->acuerdo_id ?>">Finalizar acuerdo</a>
@@ -29,7 +29,7 @@
 			<tr>
 				<td><?= $acuerdo->folio ?></td>
 				<td><?= $acuerdo->seguimiento ?></td>
-				<td><?= $acuerdo->area_acuerdo ?></td>
+				<td><?= $acuerdo->area_seguimiento ?></td>
 				<td><?= $acuerdo->fecha_actualizacion_seguimiento ?></td>
 				<td><?= $acuerdo->estatus_seguimiento ?></td>
 			</tr>

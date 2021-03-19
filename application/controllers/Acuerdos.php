@@ -31,18 +31,53 @@ class Acuerdos extends CI_Controller {
     {
         $json = array('exito' => TRUE);
         $data = array(
-            'titulo'    =>  'Registrar',
+            'titulo'    =>  'Registro de Acuerdo',
             'view'      => 'acuerdos/registrar'
         );
         $json['html'] = $this->load->view( $data['view'], $data, TRUE );
         return print(json_encode($json));
     }
 
-    public function seguimiento()
+    public function editar()
     {
         $json = array('exito' => TRUE);
         $data = array(
-            'titulo'    => 'Seguimiento',
+            'titulo'    =>  'Edición Acuerdo',
+            'view'      => 'acuerdos/editar'
+        );
+        $json['html'] = $this->load->view( $data['view'], $data, TRUE );
+        return print(json_encode($json));
+    }
+
+    public function seguimiento($acuerdo_id)
+    {
+        $json = array('exito' => TRUE);
+        if ( $acuerdo_id ){
+            $historial = $this->model_acuerdos->get_acuerdos_detalle($acuerdo_id);
+            if ( $historial ){
+                $data = array(
+                    'titulo'        => 'Nuevo Seguimiento',
+                    'view'          => 'acuerdos/seguimiento',
+                    'acuerdo_id'    =>  $acuerdo_id,
+                    'historial'     =>  $historial
+                );
+                $json['html'] = $this->load->view( $data['view'], $data, TRUE );
+            } else {
+                $json['exito'] = FALSE;
+                $json['error'] = 'El acuerdo no existe.';
+            }
+        } else {
+            $json['exito'] = FALSE;
+            $json['error'] = 'No se recibió el número de acuerdo';
+        }
+        return print(json_encode($json));
+    }
+
+    public function editar_seguimiento()
+    {
+        $json = array('exito' => TRUE);
+        $data = array(
+            'titulo'    => 'Edición de Seguimiento',
             'view'      => 'acuerdos/seguimiento'
         );
         $json['html'] = $this->load->view( $data['view'], $data, TRUE );
@@ -76,6 +111,7 @@ class Acuerdos extends CI_Controller {
         $acuerdo_id     = $this->input->post('acuerdo');
         $data = array(
             'titulo'       =>  'Seguimiento de Acuerdo',
+            'acuerdo_id'   =>  $acuerdo_id,
             'acuerdo'      =>  $this->model_acuerdos->get_acuerdos([ 'acuerdo_id' => $acuerdo_id ]),
             'seguimiento'  =>  $this->model_acuerdos->get_acuerdos_detalle($acuerdo_id),
             'view'         => 'acuerdos/ajax/seguimiento_detallado'
@@ -138,6 +174,7 @@ class Acuerdos extends CI_Controller {
             );
             $resultado     = $this->model_acuerdos->set_seguimiento_acuerdo($acuerdo_id, $datos_seguimiento);
             $json['exito'] = $resultado['exito'];
+            $json['model'] = $resultado;
             if ( $json['exito'] == FALSE )
                 $json['mensaje'] = $resultado['error'];
         }
