@@ -85,7 +85,7 @@ defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automat
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
 // GLOBALES PERSONALIZABLES
-defined('APLICACION')          OR define('APLICACION', 'SIPAT');       // Nombre de la aplicación
+defined('APLICACION')          OR define('APLICACION', 'SIEVAL');       // Nombre de la aplicación
 defined('EMPRESA')             OR define('EMPRESA', 'ISSET');          // Nombre de la empresa
 defined('CRIPTO')              OR define('CRIPTO', 'H4rDC0mpr3sS.');   // Cadena de encriptación
 // GLOBALES DE TEMAS
