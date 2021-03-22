@@ -57,7 +57,8 @@ function fguardar(e){
                 datos 
             );
             if ( respuesta.exito ){
-                fu_notificacion('Se ha registrado el acuerdo exitosamente.', 'success'); 
+                fu_notificacion('Se ha registrado el acuerdo exitosamente.', 'success');
+                window.location.replace( url('Acuerdos') ); 
             } else
                 fu_notificacion(respuesta.mensaje, 'danger');
         } else {
