@@ -1,14 +1,7 @@
 $(document).ready(function() {
     $('#guardar').click(fguardar);
 
-    fn_inicia_select2();
-});
-
-function fn_inicia_select2(){
-    // Estilizar Select2
-    $('.form-select').select2();
-    // Configurar Select2 de Áreas
-    var datos_select2 = fu_json_query(url('Configurador/get_areas_select2', true, false));
+    var datos_select2 = fu_json_query(url('Configurador/get_areas_select2'));
     if ( datos_select2 ){
         if ( datos_select2.exito ){
             $('.areas_select2').select2({
@@ -17,21 +10,11 @@ function fn_inicia_select2(){
                     'more': true
                 }
             });
+
+            $('#area_destino').val($('#destino').val()).trigger('change');
         }
     }
-    // Configurar Select2 de Proyectos
-    var datos_select2 = fu_json_query(url('Configurador/get_proyectos_select2', true, false));
-    if ( datos_select2 ){
-        if ( datos_select2.exito ){
-            $('.proyectos_select2').select2({
-                data: datos_select2.result,
-                pagination: {
-                    'more': true
-                }
-            });
-        }
-    }
-}
+});
 
 function fguardar(e){
     e.preventDefault();
@@ -46,8 +29,14 @@ function fguardar(e){
         datos   = {},
         inputs  = [
         {
-            'nombre': 'area_origen',
-            'texto' : 'Área de Origen'
+            'nombre': 'acuerdo_id'
+        },
+        {
+            'nombre': 'seguimiento_id'
+        },        
+        {
+            'nombre': 'tema',
+            'texto' : 'Tema'
         },
         {
             'nombre': 'area_destino',
@@ -71,12 +60,12 @@ function fguardar(e){
 
         if ( ! errores ){
             respuesta   = fu_json_query(
-                url('Actividades/registrar_acuerdo', true, false),
+                url('Acuerdos/edicion_acuerdo', true, false),
                 datos 
             );
             if ( respuesta.exito ){
-                fu_notificacion('Se ha registrado el acuerdo exitosamente.', 'success');
-                window.location.replace( url('Actividades') );
+                fu_notificacion('Se ha actualizado el acuerdo exitosamente.', 'success');
+                window.location.replace( url('Acuerdos') );
             } else
                 fu_notificacion(respuesta.mensaje, 'danger');
         } else {
@@ -86,7 +75,7 @@ function fguardar(e){
     } catch(e) {
         fu_alerta('Ha ocurrido un error al guardar el acuerdo, intentelo más tarde.', 'danger');
     }
-
+    
     $('#guardar').prop({disabled: false});
     $('#guardar').html(`Guardar`);
 }

@@ -27,6 +27,7 @@
                         <th class="">Actividad Detallada</th>
                         <th class="">Programado</th>
                         <th class="">Realizado</th>
+                        <th class="">Beneficiados</th>
                         <th class="">Medición</th>
                         <th class="">Estatus</th>
                     </tr>

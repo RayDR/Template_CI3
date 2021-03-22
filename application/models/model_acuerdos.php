@@ -148,27 +148,65 @@ class Model_acuerdos extends CI_Model {
 		*
 		* @return resultado[]
 	*/
-	public function set_seguimiento_acuerdo($acuerdo_id, $datos){
+	public function set_seguimiento_acuerdo($datos){
+		$resultado = array('exito' => TRUE);
+		try {
+			$this->db->trans_begin();
+			if ( is_array($datos) ){
+				$datos_db = array(
+				'acuerdo_id'				=> $datos['acuerdo_id'],
+				'seguimiento' 				=> $datos['acuerdos'],
+				'combinacion_area_id' 		=> $datos['area_destino'],
+				'usuario_acuerda_id' 		=> $datos['usuario_id'],
+				'ejercicio' 				=> $datos['ejercicio'],
+				'estatus_acuerdo_id' 		=> $datos['estatus_acuerdo']
+			);
+
+			$this->db->insert('seguimientos_acuerdos', $datos_db);
+			} else 
+				throw new Exception('La estructura de los datos es incorrecta.');
+
+			$this->db->trans_commit();
+		} catch (Exception $e) {
+			$this->db->trans_rollback();
+			$resultado['exito'] = FALSE;
+			$resultado['error'] = $e;
+		}
+		return $resultado;
+	}
+	
+
+	/**
+		* Actualizar el acuerdo y su seguimiento
+		*
+		* @access public
+		* @param  array   $datos 		Datos a iterar para actualizar
+		*
+		* @return resultado[]
+	*/
+	public function update_acuerdo($datos){
 		$resultado = array('exito' => TRUE);
 		try {
 			$this->db->trans_begin();
 
-			if ( $acuerdo_id ){
-				if ( is_array($datos) ){
-					$datos_db = array(
-					'acuerdo_id'				=> $acuerdo_id,
+			if ( is_array($datos) ){
+				$datos_db = array(
+					'asunto' 					=> $datos['acuerdos'],
+					'usuario_registra_id' 		=> $datos['usuario_id'],
+					'tema_id' 					=> $datos['tema']
+				);
+				$this->db->where('acuerdo_id', $datos['acuerdo_id']);
+				$this->db->update('acuerdos', $datos_db);
+
+				$datos_db = array(
 					'seguimiento' 				=> $datos['acuerdos'],
 					'combinacion_area_id' 		=> $datos['area_destino'],
-					'usuario_acuerda_id' 		=> $datos['usuario_id'],
-					'ejercicio' 				=> $datos['ejercicio'],
-					'estatus_acuerdo_id' 		=> $datos['estatus_acuerdo']
+					'usuario_acuerda_id' 		=> $datos['usuario_id']
 				);
-
+				$this->db->where('seguimiento_acuerdo_id', $datos['seguimiento_id']);
 				$this->db->insert('seguimientos_acuerdos', $datos_db);
-				} else 
-					throw new Exception('La estructura de los datos es incorrecta.');
-			} else
-				throw new Exception('El folio de acuerdo es inválido.');
+			} else 
+				throw new Exception('La estructura de los datos es incorrecta.');
 
 			$this->db->trans_commit();
 		} catch (Exception $e) {

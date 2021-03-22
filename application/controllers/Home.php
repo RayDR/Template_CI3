@@ -79,6 +79,7 @@ class Home extends CI_Controller {
 
     // Función de cierre de sesión
     public function logout(){
+        session_destroy();
         redirect(base_url('index.php/Home/login'),'refresh');
     }
 

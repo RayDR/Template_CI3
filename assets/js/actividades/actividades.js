@@ -1,7 +1,7 @@
 // Variables globales
 var dt, 
     dtNombre     = '#dtActividades', 
-    dtAjaxUrl    = 'Actividades/datatable_acuerdos'
+    dtAjaxUrl    = 'Actividades/datatable_actividades'
     vRegistro    = 'Actividades/registrar',
     vSeguimiento = 'Actividades/seguimiento';
 
@@ -45,15 +45,14 @@ function fCargar_DataTable(){
                 dataSrc: ''
             },
             columns: [
-                { data: 'acuerdo_id' },
-                { data: 'asunto' },
-                { data: 'area_acuerdo' },
-                { data: 'area_seguimiento' },            
-                { data: 'folio' },
-                { data: 'seguimiento' },
-                { data: 'fecha_creacion_acuerdo' },
-                { data: 'fecha_creacion_seguimiento' },
-                { data: 'estatus_seguimiento' }
+                { data: 'actividad_id' },
+                { data: 'actividad_general' },
+                { data: 'actividad' },
+                { data: null },
+                { data: null },
+                { data: 'beneficiados' },     
+                { data: 'unidad_medida' },
+                { data: 'estatus_actividad' }
             ],
             drawCallback: function (settings) {
                 $('[data-toggle="tooltip"]').tooltip({ boundary: 'window' });

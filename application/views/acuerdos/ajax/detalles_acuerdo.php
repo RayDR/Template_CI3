@@ -6,7 +6,11 @@
         <i class="fas fa-angle-down dropdown-arrow"></i>
         <span class="sr-only">Mostrar más</span>
     </button>
-    <div class="dropdown-menu">
+    <div class="dropdown-menu">    	
+        <?php if ( count($acuerdos) == 1 ): ?>
+        <a class="dropdown-item editar-acuerdo" href="#editar-acuerdo" data-acuerdo="<?= $acuerdos[0]->acuerdo_id ?>">Editar</a>
+        <div class="dropdown-divider"></div>
+    	<?php endif ?>
         <a class="dropdown-item nuevo-seguimiento" href="#contestacion" data-acuerdo="<?= $acuerdos[0]->acuerdo_id ?>">Nuevo Seguimiento</a>
         <a class="dropdown-item seguimiento-detallado" href="#seguimiento-detallado" data-acuerdo="<?= $acuerdos[0]->acuerdo_id ?>">Ver Detalle</a>
         <div class="dropdown-divider"></div>

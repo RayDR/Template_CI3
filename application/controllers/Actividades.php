@@ -21,7 +21,6 @@ class Actividades extends CI_Controller {
         $data = array(
             'titulo'        => 'Actividades ' . APLICACION  . ' | ' . EMPRESA,
             'menu'          => $this->model_catalogos->get_menus(),
-            'actividades'   => $this->model_actividades->get_actividades(),
             'view'          => 'actividades/index'
         );
         $this->load->view( RUTA_TEMA . 'body', $data, FALSE );
@@ -39,6 +38,20 @@ class Actividades extends CI_Controller {
         );
         $json['html'] = $this->load->view( $data['view'], $data, TRUE );
         return print(json_encode($json));
+    }
+
+/*
+|--------------------------------------------------------------------------
+| AJAX 
+|--------------------------------------------------------------------------
+*/
+    
+    // -------------- VISTAS
+
+    // -------------- DATOS
+
+    public function datatable_actividades(){
+        return print(json_encode( $this->model_actividades->get_actividades() ));
     }
 
 }

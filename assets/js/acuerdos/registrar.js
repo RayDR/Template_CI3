@@ -16,11 +16,11 @@ $(document).ready(function() {
 
 function fguardar(e){
     e.preventDefault();
-    $('#guardar').prop({disabled: true});
     $('#guardar').html(`
-        <div class="spinner-border spinner-border-sm" role="status">
-        Registrando...
-        </div>`);
+        <button class="btn btn-primary" type="button" disabled>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <span class="ms-1">Registrando...</span>
+        </button>`);
 
     var respuesta,
         errores = '',
@@ -56,7 +56,8 @@ function fguardar(e){
                 datos 
             );
             if ( respuesta.exito ){
-                fu_notificacion('Se ha registrado el acuerdo exitosamente.', 'success'); 
+                fu_notificacion('Se ha registrado el acuerdo exitosamente.', 'success');
+                window.location.replace( url('Acuerdos') );
             } else
                 fu_notificacion(respuesta.mensaje, 'danger');
         } else {
@@ -66,7 +67,7 @@ function fguardar(e){
     } catch(e) {
         fu_alerta('Ha ocurrido un error al guardar el acuerdo, intentelo más tarde.', 'danger');
     }
-
+    
     $('#guardar').prop({disabled: false});
     $('#guardar').html(`Guardar`);
 }

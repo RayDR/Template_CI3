@@ -1,12 +1,14 @@
 // Variables globales
 var dt, 
     dtNombre     = '#dtAcuerdos', 
-    dtAjaxUrl    = 'Acuerdos/datatable_acuerdos'
+    dtAjaxUrl    = 'Acuerdos/datatable_acuerdos',
     vRegistro    = 'Acuerdos/registrar',
+    vEdicion     = 'Acuerdos/editar',
     vSeguimiento = 'Acuerdos/seguimiento';
 
 $(document).off('click','.seguimiento-detallado').on('click','.seguimiento-detallado', fseguimiento_detallado);
 $(document).off('click','.nuevo-seguimiento').on('click','.nuevo-seguimiento', fnuevo_seguimiento);
+$(document).off('click','.editar-acuerdo').on('click','.editar-acuerdo', feditar_acuerdo);
 $(document).ready(function() {
     $('#nuevo_acuerdo').click(fmuestra_registro);
 
@@ -133,4 +135,18 @@ function fnuevo_seguimiento(e){
         vista   = fu_muestra_vista( url(`${vSeguimiento}/${acuerdo}`, true, false) );
     if ( vista )
         $('#ajax-html').html(vista);
+}
+
+function feditar_acuerdo(e){
+    if ( e == null || e == undefined )
+        return;
+    e.preventDefault();
+    var acuerdo     = $(this).data('acuerdo'),
+        respuesta   = fu_json_query( url(`${vEdicion}/${acuerdo}`, true, false) );
+    if ( respuesta ){
+        if ( respuesta.exito )
+            $('#ajax-html').html(respuesta.html);
+        else
+            fu_notificacion(respuesta.error, 'danger', 2000);
+    }
 }

@@ -21,13 +21,15 @@
 		<?php foreach ($seguimiento as $key => $historia): ?>
 		<ul class="list-group list-group-flush">
 			<li class="list-group-item d-flex align-items-center justify-content-between px-0  bg-transparent">
-				<div>
-					<h3 class="h6 mb-1 text-primary"><?= $historia->folio ?> - <?= $historia->seguimiento ?></h3>
-					<p class="text-primary h6">Destino:</p>
-					<p class="small pe-1 text-primary"><?= $historia->area_seguimiento ?></p>
-				</div>
-				<div>					
-					<p class="small pe-1 text-primary"><?= $historia->fecha_actualizacion_seguimiento ?></p>
+				<div class="row">
+					<div class="col-9">
+						<h3 class="h6 mb-1 text-primary"><?= $historia->folio ?> - <?= $historia->seguimiento ?></h3>
+						<p class="text-primary h6">Destino:</p>
+						<p class="small pe-1 text-primary"><?= $historia->area_seguimiento ?></p>
+					</div>
+					<div class="col-3">					
+						<p class="small pe-1 text-primary"><?= $historia->fecha_actualizacion_seguimiento ?></p>
+					</div>
 				</div>
 			</li>
 		</ul>

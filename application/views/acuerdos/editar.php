@@ -8,18 +8,7 @@
     </nav>
     <div class="d-flex justify-content-between w-100 flex-wrap">
         <div class="mb-3 mb-lg-0">
-            <h1 class="h4">Registro de Seguimiento</h1>
-        </div>
-    </div>
-    <div class="d-flex justify-content-between w-100 flex-wrap">
-        <div class="mb-3 mb-lg-0">
-            <p class="ml-2 mb-0"><b>Acuerdo:</b> <?= $historial[0]->acuerdo_id ?></p>
-        </div>
-        <div class="mb-3 mb-lg-0">
-            <p class="ml-2 mb-0"><b>Asunto:</b> <?= $historial[0]->asunto ?></p>
-        </div>
-        <div class="mb-3 mb-lg-0">
-            <p class="ml-2 mb-0"><b>Origen:</b> <?= $historial[0]->area_acuerdo ?></p>
+            <h1 class="h4">Editar Acuerdo</h1>
         </div>
     </div>
 </div>
@@ -28,12 +17,14 @@
         <div class="card border-light shadow-sm components-section">
             <div class="card-body">
                 <form>
-                    <input type="hidden" id="acuerdo_id" name="acuerdo_id" value="<?= $acuerdo_id ?>">
                     <div class="row">
                         <div class="col-12 mb-3">
                             <?php $this->load->view(RUTA_TEMA_UTIL . '/alertas'); ?>
                         </div>
                     </div>
+                    <input type="hidden" id="acuerdo_id" name="acuerdo_id" value="<?= $historial->acuerdo_id ?>">
+                    <input type="hidden" id="seguimiento_id" name="seguimiento_id" value="<?= $historial->seguimiento_acuerdo_id ?>">
+                    <input type="hidden" id="destino" name="destino" value="<?= $historial->combinacion_area_seguimiento_id ?>">
                     <div class="row">
                         <div class="col-12 mb-3">
                             <label class="my-1 me-2" for="area_destino">Área Destino</label>
@@ -44,9 +35,17 @@
                     </div>
                     <div class="row">
                         <div class="col-12 mb-3">
+                            <label class="my-1 me-2" for="tema">Tema</label>
+                            <select class="form-select" id="tema" name="tema" aria-label="Temas">
+                                <option selected value="1">Seleccione una opción</option> 
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 mb-3">
                             <div>
                                 <label for="acuerdos">Acuerdos</label>
-                                <textarea class="form-control" placeholder="Detalle del acuerdo" id="acuerdos" name="acuerdos" rows="5"></textarea>
+                                <textarea class="form-control" placeholder="Detalle del acuerdo" id="acuerdos" name="acuerdos" rows="5"><?= $historial->asunto ?></textarea>
                             </div>
                         </div>
                     </div>
@@ -64,4 +63,4 @@
         </div>
     </div>
 </div>
-<script src="<?= base_url('assets/js/acuerdos/seguimiento.js') ?>" type="text/javascript" charset="utf-8" async defer></script>
+<script src="<?= base_url('assets/js/acuerdos/editar.js') ?>" type="text/javascript" charset="utf-8" async defer></script>
