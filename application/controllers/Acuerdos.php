@@ -44,7 +44,7 @@ class Acuerdos extends CI_Controller {
         // Validar que la edición este permitida
         if ( $acuerdo_id ){
             $historial = $this->model_acuerdos->get_acuerdos_detalle($acuerdo_id);
-            if ( count($historial) == 1 ){                
+            if ( $historial[0]->estatus_seguimiento == 'Nuevo' ){                
                 $data = array(
                     'titulo'    => 'Edición Acuerdo',
                     'view'      => 'acuerdos/editar',
@@ -179,7 +179,7 @@ class Acuerdos extends CI_Controller {
                 'area_destino'  => $area_destino,
                 'acuerdos'      => $acuerdos,
                 'tema'          => 1,
-                'ejercicio'     => 2021,
+                'ejercicio'     => date('Y'),
                 'usuario_id'    => 1
             );
             $resultado     = $this->model_acuerdos->set_nuevo_acuerdo($datos_acuerdo);
@@ -205,7 +205,7 @@ class Acuerdos extends CI_Controller {
             $datos_seguimiento  = array(
                 'area_destino'      => $area_destino,
                 'acuerdos'          => $acuerdos,
-                'ejercicio'         => 2021,
+                'ejercicio'         => date('Y'),
                 'usuario_id'        => 1,
                 'estatus_acuerdo'   => 2
             );
@@ -239,7 +239,9 @@ class Acuerdos extends CI_Controller {
                 'area_destino'  => $destino,
                 'acuerdos'      => $acuerdos,
                 'tema'          => $tema,
-                'usuario_id'    => 1
+                'ejercicio'     => date('Y'),
+                'estatus_acuerdo'   => 1,
+                'usuario_id'        => 1
             );
             $resultado     = $this->model_acuerdos->update_acuerdo($datos_seguimiento);
             $json['exito'] = $resultado['exito'];
@@ -267,7 +269,7 @@ class Acuerdos extends CI_Controller {
                 $datos_seguimiento  = array(
                     'area_destino'      => $area_destino,
                     'acuerdos'          => $acuerdos,
-                    'ejercicio'         => 2021,
+                    'ejercicio'         => date('Y'),
                     'usuario_id'        => 1,
                     'estatus_acuerdo'   => 3
                 );

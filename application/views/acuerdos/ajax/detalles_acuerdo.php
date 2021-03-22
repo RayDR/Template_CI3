@@ -7,7 +7,7 @@
         <span class="sr-only">Mostrar más</span>
     </button>
     <div class="dropdown-menu">    	
-        <?php if ( count($acuerdos) == 1 ): ?>
+        <?php if ( $acuerdos[0]->estatus_seguimiento == 'Nuevo' ): ?>
         <a class="dropdown-item editar-acuerdo" href="#editar-acuerdo" data-acuerdo="<?= $acuerdos[0]->acuerdo_id ?>">Editar</a>
         <div class="dropdown-divider"></div>
     	<?php endif ?>

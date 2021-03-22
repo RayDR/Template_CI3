@@ -202,11 +202,13 @@ class Model_acuerdos extends CI_Model {
 				$this->db->update('acuerdos', $datos_db);
 
 				$datos_db = array(
+					'acuerdo_id'				=> $datos['acuerdo_id'],
 					'seguimiento' 				=> $datos['acuerdos'],
 					'combinacion_area_id' 		=> $datos['area_destino'],
-					'usuario_acuerda_id' 		=> $datos['usuario_id']
+					'usuario_acuerda_id' 		=> $datos['usuario_id'],
+					'ejercicio' 				=> $datos['ejercicio'],
+					'estatus_acuerdo_id' 		=> $datos['estatus_acuerdo']
 				);
-				$this->db->where('seguimiento_acuerdo_id', $datos['seguimiento_id']);
 				$this->db->insert('seguimientos_acuerdos', $datos_db);
 			} else 
 				throw new Exception('La estructura de los datos es incorrecta.');
