@@ -11,10 +11,14 @@
         <a class="dropdown-item editar-acuerdo" href="#editar-acuerdo" data-acuerdo="<?= $acuerdos[0]->acuerdo_id ?>">Editar</a>
         <div class="dropdown-divider"></div>
     	<?php endif ?>
-        <a class="dropdown-item nuevo-seguimiento" href="#contestacion" data-acuerdo="<?= $acuerdos[0]->acuerdo_id ?>">Nuevo Seguimiento</a>
+    	<?php if( $acuerdos[0]->estatus_seguimiento != 'Terminado' ): ?>
+        <a class="dropdown-item nuevo-seguimiento" href="#contestacion" data-acuerdo="<?= $acuerdos[0]->acuerdo_id ?>">Nuevo Seguimiento</a>        
+    	<?php endif ?>
         <a class="dropdown-item seguimiento-detallado" href="#seguimiento-detallado" data-acuerdo="<?= $acuerdos[0]->acuerdo_id ?>">Ver Detalle</a>
+        <?php if( $acuerdos[0]->estatus_seguimiento != 'Terminado' ): ?>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item seguimiento-finalizar" href="#finalizar" data-acuerdo="<?= $acuerdos[0]->acuerdo_id ?>">Finalizar acuerdo</a>
+    	<?php endif ?>
     </div>
 </div>
 <div class="table-responsive" style="max-height: 500px; overflow-y: scroll;">

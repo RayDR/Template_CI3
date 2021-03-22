@@ -4,11 +4,13 @@ var dt,
     dtAjaxUrl    = 'Acuerdos/datatable_acuerdos',
     vRegistro    = 'Acuerdos/registrar',
     vEdicion     = 'Acuerdos/editar',
-    vSeguimiento = 'Acuerdos/seguimiento';
+    vSeguimiento = 'Acuerdos/seguimiento',
+    vFinalizar   = 'Acuerdos/finalizar';
 
 $(document).off('click','.seguimiento-detallado').on('click','.seguimiento-detallado', fseguimiento_detallado);
 $(document).off('click','.nuevo-seguimiento').on('click','.nuevo-seguimiento', fnuevo_seguimiento);
 $(document).off('click','.editar-acuerdo').on('click','.editar-acuerdo', feditar_acuerdo);
+$(document).off('click','.seguimiento-finalizar').on('click','.seguimiento-finalizar', ffinalizar_acuerdo);
 $(document).ready(function() {
     $('#nuevo_acuerdo').click(fmuestra_registro);
 
@@ -131,10 +133,14 @@ function fnuevo_seguimiento(e){
     if ( e == null || e == undefined )
         return;
     e.preventDefault();
-    var acuerdo = $(this).data('acuerdo'),
-        vista   = fu_muestra_vista( url(`${vSeguimiento}/${acuerdo}`, true, false) );
-    if ( vista )
-        $('#ajax-html').html(vista);
+    var acuerdo     = $(this).data('acuerdo'),
+        respuesta   = fu_json_query( url(`${vSeguimiento}/${acuerdo}`, true, false) );
+    if ( respuesta ){
+        if ( respuesta.exito )
+            $('#ajax-html').html(respuesta.html);
+        else
+            fu_notificacion(respuesta.error, 'danger', 2000);
+    }
 }
 
 function feditar_acuerdo(e){
@@ -143,6 +149,20 @@ function feditar_acuerdo(e){
     e.preventDefault();
     var acuerdo     = $(this).data('acuerdo'),
         respuesta   = fu_json_query( url(`${vEdicion}/${acuerdo}`, true, false) );
+    if ( respuesta ){
+        if ( respuesta.exito )
+            $('#ajax-html').html(respuesta.html);
+        else
+            fu_notificacion(respuesta.error, 'danger', 2000);
+    }
+}
+
+function ffinalizar_acuerdo(e){
+    if ( e == null || e == undefined )
+        return;
+    e.preventDefault();
+    var acuerdo     = $(this).data('acuerdo'),
+        respuesta   = fu_json_query( url(`${vFinalizar}/${acuerdo}`, true, false) );
     if ( respuesta ){
         if ( respuesta.exito )
             $('#ajax-html').html(respuesta.html);

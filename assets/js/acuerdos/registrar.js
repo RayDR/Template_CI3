@@ -16,11 +16,10 @@ $(document).ready(function() {
 
 function fguardar(e){
     e.preventDefault();
+    $('#guardar').prop({disabled: true});
     $('#guardar').html(`
-        <button class="btn btn-primary" type="button" disabled>
-            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            <span class="ms-1">Registrando...</span>
-        </button>`);
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        <span class="ms-1">Finalizando...</span>`);
 
     var respuesta,
         errores = '',

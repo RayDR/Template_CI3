@@ -26,3 +26,12 @@
 .select2-results__group{
     font-weight: 1000;
 }
+
+.shown.dt-detalles:hover{
+  background-color: rgba(157, 36, 73, 0.70) !important;
+  color: #FFF;
+}
+.dt-contenido-detalle tbody tr:hover{
+  background-color: rgba(157, 36, 73, 0.65) !important;
+  color: #FFF !important;
+}

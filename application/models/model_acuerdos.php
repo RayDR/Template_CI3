@@ -134,7 +134,7 @@ class Model_acuerdos extends CI_Model {
 		} catch (Exception $e) {
 			$this->db->trans_rollback();
 			$resultado['exito'] = FALSE;
-			$resultado['error'] = $e;
+			$resultado['error'] = $e->getMessage();
 		}
 		return $resultado;
 	}
@@ -148,29 +148,32 @@ class Model_acuerdos extends CI_Model {
 		*
 		* @return resultado[]
 	*/
-	public function set_seguimiento_acuerdo($datos){
+	public function set_seguimiento_acuerdo($acuerdo_id, $datos){
 		$resultado = array('exito' => TRUE);
 		try {
 			$this->db->trans_begin();
-			if ( is_array($datos) ){
-				$datos_db = array(
-				'acuerdo_id'				=> $datos['acuerdo_id'],
-				'seguimiento' 				=> $datos['acuerdos'],
-				'combinacion_area_id' 		=> $datos['area_destino'],
-				'usuario_acuerda_id' 		=> $datos['usuario_id'],
-				'ejercicio' 				=> $datos['ejercicio'],
-				'estatus_acuerdo_id' 		=> $datos['estatus_acuerdo']
-			);
+			if ( $acuerdo_id ){
+				if ( is_array($datos) ){
+					$datos_db = array(
+						'acuerdo_id'				=> $acuerdo_id,
+						'seguimiento' 				=> $datos['acuerdos'],
+						'combinacion_area_id' 		=> $datos['area_destino'],
+						'usuario_acuerda_id' 		=> $datos['usuario_id'],
+						'ejercicio' 				=> $datos['ejercicio'],
+						'estatus_acuerdo_id' 		=> $datos['estatus_acuerdo']
+					);
 
-			$this->db->insert('seguimientos_acuerdos', $datos_db);
+					$this->db->insert('seguimientos_acuerdos', $datos_db);
+				} else 
+					throw new Exception('La estructura de los datos es incorrecta.');
 			} else 
-				throw new Exception('La estructura de los datos es incorrecta.');
+				throw new Exception('No se recibió el número del acuerdo.');
 
 			$this->db->trans_commit();
 		} catch (Exception $e) {
 			$this->db->trans_rollback();
 			$resultado['exito'] = FALSE;
-			$resultado['error'] = $e;
+			$resultado['error'] = $e->getMessage();
 		}
 		return $resultado;
 	}
@@ -212,7 +215,7 @@ class Model_acuerdos extends CI_Model {
 		} catch (Exception $e) {
 			$this->db->trans_rollback();
 			$resultado['exito'] = FALSE;
-			$resultado['error'] = $e;
+			$resultado['error'] = $e->getMessage();
 		}
 		return $resultado;
 	}

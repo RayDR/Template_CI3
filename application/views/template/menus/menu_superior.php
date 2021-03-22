@@ -16,7 +16,7 @@
               <a class="dropdown-item rounded-top fw-bold" href="#">
                 <span class="far fa-user-circle"></span>Mi Perfil
               </a>
-              <a class="dropdown-item rounded-bottom fw-bold" href="<?= base_url('Home/logout') ?>">
+              <a class="dropdown-item rounded-bottom fw-bold" href="<?= base_url('index.php/Home/logout') ?>">
                 <span class="fas fa-sign-out-alt text-danger"></span>Cerrar Sesión
               </a>
             </div>

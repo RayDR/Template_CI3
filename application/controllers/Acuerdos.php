@@ -69,13 +69,47 @@ class Acuerdos extends CI_Controller {
         if ( $acuerdo_id ){
             $historial = $this->model_acuerdos->get_acuerdos_detalle($acuerdo_id);
             if ( $historial ){
-                $data = array(
-                    'titulo'        => 'Nuevo Seguimiento',
-                    'view'          => 'acuerdos/seguimiento',
-                    'acuerdo_id'    =>  $acuerdo_id,
-                    'historial'     =>  $historial
-                );
-                $json['html'] = $this->load->view( $data['view'], $data, TRUE );
+                if ( $historial[0]->estatus_seguimiento != 'Terminado' ){
+                    $data = array(
+                        'titulo'        => 'Nuevo Seguimiento',
+                        'view'          => 'acuerdos/seguimiento',
+                        'acuerdo_id'    =>  $acuerdo_id,
+                        'historial'     =>  $historial
+                    );
+                    $json['html'] = $this->load->view( $data['view'], $data, TRUE );
+                } else {
+                    $json['exito'] = FALSE;
+                    $json['error'] = 'El acuerdo ya ha finalizado.';
+                }
+            } else {
+                $json['exito'] = FALSE;
+                $json['error'] = 'El acuerdo no existe.';
+            }
+        } else {
+            $json['exito'] = FALSE;
+            $json['error'] = 'No se recibió el número de acuerdo';
+        }
+        return print(json_encode($json));
+    }
+
+    public function finalizar($acuerdo_id)
+    {
+        $json = array('exito' => TRUE);
+        if ( $acuerdo_id ){
+            $historial = $this->model_acuerdos->get_acuerdos_detalle($acuerdo_id);
+            if ( $historial ){
+                if ( $historial[0]->estatus_seguimiento != 'Terminado' ){
+                    $data = array(
+                        'titulo'        => 'Finalizar Acuerdo',
+                        'view'          => 'acuerdos/finalizar',
+                        'acuerdo_id'    =>  $acuerdo_id,
+                        'historial'     =>  $historial
+                    );
+                    $json['html'] = $this->load->view( $data['view'], $data, TRUE );
+                } else {
+                    $json['exito'] = FALSE;
+                    $json['error'] = 'El acuerdo ya ha finalizado.';
+                }
             } else {
                 $json['exito'] = FALSE;
                 $json['error'] = 'El acuerdo no existe.';
@@ -169,15 +203,14 @@ class Acuerdos extends CI_Controller {
             $json['mensaje'] = 'Falló al recibir los datos para seguimiento al acuerdo';
         } else {               
             $datos_seguimiento  = array(
-                'area_destino'  => $area_destino,
-                'acuerdos'      => $acuerdos,
-                'ejercicio'     => 2021,
-                'usuario_id'    => 1,                
-                'estatus_acuerdo' => 2
+                'area_destino'      => $area_destino,
+                'acuerdos'          => $acuerdos,
+                'ejercicio'         => 2021,
+                'usuario_id'        => 1,
+                'estatus_acuerdo'   => 2
             );
-            $resultado     = $this->model_acuerdos->set_seguimiento_acuerdo($acuerdo_id, $datos_seguimiento);
+            $resultado = $this->model_acuerdos->set_seguimiento_acuerdo($acuerdo_id, $datos_seguimiento);
             $json['exito'] = $resultado['exito'];
-            $json['model'] = $resultado;
             if ( $json['exito'] == FALSE )
                 $json['mensaje'] = $resultado['error'];
         }
@@ -214,6 +247,40 @@ class Acuerdos extends CI_Controller {
             if ( $json['exito'] == FALSE )
                 $json['mensaje'] = $resultado['error'];
         }
+        return print(json_encode($json));
+    }
+
+    public function finalizar_acuerdo(){
+        $json           = array('exito' => TRUE);
+
+        $acuerdo_id     = $this->input->post('acuerdo_id');
+        $area_destino   = $this->input->post('destino');
+        $acuerdos       = $this->input->post('acuerdos');
+
+        if ( ! $acuerdo_id || ! $area_destino || ! $acuerdos ){
+            $json['exito']   = FALSE;
+            $json['mensaje'] = 'Falló al recibir los datos para seguimiento al acuerdo';
+        } else {
+
+            // Validación de que este acuerdo puede ser finalizado por el usuario solicitante
+            if ( true ){
+                $datos_seguimiento  = array(
+                    'area_destino'      => $area_destino,
+                    'acuerdos'          => $acuerdos,
+                    'ejercicio'         => 2021,
+                    'usuario_id'        => 1,
+                    'estatus_acuerdo'   => 3
+                );
+                $resultado = $this->model_acuerdos->set_seguimiento_acuerdo($acuerdo_id, $datos_seguimiento);
+                $json['exito'] = $resultado['exito'];
+                if ( $json['exito'] == FALSE )
+                    $json['mensaje'] = $resultado['error'];
+            } else {
+                $json['exito']   = FALSE;
+                $json['mensaje'] = 'No tiene permisos para finalizar este acuerdo.';
+            }
+        }
+
         return print(json_encode($json));
     }
 

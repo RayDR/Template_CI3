@@ -1,17 +1,5 @@
 $(document).ready(function() {
     $('#guardar').click(fguardar);
-
-    var datos_select2 = fu_json_query(url('Configurador/get_areas_select2'));
-    if ( datos_select2 ){
-        if ( datos_select2.exito ){
-            $('.areas_select2').select2({
-                data: datos_select2.result,
-                pagination: {
-                    'more': true
-                }
-            });
-        }
-    }
 });
 
 function fguardar(e){
@@ -29,12 +17,11 @@ function fguardar(e){
             'nombre': 'acuerdo_id'
         },
         {
-            'nombre': 'area_destino',
-            'texto' : 'Área de Destino'
+            'nombre': 'destino'
         },
         {
             'nombre': 'acuerdos',
-            'texto' : 'Acuerdos'
+            'texto' : 'Resumen'
         }
     ];
 
@@ -43,21 +30,19 @@ function fguardar(e){
         inputs.forEach( function(input, index) {
             let valor           = $(`#${input.nombre}`).val();
             datos[input.nombre] = valor;
-            if (  valor == '' ){
-                if ( input.nombre == 'acuerdo_id' )
-                    errores += 'No se recibió el número de acuerdo, por favor recargue la página';
-                else
-                    errores += `El campo <a href="#${input.nombre}">${input.texto}</a> es requerido.`;
-            }
+
+            if (  valor == '' )
+                errores += `El campo <a href="#${input.nombre}">${input.texto}</a> es requerido.`;
         });
 
         if ( ! errores ){
             respuesta   = fu_json_query(
-                url('Acuerdos/registrar_seguimiento', true, false),
+                url('Acuerdos/finalizar_acuerdo', true, false),
                 datos 
             );
             if ( respuesta.exito ){
-                fu_notificacion('Se ha registrado el acuerdo exitosamente.', 'success'); 
+                fu_notificacion('Acuerdo finalizado.', 'success');
+                window.location.replace( url('Acuerdos') );
             } else
                 fu_notificacion(respuesta.mensaje, 'danger');
         } else {
@@ -65,9 +50,9 @@ function fguardar(e){
             fu_notificacion('Existen campos pendientes por llenar.', 'success');    
         }
     } catch(e) {
-        fu_alerta('Ha ocurrido un error al guardar el acuerdo, intentelo más tarde.', 'danger');
+        fu_alerta('Ha ocurrido un error al actualizar el estatus del acuerdo, intentelo más tarde.', 'danger');
     }
-
+    
     $('#guardar').prop({disabled: false});
     $('#guardar').html(`Guardar`);
 }

@@ -19,7 +19,7 @@
 <div class="card border-light shadow-sm mb-4">
     <div class="card-body">
         <div class="table-responsive py-1">
-            <table id="dtAcuerdos" class="table table-centered table-nowrap mb-0 rounded w-100">
+            <table id="dtAcuerdos" class="table table-hover table-centered table-nowrap mb-0 rounded w-100">
                 <thead class="thead-light">
                     <tr>
                         <th class="align-middle">#</th>
