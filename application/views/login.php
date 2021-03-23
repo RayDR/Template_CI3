@@ -7,12 +7,13 @@
                         <h1 class="mb-0 h3">Iniciar sesión</h1>
                     </div>
                     <form action="#" class="mt-4">
+                        <?php $this->load->view(RUTA_TEMA_UTIL . '/alertas'); ?>
                         <!-- Form -->
                         <div class="form-group mb-4">
                             <label for="text">Número de Cuenta</label>
                             <div class="input-group">
                                 <span class="input-group-text" id="basic-addon1"><span class="fas fa-user-tie"></span></span>
-                                <input type="text" class="form-control" placeholder="Ej: 123450" id="text" autofocus required>
+                                <input id="usuario" type="text" class="form-control" placeholder="Ej: 123450" autofocus required>
                             </div>
                         </div>
                         <!-- End of Form -->
@@ -22,22 +23,16 @@
                                 <label for="password">Contraseña</label>
                                 <div class="input-group">
                                     <span class="input-group-text" id="basic-addon2"><span class="fas fa-unlock-alt"></span></span>
-                                    <input type="password" placeholder="Password" class="form-control" id="password" required>
+                                    <input type="password" placeholder="Ingrese su contraseña" class="form-control" id="password" required>
                                 </div>
                             </div>
                             <!-- End of Form -->
                             <div class="d-flex justify-content-between align-items-top mb-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="remember">
-                                    <label class="form-check-label mb-0" for="remember">
-                                        Recuerdame
-                                    </label>
-                                </div>
                                 <div><a href="<?= base_url('index.php/Home/recovery') ?>" class="small text-right">Recuperar contraseña</a></div>
                             </div>
                         </div>
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-dark">Ingresar</button>
+                            <button id="do_login" type="submit" class="btn btn-dark">Ingresar</button>
                         </div>
                     </form>
                 </div>
@@ -45,3 +40,5 @@
         </div>
     </div>
 </section>
+
+<script src="<?= base_url('assets/js/sing.js') ?>" type="text/javascript" charset="utf-8" async defer></script>

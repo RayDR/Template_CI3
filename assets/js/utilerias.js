@@ -445,3 +445,58 @@ function fu_validar_correo_2(correo_electronico) {
   var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
   return regex.test(correo_electronico);
 }
+
+// Función validadora de políticas de password
+function fu_valida_password(usuario, password){
+  let valoraciones    = [];
+  valoraciones.exito  = true;
+
+  if ( ! usuario.match(/^[0-9]{6}$/) )
+    valoraciones.push(
+      {
+        campo         :   'usuario',
+        resultado     :   false,
+        valoracion    :   'numerico',
+        mensaje       :   'El número de cuenta es inválido'
+      }
+    );
+  else 
+    valoraciones.push(
+      {
+        campo         :   'usuario',
+        resultado     :   true,
+        valoracion    :   'numerico',
+      }
+    );
+
+  if ( password.length < 6 || password == '' ){
+    valoraciones.exito = false;
+    valoraciones.push(
+      {
+        campo       : 'password',
+        resultado   : false,
+        valoracion  : 'longitud',
+        mensaje     : 'La contraseña no es válida'
+      }
+    );
+  } else 
+    valoraciones.push(
+      {
+        campo       : 'password',
+        resultado   : true,
+        valoracion  : 'longitud',
+        mensaje     : 'Contraseña válida'
+      }
+    );
+  return valoraciones;
+}
+
+// Codificar UTF-8
+function codifica_utf8( cadena ){
+  return window.btoa( unescape( encodeURIComponent( cadena ) ) );
+}
+
+// Decodificar UTF-8
+function decodifica_utf8( cadena ){
+  return decodeURIComponent( escape( window.atob( cadena ) ) );
+}

@@ -7,6 +7,7 @@ class Home extends CI_Controller {
     {
         parent::__construct();
         $this->load->model('model_catalogos');
+        $this->load->model('model_usuarios');
     }
 
 
@@ -76,14 +77,16 @@ class Home extends CI_Controller {
             'exito'     =>  FALSE
         );
 
-        // Validación
-        //$db_usuario = $this->model_usuarios->get_usuario_acceso( $usuario, $acceso );
-        $respuesta['db'] = $db_usuario;
+        if ( ! $usuario || ! $password )
+            $db_usuario = NULL;
+        else
+            $db_usuario = $this->model_usuarios->get_usuario_acceso( $usuario, $acceso );
+
         if ( $db_usuario ) 
             {  // Comprobación de usuario
-            if ( $db_usuario->status_usuario_id != 1 )
+            if ( $db_usuario->estatus != 1 )
             {  // Usuario no Activo
-                switch ( $db_usuario->status_usuario_id ) 
+                switch ( $db_usuario->estatus ) 
                 {
                     case 2:  // Usuario no inactivo
                         $respuesta["mensaje"] = "<b>El usuario está inactivo.</b><br><small>Pongase en contacto con la administración para reactivar su cuenta.</small>";
@@ -95,18 +98,18 @@ class Home extends CI_Controller {
                         $respuesta["mensaje"] = "<b>No se pudo obtener el estatus de su usuario. </b><br><small>Por favor, solicite asistencia al administrador del sistema.</small>";
                         break;
                 }
-            } else if ( password_verify( $password, $db_usuario->password ) )
+            } 
+            else if ( password_verify( $password, $db_usuario->password ) )
             {  // Todo correcto - Permitir Login
-            $array_login = array('ulogin' => TRUE);
-            if ($this->session->establecer_sesion($db_usuario->usuario_id, $array_login))
-            {
-                $respuesta["exito"]     =   TRUE;
-                $respuesta["last_cnx"]  =   $this->model_usuarios->set_ultima_conexion( $db_usuario->usuario_id );
-                $respuesta["usuario"]   =   array(  'value' =>  $db_usuario->usuario_id, 
-                                      'name'  =>  'usuario_id' );
-                $respuesta["mensaje"]   =   "<b>Acceso concedido.</b>";
-            } else 
-                $respuesta["mensaje"]   =   "<b>No fue posible crear la sesión del usuario</b>. Intente nuevamente.";
+                $array_login = array('ulogin' => TRUE);
+                if ($this->session->establecer_sesion($db_usuario->usuario_id, $array_login))
+                {
+                    $respuesta["exito"]     =   TRUE;
+                    $respuesta["usuario"]   =   array(  'value' =>  $db_usuario->usuario_id, 
+                                                        'name'  =>  'usuario_id' );
+                    $respuesta["mensaje"]   =   "<b>Acceso concedido.</b>";
+                } else 
+                    $respuesta["mensaje"]   =   "<b>No fue posible crear la sesión del usuario</b>. Intente nuevamente.";
             } 
             else
             {

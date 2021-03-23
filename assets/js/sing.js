@@ -1,0 +1,30 @@
+$(document).ready(function($) {
+    $('#do_login').click(flogin);
+});
+
+function flogin(){
+    var usuario     = $('#usuario').val(),
+        password    = $('#password').val();
+
+    let validacion  = fu_valida_password(usuario, password);
+
+    if ( validacion.exito ){
+        // Intercambio
+
+        $('#guardar').html(`
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <span class="ms-1">Enviando...</span>`);
+        fu_alerta('');
+        var respuesta = fu_json_query( url('Home/do_login', true, false), {
+            usuario: usuario,
+            password: codifica_utf8(password)
+        });
+    } else {
+        let mensaje  = '';
+        validacion.forEach( function(val, index) {
+            if ( ! val.resultado )
+                mensaje += `${val.mensaje}<br>`;
+        });
+        fu_alerta(mensaje);
+    }
+}

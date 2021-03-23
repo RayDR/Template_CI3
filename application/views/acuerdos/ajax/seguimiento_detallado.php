@@ -20,7 +20,7 @@
 		<h2 class="h5 mb-4 text-primary">Historial del Acuerdo</h2>
 		<?php foreach ($seguimiento as $key => $historia): ?>
 		<ul class="list-group list-group-flush">
-			<li class="list-group-item d-flex align-items-center justify-content-between px-0  bg-transparent">
+			<li class="list-group-item bg-transparent">
 				<div class="row">
 					<div class="col-9">
 						<h3 class="h6 mb-1 text-primary"><?= $historia->folio ?> - <?= $historia->seguimiento ?></h3>
