@@ -80,10 +80,17 @@ class Model_catalogos extends CI_Model {
 			}
 			$this->db->order_by('cve_direccion', 'asc');
 			$areas = $this->db->get('combinaciones_areas');
-			if ( $tipo_retorno )
-				return $areas->result();
-			else
-				return $areas->result_array();
+			if ( $areas->num_rows() > 1 ){
+				if ( $tipo_retorno )
+					return $areas->result();
+				else
+					return $areas->result_array();
+			} else {
+				if ( $tipo_retorno )
+					return $areas->row();
+				else
+					return $areas->row_array();
+			}
 		} catch (Exception $e) {
 			return [];
 		}

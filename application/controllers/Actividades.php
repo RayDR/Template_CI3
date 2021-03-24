@@ -8,6 +8,9 @@ class Actividades extends CI_Controller {
         parent::__construct();
         $this->load->model('model_catalogos');
         $this->load->model('model_actividades');
+        
+        if ( ! $this->session->estatus_usuario_sesion() )
+            redirect(base_url('index.php/Home/login'),'refresh');
     }
 
 /*
@@ -18,8 +21,6 @@ class Actividades extends CI_Controller {
 
     public function index()
     {
-        if ( ! $this->session->estatus_usuario_sesion() )
-            redirect(base_url('index.php/Home/login'),'refresh');
         $data = array(
             'titulo'        => 'Actividades ' . APLICACION  . ' | ' . EMPRESA,
             'menu'          => $this->model_catalogos->get_menus(),

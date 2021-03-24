@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Configurador extends CI_Controller {
 
-	public function __construct()
+    public function __construct()
     {
         parent::__construct();
         $this->load->model('model_catalogos');
@@ -18,21 +18,32 @@ class Configurador extends CI_Controller {
 | VISTAS 
 |--------------------------------------------------------------------------
 */
-	public function programas()
-	{
-		$data = array(
+    public function programas()
+    {
+        $data = array(
             'titulo'        => 'Configuración - Programas '  . ' | ' . EMPRESA,
             'menu'          => $this->model_catalogos->get_menus(),
             'view'          => 'configurador/programas/index'
         );
         $this->load->view( RUTA_TEMA . 'body', $data, FALSE );
-	}
+    }
+
+    public function usuarios()
+    {
+        $data = array(
+            'titulo'        => 'Configuración - Usuarios '  . ' | ' . EMPRESA,
+            'menu'          => $this->model_catalogos->get_menus(),
+            'view'          => 'configurador/usuarios/index'
+        );
+        $this->load->view( RUTA_TEMA . 'body', $data, FALSE );
+    }
 
 /*
 |--------------------------------------------------------------------------
 | AJAX DATOS 
 |--------------------------------------------------------------------------
 */
+
     public function get_areas_select2(){
         $areas = $this->model_catalogos->get_areas();
         $json  = array('exito' => FALSE);
@@ -77,6 +88,13 @@ class Configurador extends CI_Controller {
             $json['result'] = $resultados;
         }
         return print(json_encode($json));
+    }
+
+    // ----------- DATATABLES
+
+    public function datatable_usuarios(){        
+        $this->load->model('model_usuarios');
+        return print(json_encode($this->model_usuarios->get_usuarios()));
     }
 
 }

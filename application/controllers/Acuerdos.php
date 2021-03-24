@@ -8,6 +8,9 @@ class Acuerdos extends CI_Controller {
         parent::__construct();
         $this->load->model('model_catalogos');
         $this->load->model('model_acuerdos');
+
+        if ( ! $this->session->estatus_usuario_sesion() )
+            redirect(base_url('index.php/Home/login'),'refresh');
     }
 
 
@@ -19,8 +22,6 @@ class Acuerdos extends CI_Controller {
 
 	public function index()
 	{
-        if ( ! $this->session->estatus_usuario_sesion() )
-            redirect(base_url('index.php/Home/login'),'refresh');
 		$data = array(
             'titulo'    => 'Acuerdos ' . APLICACION  . ' | ' . EMPRESA,
             'menu'      => $this->model_catalogos->get_menus(),
@@ -162,7 +163,29 @@ class Acuerdos extends CI_Controller {
     // -------------- DATOS
 
     public function datatable_acuerdos(){
-        return print(json_encode( $this->model_acuerdos->get_acuerdos_master() ));
+        $condicion = array();
+        if ( $this->session->userdata('tuser') != 1 ){
+            $where       = array('combinacion_area_id' => $this->session->userdata('combinacion_area')); 
+            $combinacion = $this->model_catalogos->get_areas( $where );
+            if ( $combinacion ){
+                $condicion  = "    direccion_id_acuerdo     = {$combinacion->direccion_id} ";
+                $condicion .= "OR direccion_id_seguimiento  = {$combinacion->direccion_id} ";
+                if ( $combinacion->subdireccion_id != 1 ){
+                    $condicion = "subdireccion_id_acuerdo         = {$combinacion->subdireccion_id} ";
+                    $condicion .= "OR subdireccion_id_seguimiento = {$combinacion->subdireccion_id} ";
+                }
+                if ( $combinacion->departamento_id != 1 ){
+                    $condicion = "departamento_id_acuerdo         = {$combinacion->departamento_id} ";
+                    $condicion .= "OR departamento_id_seguimiento = {$combinacion->departamento_id} ";
+                }
+                if ( $combinacion->area_id != 1 ){
+                    $condicion = "area_id_acuerdo         = {$combinacion->area_id} ";
+                    $condicion .= "OR area_id_seguimiento = {$combinacion->area_id} ";
+                }
+            } else
+                return print(json_encode([]));
+        } 
+        return print(json_encode( $this->model_acuerdos->get_acuerdos_master($condicion) ));
     }
 
     public function registrar_acuerdo(){

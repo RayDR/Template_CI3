@@ -6,9 +6,9 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle pt-1 px-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <div class="media d-flex align-items-center">
-                <img class="user-avatar md-avatar rounded-circle" alt="Usuario" src="">
+                <span class=""><i class="fas fa-user text-info"></i></span>
                 <div class="media-body ms-2 text-dark align-items-center d-none d-lg-block">
-                  <span class="mb-0 font-small fw-bold">Nombre del Usuario</span>
+                  <span class="mb-0 font-small fw-bold"><?= $this->session->userdata('nombres'); ?> <?= $this->session->userdata('primer_apellido'); ?></span>
                 </div>
               </div>
             </a>

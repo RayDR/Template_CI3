@@ -47,7 +47,9 @@ class Model_acuerdos extends CI_Model {
 				foreach ($filtros as $key => $filtro) {
 					$this->db->where($key, $filtro);
 				}
-			}
+			} else if ( is_string( $filtros ) )
+				$this->db->where($filtros);
+			
 			$acuerdos = $this->db->get('vw_ultimo_seguimiento');
 
 			if ( $tipo_retorno )

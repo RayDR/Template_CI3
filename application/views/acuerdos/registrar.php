@@ -23,12 +23,16 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-12 mb-3">
-                            <label class="my-1 me-2" for="area_origen">Área Origen</label>
-                            <select class="form-select areas_select2" id="area_origen" name="area_origen" aria-label="Área Origen">
-                                <option selected disabled>Seleccione una opción</option>  
-                            </select>
-                        </div>
+                        <?php if( $this->session->userdata('tuser') == 1 ): ?>
+                            <div class="col-12 mb-3">
+                                <label class="my-1 me-2" for="area_origen">Área Origen</label>
+                                <select class="form-select areas_select2" id="area_origen" name="area_origen" aria-label="Área Origen">
+                                    <option selected disabled>Seleccione una opción</option>  
+                                </select>
+                            </div>
+                        <?php else: ?>
+                            <input type="hidden" id="area_origen" name="area_origen" value="<?= $this->session->userdata('combinacion_area') ?>">
+                        <?php endif ?>
                         <div class="col-12 mb-3">
                             <label class="my-1 me-2" for="area_destino">Área Destino</label>
                             <select class="form-select areas_select2" id="area_destino" name="area_destino" aria-label="Área Destino">
