@@ -13,7 +13,7 @@ class Model_usuarios extends CI_Model {
 		*								 		FALSE - Array
 		* @return usuarios
 	*/
-	public function get_acuerdos($filtros = NULL, $tipo_retorno = TRUE){
+	public function get_usuarios($filtros = NULL, $tipo_retorno = TRUE){
 		try {			
 			if ( is_array($filtros) ){
 				foreach ($filtros as $key => $filtro) {
@@ -23,10 +23,18 @@ class Model_usuarios extends CI_Model {
 
 			$usuarios = $this->db->get('vw_usuarios');
 
-			if ( $tipo_retorno )
-				return $usuarios->result();
-			else
-				return $usuarios->result_array();
+			if ( $usuarios->num_rows() > 1 ){
+				if ( $tipo_retorno )
+					return $usuarios->result();
+				else
+					return $usuarios->result_array();
+			}
+			else {
+				if ( $tipo_retorno )
+					return $usuarios->row();
+				else
+					return $usuarios->row_array();
+			}
 		} catch (Exception $e) {
 			return [];
 		}

@@ -18,6 +18,8 @@ class Home extends CI_Controller {
 */
     public function index()
     {
+        if ( ! $this->session->estatus_usuario_sesion() )
+            redirect(base_url('index.php/Home/login'),'refresh');
         $data = array(
             'titulo'    => 'Home ' . APLICACION  . ' | ' . EMPRESA,
             'menu'      => $this->model_catalogos->get_menus(),
@@ -71,7 +73,7 @@ class Home extends CI_Controller {
     // Función para verificar usuario y contraseña del login
     public function do_login(){
         $usuario    = $this->input->post('usuario');
-        $password   = $this->input->post('password');
+        $password   = base64_decode($this->input->post('password'));
 
         $respuesta = array(
             'exito'     =>  FALSE
@@ -80,8 +82,7 @@ class Home extends CI_Controller {
         if ( ! $usuario || ! $password )
             $db_usuario = NULL;
         else
-            $db_usuario = $this->model_usuarios->get_usuario_acceso( $usuario, $acceso );
-
+            $db_usuario = $this->model_usuarios->get_usuarios( array('usuario' => $usuario) );
         if ( $db_usuario ) 
             {  // Comprobación de usuario
             if ( $db_usuario->estatus != 1 )
@@ -99,10 +100,9 @@ class Home extends CI_Controller {
                         break;
                 }
             } 
-            else if ( password_verify( $password, $db_usuario->password ) )
+            else if ( password_verify( $password, $db_usuario->contrasena ) )
             {  // Todo correcto - Permitir Login
-                $array_login = array('ulogin' => TRUE);
-                if ($this->session->establecer_sesion($db_usuario->usuario_id, $array_login))
+                if ( $this->session->establecer_sesion($db_usuario) )
                 {
                     $respuesta["exito"]     =   TRUE;
                     $respuesta["usuario"]   =   array(  'value' =>  $db_usuario->usuario_id, 
@@ -114,7 +114,7 @@ class Home extends CI_Controller {
             else
             {
                 $respuesta["mensaje"]   =   "<b>La combinación de usuario y contraseña no son correctas.</b>";                        
-                $respuesta["intentos"]  =   $this->session->intentos_conexion($db_usuario->usuario_id);
+                //$respuesta["intentos"]  =   $this->session->intentos_conexion($db_usuario->usuario_id);
             }
         } else
             $respuesta["mensaje"]   =   "<b>El usuario ingresado no existe.</b>";

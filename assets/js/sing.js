@@ -2,7 +2,8 @@ $(document).ready(function($) {
     $('#do_login').click(flogin);
 });
 
-function flogin(){
+function flogin(e){
+    e.preventDefault();
     var usuario     = $('#usuario').val(),
         password    = $('#password').val();
 
@@ -10,7 +11,6 @@ function flogin(){
 
     if ( validacion.exito ){
         // Intercambio
-
         $('#guardar').html(`
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             <span class="ms-1">Enviando...</span>`);
@@ -19,6 +19,14 @@ function flogin(){
             usuario: usuario,
             password: codifica_utf8(password)
         });
+        if ( respuesta ){
+            if ( respuesta.exito ){
+                fu_notificacion('Accediendo al sistema', 'success');
+                window.location.replace( url() );
+            } else {
+                fu_notificacion(respuesta.mensaje, 'danger');
+            }
+        }
     } else {
         let mensaje  = '';
         validacion.forEach( function(val, index) {

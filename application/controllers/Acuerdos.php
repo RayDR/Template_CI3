@@ -19,6 +19,8 @@ class Acuerdos extends CI_Controller {
 
 	public function index()
 	{
+        if ( ! $this->session->estatus_usuario_sesion() )
+            redirect(base_url('index.php/Home/login'),'refresh');
 		$data = array(
             'titulo'    => 'Acuerdos ' . APLICACION  . ' | ' . EMPRESA,
             'menu'      => $this->model_catalogos->get_menus(),

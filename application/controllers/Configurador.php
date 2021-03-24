@@ -7,6 +7,9 @@ class Configurador extends CI_Controller {
     {
         parent::__construct();
         $this->load->model('model_catalogos');
+        
+        if ( ! $this->session->estatus_usuario_sesion() )
+            redirect(base_url('index.php/Home/login'),'refresh');
     }
 
 
