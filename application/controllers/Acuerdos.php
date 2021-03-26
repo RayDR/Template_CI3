@@ -160,6 +160,18 @@ class Acuerdos extends CI_Controller {
         return print(json_encode( $json ));
     }
 
+    public function planificador(){
+        $json           = array('exito' => TRUE);
+
+        $acuerdo_id     = $this->input->post('acuerdo');
+        $data = array(
+            'titulo'       => 'Planificador de Acuerdos',
+            'view'         => 'acuerdos/ajax/scheduler'
+        );
+        $json['html'] = $this->load->view( $data['view'], $data, TRUE );
+        return print(json_encode( $json ));
+    }
+
     // -------------- DATOS
 
     public function datatable_acuerdos(){

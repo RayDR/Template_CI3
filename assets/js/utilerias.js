@@ -40,8 +40,7 @@ const notyf = new Notyf({
       dismissible: true
     }
   ]
-}); 
-
+});
 
 // Función de animación de carga del sistema
 function loader(opcion = true){

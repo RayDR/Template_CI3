@@ -86,6 +86,8 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- Utilerias JS -->
     <script src="<?= base_url('assets/js/utilerias.js') ?>" type="text/javascript" charset="utf-8" async defer></script> 
+    <!-- AlloyUI JS -->
+    <script src="<?= base_url('vendor/alloyui_3.0.1/build/aui/aui-min.js') ?>" type="text/javascript" charset="utf-8" async defer></script> 
 
     <!-- Sweet Alert -->
     <link type="text/css" href="<?= base_url('vendor/sweetalert2/dist/sweetalert2.min.css') ?>" rel="stylesheet">

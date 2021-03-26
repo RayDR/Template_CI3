@@ -1,11 +1,12 @@
 // Variables globales
 var dt, 
-    dtNombre     = '#dtAcuerdos', 
-    dtAjaxUrl    = 'Acuerdos/datatable_acuerdos',
-    vRegistro    = 'Acuerdos/registrar',
-    vEdicion     = 'Acuerdos/editar',
-    vSeguimiento = 'Acuerdos/seguimiento',
-    vFinalizar   = 'Acuerdos/finalizar';
+    dtNombre        = '#dtAcuerdos', 
+    dtAjaxUrl       = 'Acuerdos/datatable_acuerdos',
+    vRegistro       = 'Acuerdos/registrar',
+    vPlanificador   = 'Acuerdos/planificador',
+    vEdicion        = 'Acuerdos/editar',
+    vSeguimiento    = 'Acuerdos/seguimiento',
+    vFinalizar      = 'Acuerdos/finalizar';
 
 $(document).off('click','.seguimiento-detallado').on('click','.seguimiento-detallado', fseguimiento_detallado);
 $(document).off('click','.nuevo-seguimiento').on('click','.nuevo-seguimiento', fnuevo_seguimiento);
@@ -13,6 +14,7 @@ $(document).off('click','.editar-acuerdo').on('click','.editar-acuerdo', feditar
 $(document).off('click','.seguimiento-finalizar').on('click','.seguimiento-finalizar', ffinalizar_acuerdo);
 $(document).ready(function() {
     $('#nuevo_acuerdo').click(fmuestra_registro);
+    $('#vista_calendario').click(fmuestra_planificador);
 
     finicia_datatable();
 
@@ -110,6 +112,16 @@ function fmuestra_registro(e){
         return;
     e.preventDefault();
     var vista = fu_muestra_vista( url(vRegistro, true, false) );
+    if ( vista )
+        $('#ajax-html').html(vista);
+}
+
+
+function fmuestra_planificador(e){
+    if ( e == null || e == undefined )
+        return;
+    e.preventDefault();
+    var vista = fu_muestra_vista( url(vPlanificador, true, false) );
     if ( vista )
         $('#ajax-html').html(vista);
 }

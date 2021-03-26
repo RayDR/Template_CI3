@@ -53,6 +53,9 @@
     <script src="https://kit.fontawesome.com/8cca2ecc5a.js" crossorigin="anonymous"></script>
     <!-- Select2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- AlloyUI JS -->
+    <script src="https://cdn.alloyui.com/3.0.1/aui/aui-min.js"></script>
+
     <!-- Sweet Alert -->
     <link type="text/css" href="<?= base_url('vendor/sweetalert2/dist/sweetalert2.min.css') ?>" rel="stylesheet">
     <!-- Notyf -->
@@ -63,4 +66,6 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <!-- Global CSS -->
     <link href="<?= base_url('assets/css/global.css') ?>" rel="stylesheet" />
+    <!-- AlloyUI CSS -->
+    <link href="https://cdn.alloyui.com/3.0.1/aui-css/css/bootstrap.min.css" rel="stylesheet"></link>
 </head>

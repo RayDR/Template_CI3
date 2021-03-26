@@ -10,10 +10,15 @@
             <h1 class="h4">Seguimiento de Acuerdos</h1>
         </div>
     </div>
-    <div class="btn-toolbar dropdown pt-2">
-      <a id="nuevo_acuerdo" href="#registrar" class="btn btn-dark btn-sm me-2 dropdown-toggle">
-        <span class="fas fa-plus me-2"></span>Nuevo Acuerdo
-      </a>
+    <div class="btn-toolbar dropdown d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+        <a id="nuevo_acuerdo" href="#registrar" class="btn btn-dark btn-sm me-2 dropdown-toggle">
+            <span class="fas fa-plus me-2"></span>Nuevo Acuerdo
+        </a>
+        <div class="btn-group">
+            <button id="vista_calendario" class="btn btn-sm btn-outline-primary" type="button">
+                <span class="far fa-calendar me-2"></span>Calendario
+            </button>
+        </div>
     </div>
 </div>
 <div class="card border-light shadow-sm mb-4">
