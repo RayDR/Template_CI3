@@ -1,3 +1,9 @@
+<!-- AlloyUI JS -->
+<script src="<?= base_url('vendor/alloyui_3.0.1/build/aui/aui-min.js') ?>" type="text/javascript" charset="utf-8" async defer></script> 
+
+<!-- Global CSS -->
+<link href="<?= base_url('assets/css/global.css') ?>" rel="stylesheet" />
+
 <nav aria-label="breadcrumb" style="margin: 0; !important">
     <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
         <li class="breadcrumb-item"><a href="<?= base_url() ?>"><span class="fas fa-home"></span></a></li>

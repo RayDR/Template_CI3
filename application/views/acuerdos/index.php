@@ -29,8 +29,11 @@
                     <tr>
                         <th class="align-middle">#</th>
                         <th class="align-middle">Asunto</th>
+                        <th class="align-middle">Tema</th>
                         <th class="align-middle">Origen</th>
+                        <th class="align-middle">Usuario Envia</th>
                         <th class="align-middle">Destino</th>
+                        <th class="align-middle">Usuario Recibe</th>
                         <th class="align-middle">Folio</th>
                         <th class="align-middle">Último Acuerdo</th>
                         <th class="align-middle">Fecha Creación</th>

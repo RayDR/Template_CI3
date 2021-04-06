@@ -11,15 +11,53 @@
             <h1 class="h4">Registro de Seguimiento</h1>
         </div>
     </div>
-    <div class="d-flex justify-content-between w-100 flex-wrap">
-        <div class="mb-3 mb-lg-0">
-            <p class="ml-2 mb-0"><b>Acuerdo:</b> <?= $historial[0]->acuerdo_id ?></p>
+    <div class="shadow rounded border-light p-3 w-100">
+        <div class="d-flex justify-content-between flex-wrap">
+            <div class="mb-3 mb-lg-0">
+                <p class="ml-2 mb-0"><b>Acuerdo:</b> <?= $historial[0]->acuerdo_id ?></p>
+            </div>
+            <div class="mb-3 mb-lg-0">
+                <p class="ml-2 mb-0"><b>Tema:</b> <?= $historial[0]->tema ?></p>
+            </div>
+            <div class="mb-3 mb-lg-0">
+                <p class="ml-2 mb-0"><b>Asunto:</b> <?= $historial[0]->asunto ?></p>
+            </div>
+            <div class="mb-3 mb-lg-0">
+                <p class="ml-2 mb-0"><b>Origen:</b> <?= $historial[0]->area_acuerdo ?></p>
+            </div>
         </div>
-        <div class="mb-3 mb-lg-0">
-            <p class="ml-2 mb-0"><b>Asunto:</b> <?= $historial[0]->asunto ?></p>
-        </div>
-        <div class="mb-3 mb-lg-0">
-            <p class="ml-2 mb-0"><b>Origen:</b> <?= $historial[0]->area_acuerdo ?></p>
+
+        <div class="accordion my-3" id="ver-historial">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="titulo">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#historial" aria-expanded="true" aria-controls="historial">
+                    Mostrar historial completo
+                    </button>
+                </h2>
+                <div id="historial" class="accordion-collapse collapse" aria-labelledby="titulo" data-bs-parent="#ver-historial">
+                    <div class="accordion-body">
+                        <ul class="list-group list-group-flush bg-transparent">
+                        <?php foreach ($historial as $key => $historia): ?>
+                            <li class="list-group-item bg-transparent">
+                                <div class="row">
+                                    <div class="col-9">
+                                        <h3 class="h5 mb-1 text-primary"><?= $historia->folio ?> - <?= $historia->seguimiento ?></h3>
+                                        <p class="text-primary h6">Destino:
+                                            <small class="text-primary"><?= $historia->area_seguimiento ?></small>
+                                            <br>
+                                            <small class="text-muted">Atendió: <?= $historia->usuario_recibe ?></small>
+                                        </p>
+                                    </div>
+                                    <div class="col-3">                 
+                                        <p class="small pe-1 text-primary"><?= $historia->fecha_actualizacion_seguimiento ?></p>
+                                    </div>
+                                </div>
+                            </li>
+                        <?php endforeach ?>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -51,9 +89,12 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-12 mb-3">
-                            <label for="anexo" class="form-label">Anexar documento</label>
-                            <input class="form-control" type="file" id="anexo">
+                        <div id="dropzone" class="col-12 mb-3">
+                            <form enctype="multipart/form-data" id="anexo" class="dropzone needsclick dz-clickable dz-started rounded mb-4" action="<?= base_url('index.php/Acuerdos/anexar_documento') ?>" method="POST">
+                                <div class="dz-default dz-message">
+                                    <button class="dz-button" type="button">Drop files here to upload</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                     <div class="mt-3">

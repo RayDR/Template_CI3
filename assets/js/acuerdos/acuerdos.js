@@ -55,8 +55,11 @@ function finicia_datatable(){
         columns: [
             { data: 'acuerdo_id' },
             { data: 'asunto' },
+            { data: 'tema' },
             { data: 'area_acuerdo' },
-            { data: 'area_seguimiento' },            
+            { data: 'usuario_envia' },
+            { data: 'area_seguimiento' },
+            { data: 'usuario_recibe' },
             { data: 'folio' },
             { data: 'seguimiento' },
             { data: 'fecha_creacion_acuerdo' },

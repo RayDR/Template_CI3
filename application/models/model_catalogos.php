@@ -149,6 +149,33 @@ class Model_catalogos extends CI_Model {
 			return [];
 		}
 	}
+
+	/**
+		* Devuelve el catalogo de Temas
+		*
+		* @access public
+		* @param  array   $filtros 			filtros a iterar
+		* @param  boolean $tipo_retorno 	Modo de retonro: 
+		*								 		TRUE - Objeto
+		*								 		FALSE - Array
+		* @return temas
+	*/
+	public function get_temas($filtros = NULL, $tipo_retorno = TRUE){
+		try {			
+			if ( is_array($filtros) ){
+				foreach ($filtros as $key => $filtro) {
+					$this->db->where($key, $filtro);
+				}
+			}
+			$temas = $this->db->get('temas');
+			if ( $tipo_retorno )
+				return $temas->result();
+			else
+				return $temas->result_array();
+		} catch (Exception $e) {
+			return [];
+		}
+	}
 }
 
 /* End of file model_catalogos.php */

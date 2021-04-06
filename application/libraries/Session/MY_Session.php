@@ -32,9 +32,9 @@ class MY_Session extends CI_Session
             // Almacenar las variables enviadas
             $datos_usuario = array(
                 'uid'       => $datos->usuario_id,
-                'tuser'     => $datos->tipo_usuario_id,
                 'ulogin'    => TRUE,
                 'usuario'   => $datos->usuario,
+                'tuser'     => $datos->tipo_usuario_id,
                 'sexo'      => $datos->sexo,
                 'nombres'   => $datos->nombres,
                 'primer_apellido'   => $datos->primer_apellido,

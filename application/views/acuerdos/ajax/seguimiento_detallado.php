@@ -18,22 +18,25 @@
 	<div class="card card-body shadow-sm mb-4 mb-lg-0 bg-white">
 		<div class="container" style="max-height: 500px; overflow-y: scroll;">
 		<h2 class="h5 mb-4 text-primary">Historial del Acuerdo</h2>
+		<ul class="list-group list-group-flush bg-transparent">
 		<?php foreach ($seguimiento as $key => $historia): ?>
-		<ul class="list-group list-group-flush">
-			<li class="list-group-item bg-transparent">
-				<div class="row">
-					<div class="col-9">
-						<h3 class="h6 mb-1 text-primary"><?= $historia->folio ?> - <?= $historia->seguimiento ?></h3>
-						<p class="text-primary h6">Destino:</p>
-						<p class="small pe-1 text-primary"><?= $historia->area_seguimiento ?></p>
-					</div>
-					<div class="col-3">					
-						<p class="small pe-1 text-primary"><?= $historia->fecha_actualizacion_seguimiento ?></p>
-					</div>
-				</div>
-			</li>
-		</ul>
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col-9">
+                        <h3 class="h5 mb-1 text-primary"><?= $historia->folio ?> - <?= $historia->seguimiento ?></h3>
+                        <p class="text-primary h6">Destino:
+                            <small class="text-primary"><?= $historia->area_seguimiento ?></small>
+                            <br>
+                            <small class="text-tertiary">Atendió: <?= $historia->usuario_recibe ?></small>
+                        </p>
+                    </div>
+                    <div class="col-3">                 
+                        <p class="small pe-1 text-primary"><?= $historia->fecha_actualizacion_seguimiento ?></p>
+                    </div>
+                </div>
+            </li>
 		<?php endforeach ?>
+        </ul>
 		</div>
 	</div>
 </div>

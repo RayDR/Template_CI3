@@ -35,7 +35,8 @@ class Acuerdos extends CI_Controller {
         $json = array('exito' => TRUE);
         $data = array(
             'titulo'    => 'Registro de Acuerdo',
-            'view'      => 'acuerdos/registrar'
+            'view'      => 'acuerdos/registrar',
+            'temas'     => $this->model_catalogos->get_temas(['estatus' => 1])
         );
         $json['html'] = $this->load->view( $data['view'], $data, TRUE );
         return print(json_encode($json));
@@ -206,8 +207,9 @@ class Acuerdos extends CI_Controller {
         $area_origen    = $this->input->post('area_origen');
         $area_destino   = $this->input->post('area_destino');
         $acuerdos       = $this->input->post('acuerdos');
+        $tema           = $this->input->post('tema');
 
-        if ( ! $area_origen || ! $area_destino || ! $acuerdos ){
+        if ( ! $area_origen || ! $area_destino || ! $acuerdos || ! $tema ){
             $json['exito']   = FALSE;
             $json['mensaje'] = 'Falló al recibir los datos del acuerdo';
         } else {               
@@ -215,9 +217,9 @@ class Acuerdos extends CI_Controller {
                 'area_origen'   => $area_origen,
                 'area_destino'  => $area_destino,
                 'acuerdos'      => $acuerdos,
-                'tema'          => 1,
+                'tema'          => $tema,
                 'ejercicio'     => date('Y'),
-                'usuario_id'    => 1
+                'usuario_id'    => $this->session->userdata('uid')
             );
             $resultado     = $this->model_acuerdos->set_nuevo_acuerdo($datos_acuerdo);
             $json['exito'] = $resultado['exito'];
@@ -243,7 +245,7 @@ class Acuerdos extends CI_Controller {
                 'area_destino'      => $area_destino,
                 'acuerdos'          => $acuerdos,
                 'ejercicio'         => date('Y'),
-                'usuario_id'        => 1,
+                'usuario_id'        => $this->session->userdata('uid'),
                 'estatus_acuerdo'   => 2
             );
             $resultado = $this->model_acuerdos->set_seguimiento_acuerdo($acuerdo_id, $datos_seguimiento);
@@ -278,7 +280,7 @@ class Acuerdos extends CI_Controller {
                 'tema'          => $tema,
                 'ejercicio'     => date('Y'),
                 'estatus_acuerdo'   => 1,
-                'usuario_id'        => 1
+                'usuario_id'        => $this->session->userdata('uid')
             );
             $resultado     = $this->model_acuerdos->update_acuerdo($datos_seguimiento);
             $json['exito'] = $resultado['exito'];
@@ -307,7 +309,7 @@ class Acuerdos extends CI_Controller {
                     'area_destino'      => $area_destino,
                     'acuerdos'          => $acuerdos,
                     'ejercicio'         => date('Y'),
-                    'usuario_id'        => 1,
+                    'usuario_id'        => $this->session->userdata('uid'),
                     'estatus_acuerdo'   => 3
                 );
                 $resultado = $this->model_acuerdos->set_seguimiento_acuerdo($acuerdo_id, $datos_seguimiento);
@@ -321,6 +323,17 @@ class Acuerdos extends CI_Controller {
         }
 
         return print(json_encode($json));
+    }
+
+    public function anexar_documento(){
+        $folder_guardar = 'uploads';   //2 
+        if ( !empty($_FILES) ) {         
+            $tempFile   = $_FILES['file']['tmp_name'];          //3   
+            $targetPath = dirname( __FILE__ ) . $ds. $folder_guardar . $ds;  //4
+            $targetFile =  $targetPath. $_FILES['file']['name'];  //5
+            move_uploaded_file($tempFile,$targetFile); //6
+         
+        }
     }
 
 }
