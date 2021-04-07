@@ -19,7 +19,8 @@ class Model_usuarios extends CI_Model {
 				foreach ($filtros as $key => $filtro) {
 					$this->db->where($key, $filtro);
 				}
-			}
+			} else 
+				$this->db->where('estatus', 1);
 
 			$usuarios = $this->db->get('vw_usuarios');
 

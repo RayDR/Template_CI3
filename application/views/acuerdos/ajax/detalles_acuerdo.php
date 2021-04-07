@@ -1,4 +1,3 @@
-<th>
 <div class="btn-group me-2 mb-4">
     <button type="button" class="btn btn-primary seguimiento-detallado" data-acuerdo="<?= $acuerdos[0]->acuerdo_id ?>">Ver Seguimiento Detallado</button>
     <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split"
@@ -21,13 +20,25 @@
     	<?php endif ?>
     </div>
 </div>
-<div class="table-responsive" style="max-height: 500px; overflow-y: scroll;">
-	<table class="table table-hover table-centered table-nowrap table-inverse">
+<div class="table-responsive w-100" style="max-height: 500px; overflow-y: scroll; ">
+	<div class="card mb-3">
+		<div class="card-body">
+			<a href="#seguimiento-detallado" class="seguimiento-detallado" data-acuerdo="<?= $acuerdos[0]->acuerdo_id ?>">
+				<h6 class="card-title">Acuerdo # <?= $acuerdos[0]->acuerdo_id ?></h6>
+			</a>
+			<p class="p-0 m-0"><b>Asunto:</b> <?= $acuerdos[0]->asunto ?></p>
+			<p class="p-0 m-0"><b>Tema:</b> <?= $acuerdos[0]->tema ?></p>
+			<p class="p-0 m-0"><b>Solicitante:</b> <?= $acuerdos[0]->usuario_registra ?></p>
+		</div>
+	</div>
+	<table class="table table-hover table-inverse">
 		<thead class="thead-dark text-white">
 			<tr>
 				<th>Folio</th>
 				<th>Acuerdo</th>
 				<th>Destino</th>
+				<th>Envía</th>
+				<th>Recibe</th>
 				<th>Fecha</th>
 				<th>Estatus</th>
 			</tr>
@@ -35,14 +46,26 @@
 		<tbody>		
 		<?php foreach ($acuerdos as $key => $acuerdo): ?>
 			<tr>
-				<td><?= $acuerdo->folio ?></td>
+				<td>
+					<a href="#seguimiento-detallado" class="seguimiento-detallado" data-acuerdo="<?= $acuerdos[0]->acuerdo_id ?>">
+						<?= $acuerdo->folio ?>
+					</a>
+				</td>
 				<td><?= $acuerdo->seguimiento ?></td>
 				<td><?= $acuerdo->area_seguimiento ?></td>
+				<td><?= $acuerdo->usuario_envia ?></td>
+				<td><?= $acuerdo->usuario_recibe ?></td>
 				<td><?= $acuerdo->fecha_actualizacion_seguimiento ?></td>
 				<td><?= $acuerdo->estatus_seguimiento ?></td>
 			</tr>
 		<?php endforeach ?>
 		</tbody>
 	</table>
+	<div class="card my-3">
+		<div class="card-body">
+			<a href="#seguimiento-detallado" class="seguimiento-detallado" data-acuerdo="<?= $acuerdos[0]->acuerdo_id ?>">
+				<h6 class="card-title p-0 m-0">Fin de histórico del acuerdo # <?= $acuerdos[0]->acuerdo_id ?></h6>
+			</a>
+		</div>
+	</div>
 </div>
-</th>

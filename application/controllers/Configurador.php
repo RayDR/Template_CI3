@@ -90,6 +90,52 @@ class Configurador extends CI_Controller {
         return print(json_encode($json));
     }
 
+    public function get_proyectos_select2(){
+        $areas = $this->model_catalogos->get_areas();
+        $json  = array('exito' => FALSE);
+
+        if ( $areas ){
+            $json['exito']  = TRUE;
+            $resultados     = [];
+
+            $direccion      = $areas[0]->direccion;
+            $children       = [];
+            $guardar_dir    = TRUE;
+            // Asignar los hijos
+            foreach ($areas as $key => $grupos_areas) {
+                if ( $direccion != $grupos_areas->direccion ){
+                    // Guardar en resultados
+                    array_push($resultados, array(
+                        'text'      => $direccion,
+                        'children'  => $children
+                    ));
+                    // Reiniciar
+                    $children       = [];
+                    $direccion      = $grupos_areas->direccion;
+                    $guardar_dir    = TRUE;
+                }
+                // Almacenar el hijo
+                if ( $guardar_dir ){
+                    array_push($children, array(
+                        'id'    => $grupos_areas->combinacion_area_id,
+                        'text'  => $grupos_areas->direccion
+                    ));
+                    $guardar_dir = FALSE;
+                } else {
+                    array_push($children, array(
+                        'id'    => $grupos_areas->combinacion_area_id,
+                        'text'  => trim($grupos_areas->subdireccion . ' ' . 
+                                   $grupos_areas->departamento . ' ' . 
+                                   $grupos_areas->area)
+                    ));
+                }
+            }
+
+            $json['result'] = $resultados;
+        }
+        return print(json_encode($json));
+    }
+
     // ----------- DATATABLES
 
     public function datatable_usuarios(){        

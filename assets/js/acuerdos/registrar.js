@@ -79,7 +79,6 @@ function fguardar(e){
 function fdias_respuesta(){
     var dias = $(this).find(':selected').data('respuesta');
     if ( dias ){
-        console.log(dias);
         $('#detalle_tema').html(`
             <span class="text-success">Fecha probable de respuesta: 
             ${ moment().add(dias, 'days').format('DD/MM/YYYY')}

@@ -154,9 +154,19 @@ class Model_acuerdos extends CI_Model {
 		$resultado = array('exito' => TRUE);
 		try {
 			$this->db->trans_begin();
-			if ( $acuerdo_id ){
+			if ( $acuerdo_id ){		
 				$folio = $this->db->get_where('seguimientos_acuerdos', ['acuerdo_id' => $acuerdo_id]);
 				if ( is_array($datos) ){
+					// Actualizar datos seguimiento anterior
+					$datos_db = array(
+						'usuario_recibe_id'         => $datos['usuario_id']
+					);
+					$seguimiento_acuerdo_id = $this->db->get_where('vw_ultimo_seguimiento', ['acuerdo_id' => $acuerdo_id]);
+					if ( $seguimiento_acuerdo_id->num_rows() > 0 ){
+						$this->db->where('seguimiento_acuerdo_id', $seguimiento_acuerdo_id->row('seguimiento_acuerdo_id'));
+						$this->db->update('seguimientos_acuerdos', $datos_db);
+					}
+					// Crear nuevo seguimiento
 					$datos_db = array(
 						'acuerdo_id'				=> $acuerdo_id,
 						'seguimiento' 				=> $datos['acuerdos'],
@@ -164,6 +174,8 @@ class Model_acuerdos extends CI_Model {
 						'usuario_acuerda_id' 		=> $datos['usuario_id'],
 						'ejercicio' 				=> $datos['ejercicio'],
 						'estatus_acuerdo_id' 		=> $datos['estatus_acuerdo'],
+						'usuario_recibe_id'			=> ( $datos['estatus_acuerdo'] == 3)? 
+														 $datos['usuario_id']: NULL,
 						'folio'						=> ( $folio->num_rows() > 0 )? 
 														 $folio->num_rows() + 1 : 1
 					);
@@ -200,7 +212,6 @@ class Model_acuerdos extends CI_Model {
 			if ( is_array($datos) ){
 				$datos_db = array(
 					'asunto' 					=> $datos['acuerdos'],
-					'usuario_registra_id' 		=> $datos['usuario_id'],
 					'tema_id' 					=> $datos['tema']
 				);
 				$this->db->where('acuerdo_id', $datos['acuerdo_id']);
@@ -228,6 +239,33 @@ class Model_acuerdos extends CI_Model {
 		return $resultado;
 	}
 
+	/**
+		* Actualizar el usuario que recibe de seguimiento
+		*
+		* @access public
+		* @param  array   $datos 		Datos a actualizar
+		*
+		* @return resultado[]
+	*/
+	public function asignar_usuario_seguimiento($seguimiento_id, $usuario_id){
+		$resultado = array('exito' => TRUE);
+		try {
+			$this->db->trans_begin();
+			
+			$datos_db = array(
+				'usuario_recibe_id'         => $usuario_id
+			);
+			$this->db->where('seguimiento_id', $seguimiento_id);
+			$this->db->update('seguimientos_acuerdos', $datos_db);
+
+			$this->db->trans_commit();
+		} catch (Exception $e) {
+			$this->db->trans_rollback();
+			$resultado['exito'] = FALSE;
+			$resultado['error'] = $e->getMessage();
+		}
+		return $resultado;
+	}
 }
 
 /* End of file model_acuerdos.php */

@@ -35,10 +35,14 @@
                     </div>
                     <div class="row">
                         <div class="col-12 mb-3">
-                            <label class="my-1 me-2" for="tema">Tema</label>
-                            <select class="form-select" id="tema" name="tema" aria-label="Temas">
-                                <option selected value="1">Seleccione una opción</option> 
+                            <label class="my-1 me-2" for="tema">Tema del Acuerdo</label>
+                            <select class="form-select" id="tema" name="tema" aria-label="Área Destino" aria-describedby="detalle_tema">
+                                <option selected disabled>Seleccione una opción</option>
+                                <?php foreach ($temas as $key => $tema): ?>
+                                <option value="<?= $tema->tema_id ?>" data-respuesta="<?= $tema->fecha_respuesta ?>"><?= $tema->cve_tema ?> - <?= $tema->descripcion ?></option>
+                                <?php endforeach; ?>
                             </select>
+                            <div id="detalle_tema" class="form-text"></div>
                         </div>
                     </div>
                     <div class="row">

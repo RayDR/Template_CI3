@@ -13,7 +13,7 @@
               </div>
             </a>
             <div class="dropdown-menu dashboard-dropdown dropdown-menu-end mt-2 py-0">
-              <a class="dropdown-item rounded-top fw-bold" href="#">
+              <a href="<?= base_url('index.php/Perfil') ?>" class="dropdown-item rounded-top fw-bold">
                 <span class="far fa-user-circle"></span>Mi Perfil
               </a>
               <a class="dropdown-item rounded-bottom fw-bold" href="<?= base_url('index.php/Home/logout') ?>">

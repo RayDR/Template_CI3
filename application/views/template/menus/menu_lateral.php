@@ -7,7 +7,10 @@
                alt="Perfil">
             </div>
             <div class="d-block">
-               <h2 class="h6">Hola, Marco</h2>
+               <h2 class="h6">Hola, <?= $this->session->userdata('nombres') ?> <?= $this->session->userdata('primer_apellido') ?></h2>
+               <a href="<?= base_url('index.php/Perfil') ?>" class="btn btn-secondary text-dark btn-xs">
+                  <span class="me-2"><span class="far fa-user-circle"></span></span>Mi Perfil
+               </a>
                <a href="<?= base_url('index.php/Home/logout') ?>" class="btn btn-secondary text-dark btn-xs">
                   <span class="me-2"><span class="fas fa-sign-out-alt"></span></span>Cerrar sesión
                </a>

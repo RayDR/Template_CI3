@@ -52,6 +52,7 @@ class Acuerdos extends CI_Controller {
                 $data = array(
                     'titulo'    => 'Edición Acuerdo',
                     'view'      => 'acuerdos/editar',
+                    'temas'     => $this->model_catalogos->get_temas(['estatus' => 1]),
                     'historial' => $historial[0]
                 );
                 $json['html'] = $this->load->view( $data['view'], $data, TRUE );
@@ -147,17 +148,33 @@ class Acuerdos extends CI_Controller {
     }
 
     public function seguimiento_detallado(){
+        $this->load->model('model_usuarios');
         $json           = array('exito' => TRUE);
 
         $acuerdo_id     = $this->input->post('acuerdo');
+        $area_usuario   = array('combinacion_area_id' => $this->session->userdata('combinacion_area'));
+        if ( $area_usuario ){
+            $combinacion = $this->model_catalogos->get_areas( $area_usuario );
+            if ( $combinacion ){
+                $direccion = ( $this->session->userdata('tuser') == 1 )? NULL : 
+                                array( 'direccion_id' => $combinacion->direccion_id );
+                $usuarios  = $this->model_usuarios->get_usuarios( $direccion );
+            }
+        }
+
         $data = array(
             'titulo'       => 'Seguimiento de Acuerdo',
             'acuerdo_id'   => $acuerdo_id,
             'acuerdo'      => $this->model_acuerdos->get_acuerdos([ 'acuerdo_id' => $acuerdo_id ]),
             'seguimiento'  => $this->model_acuerdos->get_acuerdos_detalle($acuerdo_id),
+            'combinacion'  => ( $combinacion )? $combinacion : NULL,
+            'area_usuarios'=> ( $usuarios )? $usuarios : NULL,
             'view'         => 'acuerdos/ajax/seguimiento_detallado'
         );
-        $json['html'] = $this->load->view( $data['view'], $data, TRUE );
+        if ( $data['acuerdo'] && $data['seguimiento'] )
+            $json['html']   = $this->load->view( $data['view'], $data, TRUE );
+        else
+            $json['exito']  = FALSE;
         return print(json_encode( $json ));
     }
 
@@ -325,15 +342,27 @@ class Acuerdos extends CI_Controller {
         return print(json_encode($json));
     }
 
+    // Función ajax para cargar documentos
     public function anexar_documento(){
-        $folder_guardar = 'uploads';   //2 
-        if ( !empty($_FILES) ) {         
-            $tempFile   = $_FILES['file']['tmp_name'];          //3   
-            $targetPath = dirname( __FILE__ ) . $ds. $folder_guardar . $ds;  //4
-            $targetFile =  $targetPath. $_FILES['file']['name'];  //5
-            move_uploaded_file($tempFile,$targetFile); //6
-         
-        }
+        $folder_guardar = 'uploads';
+
+    }
+
+    // Función de directores y administradores de asignar el acuerdo a un usuario segun su área
+    public function asignar_usuario(){
+        $json           = array('exito' => TRUE);
+
+        $usuario_id     = $this->input->post('usuario');
+        $acuerdo_id     = $this->input->post('acuerdo');
+        $seguimiento_id = $this->input->post('seguimiento');
+        if ( $usuario_id ){
+            $respuesta = $this->model_acuerdos->asignar_usuario_seguimiento($seguimiento_id, $usuario_id);
+            $json['exito'] = $respuesta['exito'];
+            if ( ! $respuesta['exito'] )
+                $json['error'] = $respuesta['error'];
+        } else 
+            $json['exito'] = FALSE;
+        return print(json_encode( $json ));
     }
 
 }
