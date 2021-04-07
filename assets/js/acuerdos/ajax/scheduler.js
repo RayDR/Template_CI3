@@ -1,36 +1,24 @@
-var scheduler = '#planificador_acuerdos';
+var scheduler = '#planificador_acuerdos',
+    Registro  = 'Acuerdos/registrar';
 
 $(document).off('click','.scheduler-event-content').on('click','.scheduler-event-content', function(event) {
-    console.log($(this));
-    console.log($(this).text());
-  });
+});
 $(document).ready(function($) {
   finiciar_scheduler();
 
-
+  $('#nuevo_acuerdo').click(fmuestra_registro);
 });
 
 function finiciar_scheduler(){
-  var events = [
-    {
+  var datos = [];
+  acuerdos.forEach( function(acuerdo, index) {
+    datos.push({
       disabled  : true,
-      content: 'Este es un acuerdo',
-      endDate: new Date(2021, 2, 25, 5),
-      startDate: new Date(2021, 2, 25, 1)
-    },
-    {
-      disabled  : true,
-      content: 'Otro acuerdo perdido ahi',
-      endDate: new Date(2021, 2, 27, 13),
-      startDate: new Date(2021, 2, 23, 12)
-    },
-    {
-      disabled  : true,
-      content: "Super largo el acuerdo",
-      endDate: new Date(2021, 2, 30),
-      startDate: new Date(2021, 2, 21)
-    }
-  ];
+      content: acuerdo.asunto,
+      startDate: new Date(acuerdo.fecha_creacion_acuerdo),
+      endDate: new Date(moment(acuerdo.fecha_creacion_acuerdo).add(acuerdo.fecha_respuesta, 'days'))
+    });
+  });
     
   YUI({lang: 'es-MX'}).use(
     'aui-scheduler',
@@ -64,7 +52,7 @@ function finiciar_scheduler(){
           boundingBox : scheduler,
           activeView  : agenda,
           date        : new Date(),
-          items       : events,
+          items       : datos,
           render      : true,
           strings: {
             agenda  : 'Agenda',
@@ -80,4 +68,13 @@ function finiciar_scheduler(){
     }
   );
 
+}
+
+function fmuestra_registro(e){
+    if ( e == null || e == undefined )
+        return;
+    e.preventDefault();
+    var vista = fu_muestra_vista( url(vRegistro, true, false) );
+    if ( vista )
+        $('#ajax-html').html(vista);
 }

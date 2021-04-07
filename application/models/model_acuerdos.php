@@ -91,6 +91,47 @@ class Model_acuerdos extends CI_Model {
 		}
 	}
 
+	/**
+		* Obtener el listado de acuerdos para el planificador
+		*
+		* @access public
+		* @param  array   $usuario_id 		Usado para crear filtros
+		* @param  boolean $tipo_retorno 	Modo de retonro: 
+		*								 		TRUE - Objeto
+		*								 		FALSE - Array
+		* @return acuerdos
+	*/
+	public function get_acuerdos_planificador($usuario_id, $tipo_retorno = TRUE){		
+		$this->db->where('usuario_id', $usuario_id);
+		$db_usuario = $this->db->get('vw_usuarios', 1)->row();
+
+		if ( $db_usuario ){
+			if ( $db_usuario->tipo_usuario_id != 1 ){
+				if ( 
+					$db_usuario->subdireccion_id == 1 && 
+					$db_usuario->departamento_id == 1 && 
+					$db_usuario->area_id == 1 
+				){
+					$this->db->where( 'direccion_id_acuerdo', $db_usuario->direccion_id );
+					$this->db->or_where( 'direccion_id_seguimiento', $db_usuario->direccion_id );
+				} else {
+					$this->db->where( 'combinacion_area_acuerdo_id', $db_usuario->combinacion_area_usuario_id );
+					$this->db->or_where( 'combinacion_area_seguimiento_id', $db_usuario->direccion_id );
+				}
+			}
+			$this->db->select('acuerdo_id, asunto, estatus_seguimiento, area_acuerdo, area_seguimiento, tema_id, tema, fecha_creacion_acuerdo, fecha_actualizacion_seguimiento, fecha_respuesta');
+
+			$resultado = $this->db->get('vw_ultimo_seguimiento');
+			if ( $tipo_retorno )
+				return $resultado->result();
+			else
+				return $resultado->result_array();
+		}
+		return [];
+	}
+
+	//  ------------------------------------------------------- SETTERS
+
 
 	/**
 		* Registrar un nuevo acuerdo
@@ -253,9 +294,9 @@ class Model_acuerdos extends CI_Model {
 			$this->db->trans_begin();
 			
 			$datos_db = array(
-				'usuario_recibe_id'         => $usuario_id
+				'usuario_recibe_id' => $usuario_id
 			);
-			$this->db->where('seguimiento_id', $seguimiento_id);
+			$this->db->where('seguimiento_acuerdo_id', $seguimiento_id);
 			$this->db->update('seguimientos_acuerdos', $datos_db);
 
 			$this->db->trans_commit();

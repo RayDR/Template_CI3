@@ -5,8 +5,13 @@
         <i class="fas fa-angle-down dropdown-arrow"></i>
         <span class="sr-only">Mostrar más</span>
     </button>
-    <div class="dropdown-menu">    	
-        <?php if ( $acuerdos[0]->estatus_seguimiento == 'Nuevo' ): ?>
+    <div class="dropdown-menu">
+        <?php if ( 
+        	( $acuerdos[0]->usuario_id_registra == $this->session->userdata('uid')
+        		||
+        	  $acuerdos[0]->usuario_id_envia 	== $this->session->userdata('uid') ) &&
+        	$acuerdos[0]->estatus_seguimiento == 'Nuevo' 
+        ): ?>
         <a class="dropdown-item editar-acuerdo" href="#editar-acuerdo" data-acuerdo="<?= $acuerdos[0]->acuerdo_id ?>">Editar</a>
         <div class="dropdown-divider"></div>
     	<?php endif ?>

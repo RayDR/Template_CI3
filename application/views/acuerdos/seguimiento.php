@@ -36,25 +36,7 @@
                 </h2>
                 <div id="historial" class="accordion-collapse collapse" aria-labelledby="titulo" data-bs-parent="#ver-historial">
                     <div class="accordion-body">
-                        <ul class="list-group list-group-flush bg-transparent">
-                        <?php foreach ($historial as $key => $historia): ?>
-                            <li class="list-group-item bg-transparent">
-                                <div class="row">
-                                    <div class="col-9">
-                                        <h3 class="h5 mb-1 text-primary"><?= $historia->folio ?> - <?= $historia->seguimiento ?></h3>
-                                        <p class="text-primary h6">Destino:
-                                            <small class="text-primary"><?= $historia->area_seguimiento ?></small>
-                                            <br>
-                                            <small class="text-muted">Atendió: <?= $historia->usuario_recibe ?></small>
-                                        </p>
-                                    </div>
-                                    <div class="col-3">                 
-                                        <p class="small pe-1 text-primary"><?= $historia->fecha_actualizacion_seguimiento ?></p>
-                                    </div>
-                                </div>
-                            </li>
-                        <?php endforeach ?>
-                        </ul>
+                    <?php $this->load->view('acuerdos/ajax/historial', ['historial' => $historial]); ?>
                     </div>
                 </div>
             </div>
@@ -67,6 +49,7 @@
             <div class="card-body">
                 <form>
                     <input type="hidden" id="acuerdo_id" name="acuerdo_id" value="<?= $acuerdo_id ?>">
+                    <input type="hidden" id="remitente" name="remitente" value="<?= $historial[0]->combinacion_area_acuerdo_id ?>">
                     <div class="row">
                         <div class="col-12 mb-3">
                             <?php $this->load->view(RUTA_TEMA_UTIL . '/alertas'); ?>

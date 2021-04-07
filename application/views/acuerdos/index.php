@@ -10,15 +10,16 @@
             <h1 class="h4">Seguimiento de Acuerdos</h1>
         </div>
     </div>
-    <div class="btn-toolbar dropdown d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
-        <a id="nuevo_acuerdo" href="#registrar" class="btn btn-dark btn-sm me-2 dropdown-toggle">
-            <span class="fas fa-plus me-2"></span>Nuevo Acuerdo
+    <div class="btn-group" role="group" aria-label="Botones de Acción">
+        <a id="nuevo_acuerdo" href="#registrar" class="btn btn-dark btn-sm">
+            <span class="fas fa-plus me-2"></span><span class="d-none d-md-inline">Nuevo Acuerdo</span>
         </a>
-        <div class="btn-group">
-            <button id="vista_calendario" class="btn btn-sm btn-outline-primary" type="button">
-                <span class="far fa-calendar me-2"></span>Calendario
-            </button>
-        </div>
+        <button id="vista_calendario" class="btn btn-sm btn-primary" type="button">
+            <span class="far fa-calendar me-2"></span><span class="d-none d-md-inline">Vista Calendario</span>
+        </button>
+        <button id="vista_calendario" class="btn btn-sm btn-outline-primary disabled" type="button" disabled>
+            <span class="fas fa-search me-2"></span><span class="d-none d-md-inline">Buscar Acuerdo</span>
+        </button>
     </div>
 </div>
 <div class="card border-light shadow-sm mb-4">

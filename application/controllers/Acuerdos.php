@@ -178,13 +178,28 @@ class Acuerdos extends CI_Controller {
         return print(json_encode( $json ));
     }
 
-    public function planificador(){
+    public function historial_acuerdo(){
         $json           = array('exito' => TRUE);
 
         $acuerdo_id     = $this->input->post('acuerdo');
         $data = array(
-            'titulo'       => 'Planificador de Acuerdos',
-            'view'         => 'acuerdos/ajax/scheduler'
+            'historial'    => $this->model_acuerdos->get_acuerdos_detalle($acuerdo_id),
+            'view'         => 'acuerdos/ajax/historial'
+        );
+        $json['html'] = $this->load->view( $data['view'], $data, TRUE );
+        return print(json_encode( $json ));
+    }
+
+    public function planificador(){
+        $json = array('exito' => TRUE);
+
+        $usuario_id         = $this->session->userdata('uid');
+        $acuerdos           = $this->model_acuerdos->get_acuerdos_planificador($usuario_id);
+
+        $data = array(
+            'titulo'    => 'Planificador de Acuerdos',
+            'acuerdos'  => $acuerdos,
+            'view'      => 'acuerdos/ajax/scheduler'
         );
         $json['html'] = $this->load->view( $data['view'], $data, TRUE );
         return print(json_encode( $json ));
@@ -354,14 +369,31 @@ class Acuerdos extends CI_Controller {
 
         $usuario_id     = $this->input->post('usuario');
         $acuerdo_id     = $this->input->post('acuerdo');
-        $seguimiento_id = $this->input->post('seguimiento');
+        $seguimiento    = $this->input->post('seguimiento');
+
         if ( $usuario_id ){
-            $respuesta = $this->model_acuerdos->asignar_usuario_seguimiento($seguimiento_id, $usuario_id);
-            $json['exito'] = $respuesta['exito'];
-            if ( ! $respuesta['exito'] )
-                $json['error'] = $respuesta['error'];
-        } else 
+            $condicion  = array('usuario_id' => $usuario_id, 'estatus' => 1);
+            $db_usuario = $this->model_usuarios->get_usuarios($condicion);
+            $condicion  = array('acuerdo_id' => $acuerdo_id, 'estatus' => 1);
+            $db_acuerdo = $this->model_acuerdos->get_acuerdos($condicion);
+            if ( $db_usuario && $db_acuerdo ){
+                if (  $db_usuario->direccion_id == $db_acuerdo[0]->direccion_id_acuerdo ){
+                    $respuesta  = $this->model_acuerdos->asignar_usuario_seguimiento($seguimiento,$usuario_id);
+                    $json['exito'] = $respuesta['exito'];
+                    if ( ! $respuesta['exito'] )
+                        $json['error'] = $respuesta['error'];
+                } else {
+                    $json['exito'] = FALSE;
+                    $json['error'] = 'El usuario asignado no pertenece a la misma Dirección.';
+                }
+            } else {
+                $json['exito'] = FALSE;
+                $json['error'] = 'El usuario asignado no existe o esta inactivo';
+            }
+        } else {
             $json['exito'] = FALSE;
+            $json['error'] = 'No fue posible realizar la asignación del usuario. Intente más tarde';
+        }
         return print(json_encode( $json ));
     }
 
