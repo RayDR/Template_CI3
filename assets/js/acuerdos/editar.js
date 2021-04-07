@@ -1,5 +1,6 @@
 $(document).ready(function() {
     $('#guardar').click(fguardar);
+    $('#tema').change(fdias_respuesta);
 
     var datos_select2 = fu_json_query(url('Configurador/get_areas_select2'));
     if ( datos_select2 ){
@@ -77,4 +78,15 @@ function fguardar(e){
     
     $('#guardar').prop({disabled: false});
     $('#guardar').html(`Guardar`);
+}
+
+function fdias_respuesta(){
+    var dias = $(this).find(':selected').data('respuesta');
+    if ( dias ){
+        $('#detalle_tema').html(`
+            <span class="text-success">Fecha probable de respuesta: 
+            ${ moment().add(dias, 'days').format('DD/MM/YYYY')}
+            </span>
+        `);
+    }
 }

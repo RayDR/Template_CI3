@@ -39,7 +39,7 @@
                             <select class="form-select" id="tema" name="tema" aria-label="Área Destino" aria-describedby="detalle_tema">
                                 <option selected disabled>Seleccione una opción</option>
                                 <?php foreach ($temas as $key => $tema): ?>
-                                <option value="<?= $tema->tema_id ?>" data-respuesta="<?= $tema->fecha_respuesta ?>"><?= $tema->cve_tema ?> - <?= $tema->descripcion ?></option>
+                                <option value="<?= $tema->tema_id ?>" data-respuesta="<?= $tema->fecha_respuesta ?>" <?PHP if( $historial->tema_id == $tema->tema_id ) echo 'selected'; ?> ><?= $tema->cve_tema ?> - <?= $tema->descripcion ?></option>
                                 <?php endforeach; ?>
                             </select>
                             <div id="detalle_tema" class="form-text"></div>
