@@ -59,9 +59,8 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-12 mb-3">
-                            <label for="anexo" class="form-label">Anexar documento</label>
-                            <input class="form-control" type="file" id="anexo">
+                        <div class="col-12 mb-3" class="dropzone">
+                            <?php $this->load->view('acuerdos/ajax/carga_documento'); ?>
                         </div>
                     </div>
                     <div class="mt-3">

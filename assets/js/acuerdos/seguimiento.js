@@ -58,7 +58,13 @@ function fguardar(e){
             );
             if ( respuesta.exito ){
                 fu_notificacion('Se ha registrado el acuerdo exitosamente.', 'success');
-                window.location.replace( url('Acuerdos') ); 
+                if ( carga_doctos ){
+                    carga_doctos.processQueue();
+                    carga_doctos.on("queuecomplete", function(progress) {
+                        window.location.replace( url('Acuerdos') ); 
+                    });
+                } else
+                    window.location.replace( url('Acuerdos') ); 
             } else
                 fu_notificacion(respuesta.mensaje, 'danger');
         } else {

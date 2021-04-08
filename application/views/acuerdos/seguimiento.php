@@ -1,3 +1,4 @@
+<script type="text/javascript" charset="utf-8" async defer> var carga_doctos; </script>
 <div class="py-4">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
@@ -71,13 +72,29 @@
                             </div>
                         </div>
                     </div>
+
+                    <script type="text/javascript" charset="utf-8" async defer>
+                        if ( carga_doctos )
+                            carga_doctos.options.autoProcessQueue = false;
+                    </script>
+
                     <div class="row">
-                        <div id="dropzone" class="col-12 mb-3">
-                            <form enctype="multipart/form-data" id="anexo" class="dropzone needsclick dz-clickable dz-started rounded mb-4" action="<?= base_url('index.php/Acuerdos/anexar_documento') ?>" method="POST">
-                                <div class="dz-default dz-message">
-                                    <button class="dz-button" type="button">Drop files here to upload</button>
+                        <div class="col-12 mb-3" class="dropzone">
+                            <?php $this->load->view('acuerdos/ajax/carga_documento'); ?>
+                        </div>
+                    </div>
+                    <div class="accordion mb-3" id="ver-archivos">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="titulo">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#archivos" aria-expanded="true" aria-controls="archivos">
+                                Mostrar archivos cargados
+                                </button>
+                            </h2>
+                            <div id="archivos" class="accordion-collapse collapse" aria-labelledby="titulo" data-bs-parent="#ver-archivos">
+                                <div class="accordion-body">
+                                <?php $this->load->view('acuerdos/ajax/archivos_cargados', ['acuerdo_id' => $historial[0]->acuerdo_id, 'archivos' => $archivos]); ?>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                     <div class="mt-3">

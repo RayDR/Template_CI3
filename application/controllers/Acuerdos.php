@@ -52,6 +52,7 @@ class Acuerdos extends CI_Controller {
                 $data = array(
                     'titulo'    => 'Edición Acuerdo',
                     'view'      => 'acuerdos/editar',
+                    'archivos'  => $this->model_acuerdos->get_archivos_acuerdo($acuerdo_id),
                     'temas'     => $this->model_catalogos->get_temas(['estatus' => 1]),
                     'historial' => $historial[0]
                 );
@@ -78,6 +79,7 @@ class Acuerdos extends CI_Controller {
                     $data = array(
                         'titulo'        => 'Nuevo Seguimiento',
                         'view'          => 'acuerdos/seguimiento',
+                        'archivos'      => $this->model_acuerdos->get_archivos_acuerdo($acuerdo_id),
                         'acuerdo_id'    =>  $acuerdo_id,
                         'historial'     =>  $historial
                     );
@@ -107,6 +109,7 @@ class Acuerdos extends CI_Controller {
                     $data = array(
                         'titulo'        => 'Finalizar Acuerdo',
                         'view'          => 'acuerdos/finalizar',
+                        'archivos'      => $this->model_acuerdos->get_archivos_acuerdo($acuerdo_id),
                         'acuerdo_id'    =>  $acuerdo_id,
                         'historial'     =>  $historial
                     );
@@ -334,7 +337,6 @@ class Acuerdos extends CI_Controller {
             $json['exito']   = FALSE;
             $json['mensaje'] = 'Falló al recibir los datos para seguimiento al acuerdo';
         } else {
-
             // Validación de que este acuerdo puede ser finalizado por el usuario solicitante
             if ( true ){
                 $datos_seguimiento  = array(
@@ -358,9 +360,49 @@ class Acuerdos extends CI_Controller {
     }
 
     // Función ajax para cargar documentos
-    public function anexar_documento(){
-        $folder_guardar = 'uploads';
+    public function anexar_documento($acuerdo_id = NULL, $seguimiento_id = NULL){
+        $json           = array('exito' => TRUE);
+        $acuerdo_id     = ( $acuerdo_id == 'undefined' || $acuerdo_id == 'null' )? NULL : $acuerdo_id;
+        $seguimiento_id = ( $seguimiento_id == 'undefined' || $seguimiento_id == 'null' )? NULL : $seguimiento_id;
 
+        if( ! empty($_FILES) ){ 
+            // Carga de documentos
+            $uploadPath = ( $acuerdo_id )? "uploads/{$acuerdo_id}": 'uploads/'; 
+            $config['upload_path']   = $uploadPath; 
+            $config['allowed_types'] = '*'; 
+
+            if ( !file_exists($uploadPath) )    // Revisar si existe el directorio
+                mkdir( $uploadPath, 0777, true ); // Crear directorio con todos los permisos
+            
+             
+            // Librería de Carga de Archivos
+            $this->load->library( 'upload', $config ); 
+            $this->upload->initialize( $config ); 
+             
+            // Subir el archivo al servidor
+            if( $this->upload->do_upload('file') ){ 
+                $fileData = $this->upload->data(); 
+                $uploadData['file_name']    = $fileData['file_name']; 
+                $uploadData['uploaded_on']  = date("Y-m-d H:i:s"); 
+
+                if ( $acuerdo_id && $seguimiento_id ){
+                    // Registrar documentos en la BD
+                    $registrar_archivos = $this->model_acuerdos->anexos_acuerdos_seguimiento($seguimiento_id, $uploadData['file_name']);
+
+                    $json['exito'] = $registrar_archivos['exito'];
+                    if ( array_key_exists('error', $registrar_archivos) )
+                        $json['error'] = $registrar_archivos['error'];
+                } else
+                    $json['error'] = 'No fue posible guardar los nombres de los archivos anexos en el acuerdo.';
+            } else {
+                $json['exito'] = FALSE;
+                $json['error'] = 'No se pudieron cargar el/los documento(s). Por favor, intente más tarde.';
+            }
+        } else {
+            $json['exito'] = FALSE;
+            $json['error'] = 'No se recibió ningún archivo.';
+        }
+        return print(json_encode( $json ));
     }
 
     // Función de directores y administradores de asignar el acuerdo a un usuario segun su área
@@ -375,10 +417,10 @@ class Acuerdos extends CI_Controller {
             $condicion  = array('usuario_id' => $usuario_id, 'estatus' => 1);
             $db_usuario = $this->model_usuarios->get_usuarios($condicion);
             $condicion  = array('acuerdo_id' => $acuerdo_id, 'estatus' => 1);
-            $db_acuerdo = $this->model_acuerdos->get_acuerdos($condicion);
+            $db_acuerdo = $this->model_acuerdos->get_acuerdos_master($condicion);
             if ( $db_usuario && $db_acuerdo ){
-                if (  $db_usuario->direccion_id == $db_acuerdo[0]->direccion_id_acuerdo ){
-                    $respuesta  = $this->model_acuerdos->asignar_usuario_seguimiento($seguimiento,$usuario_id);
+                if (  $db_usuario->direccion_id == $db_acuerdo[0]->direccion_id_seguimiento ){
+                    $respuesta  = $this->model_acuerdos->asignar_usuario_seguimiento($seguimiento, $usuario_id);
                     $json['exito'] = $respuesta['exito'];
                     if ( ! $respuesta['exito'] )
                         $json['error'] = $respuesta['error'];

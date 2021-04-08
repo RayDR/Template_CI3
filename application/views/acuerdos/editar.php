@@ -54,9 +54,22 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-12 mb-3">
-                            <label for="anexo" class="form-label">Anexar documento</label>
-                            <input class="form-control" type="file" id="anexo">
+                        <div class="col-12 mb-3" class="dropzone">
+                            <?php $this->load->view('acuerdos/ajax/carga_documento'); ?>
+                        </div>
+                    </div>
+                    <div class="accordion mb-3" id="ver-archivos">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="titulo">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#archivos" aria-expanded="true" aria-controls="archivos">
+                                Mostrar archivos cargados
+                                </button>
+                            </h2>
+                            <div id="archivos" class="accordion-collapse collapse" aria-labelledby="titulo" data-bs-parent="#ver-archivos">
+                                <div class="accordion-body">
+                                <?php $this->load->view('acuerdos/ajax/archivos_cargados', ['acuerdo_id' => $historial[0]->acuerdo_id, 'archivos' => $archivos]); ?>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="mt-3">

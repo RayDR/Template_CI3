@@ -130,6 +130,24 @@ class Model_acuerdos extends CI_Model {
 		return [];
 	}
 
+	public function get_archivos_acuerdo($acuerdo_id){
+		$this->db->where('acuerdo_id', $acuerdo_id);
+		$db_seguimientos = $this->db->get('seguimientos_acuerdos');
+
+		$archivos = array();
+		if ( $db_seguimientos->num_rows() > 0 ){
+			foreach ($db_seguimientos->result() as $key => $seguimiento) {
+				if ( $seguimiento->archivo_anexo ){
+					$files = explode(',', $seguimiento->archivo_anexo);
+					foreach ($files as $key => $file) {
+						array_push($archivos, $file);
+					}
+				}
+			}
+		}
+		return $archivos;
+	}
+
 	//  ------------------------------------------------------- SETTERS
 
 
@@ -295,6 +313,40 @@ class Model_acuerdos extends CI_Model {
 			
 			$datos_db = array(
 				'usuario_recibe_id' => $usuario_id
+			);
+			$this->db->where('seguimiento_acuerdo_id', $seguimiento_id);
+			$this->db->update('seguimientos_acuerdos', $datos_db);
+
+			$this->db->trans_commit();
+		} catch (Exception $e) {
+			$this->db->trans_rollback();
+			$resultado['exito'] = FALSE;
+			$resultado['error'] = $e->getMessage();
+		}
+		return $resultado;
+	}
+
+	/**
+		* Función para agregar nombre de documentos para un seguimiento
+		*
+		* @access public
+		* @param  array   $datos 		Datos a actualizar
+		*
+		* @return resultado[]
+	*/
+	public function anexos_acuerdos_seguimiento($seguimiento_id, $archivo){
+		$resultado = array('exito' => TRUE);
+		try {
+			$this->db->trans_begin();
+
+			$this->db->where('seguimiento_acuerdo_id', $seguimiento_id);
+			$archivos_existentes = $this->db->get('seguimientos_acuerdos')->row('archivo_anexo');
+
+			if ( $archivos_existentes )
+				$archivo = $archivo . ',' . $archivos_existentes; // Separar por coma
+						
+			$datos_db = array(
+				'archivo_anexo' => $archivo
 			);
 			$this->db->where('seguimiento_acuerdo_id', $seguimiento_id);
 			$this->db->update('seguimientos_acuerdos', $datos_db);

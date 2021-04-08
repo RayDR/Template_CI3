@@ -50,8 +50,8 @@ function fguardar(e){
             let valor           = $(`#${input.nombre}`).val();
             datos[input.nombre] = valor;
 
-            if (  valor == '' )
-                errores += `El campo <a href="#${input.nombre}">${input.texto}</a> es requerido.`;
+            if (  valor == '' || valor == null  || valor == undefined )
+                errores += `El campo <a href="#${input.nombre}">${input.texto}</a> es requerido.<br>`;
         });
 
         if ( ! errores ){
@@ -66,7 +66,7 @@ function fguardar(e){
                 fu_notificacion(respuesta.mensaje, 'danger');
         } else {
             fu_alerta(errores, 'danger');
-            fu_notificacion('Existen campos pendientes por llenar.', 'success');    
+            fu_notificacion('Existen campos pendientes por llenar.', 'danger');    
         }
     } catch(e) {
         fu_alerta('Ha ocurrido un error al guardar el acuerdo, intentelo más tarde.', 'danger');
