@@ -60,8 +60,22 @@ function fguardar(e){
                 datos 
             );
             if ( respuesta.exito ){
+                if ( respuesta.acuerdo_id ) $('#acuerdo_id').val(respuesta.acuerdo_id);
+                if ( respuesta.seguimiento_id ) $('#seguimiento_id').val(respuesta.seguimiento_id);
+                
                 fu_notificacion('Se ha registrado el acuerdo exitosamente.', 'success');
-                window.location.replace( url('Acuerdos') );
+                if ( carga_doctos ){
+                    $('#guardar').prop({disabled: true});
+                    var documentos = Dropzone.forElement("div#cargar_documento");
+                    if ( documentos.processQueue() ) {
+                        setTimeout(function() {
+                            window.location.replace( url('Acuerdos') ); 
+                        }, 3000);
+                    }
+                } else{
+                    $('#guardar').prop({disabled: true});
+                    window.location.replace( url('Acuerdos') ); 
+                }
             } else
                 fu_notificacion(respuesta.mensaje, 'danger');
         } else {

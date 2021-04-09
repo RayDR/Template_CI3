@@ -65,7 +65,18 @@ function fguardar(e){
             );
             if ( respuesta.exito ){
                 fu_notificacion('Se ha actualizado el acuerdo exitosamente.', 'success');
-                window.location.replace( url('Acuerdos') );
+                if ( carga_doctos ){
+                    $('#guardar').prop({disabled: true});
+                    var documentos = Dropzone.forElement("div#cargar_documento");
+                    if ( documentos.processQueue() ) {
+                        setTimeout(function() {
+                            window.location.replace( url('Acuerdos') ); 
+                        }, 3000);
+                    }
+                } else{
+                    $('#guardar').prop({disabled: true});
+                    window.location.replace( url('Acuerdos') ); 
+                }
             } else
                 fu_notificacion(respuesta.mensaje, 'danger');
         } else {
@@ -73,6 +84,7 @@ function fguardar(e){
             fu_notificacion('Existen campos pendientes por llenar.', 'success');    
         }
     } catch(e) {
+        console.log(e);
         fu_alerta('Ha ocurrido un error al guardar el acuerdo, intentelo más tarde.', 'danger');
     }
     

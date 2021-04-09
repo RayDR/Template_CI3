@@ -67,7 +67,7 @@
                             </h2>
                             <div id="archivos" class="accordion-collapse collapse" aria-labelledby="titulo" data-bs-parent="#ver-archivos">
                                 <div class="accordion-body">
-                                <?php $this->load->view('acuerdos/ajax/archivos_cargados', ['acuerdo_id' => $historial[0]->acuerdo_id, 'archivos' => $archivos]); ?>
+                                <?php $this->load->view('acuerdos/ajax/archivos_cargados', ['acuerdo_id' => $historial->acuerdo_id, 'archivos' => $archivos]); ?>
                                 </div>
                             </div>
                         </div>

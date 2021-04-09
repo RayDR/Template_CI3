@@ -1,4 +1,4 @@
-<?php
+ <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Acuerdos extends CI_Controller {
@@ -258,6 +258,10 @@ class Acuerdos extends CI_Controller {
             );
             $resultado     = $this->model_acuerdos->set_nuevo_acuerdo($datos_acuerdo);
             $json['exito'] = $resultado['exito'];
+
+            $json['acuerdo_id']     = ( isset($resultado['acuerdo_id']) )? $resultado['acuerdo_id'] : NULL;
+            $json['seguimiento_id'] = ( isset($resultado['seguimiento_id']) )? $resultado['seguimiento_id'] : NULL;
+
             if ( $json['exito'] == FALSE )
                 $json['mensaje'] = $resultado['error'];
         }
@@ -285,6 +289,10 @@ class Acuerdos extends CI_Controller {
             );
             $resultado = $this->model_acuerdos->set_seguimiento_acuerdo($acuerdo_id, $datos_seguimiento);
             $json['exito'] = $resultado['exito'];
+
+            $json['acuerdo_id']     = ( isset($resultado['acuerdo_id']) )? $resultado['acuerdo_id'] : NULL;
+            $json['seguimiento_id'] = ( isset($resultado['seguimiento_id']) )? $resultado['seguimiento_id'] : NULL;
+
             if ( $json['exito'] == FALSE )
                 $json['mensaje'] = $resultado['error'];
         }
@@ -319,7 +327,6 @@ class Acuerdos extends CI_Controller {
             );
             $resultado     = $this->model_acuerdos->update_acuerdo($datos_seguimiento);
             $json['exito'] = $resultado['exito'];
-            $json['model'] = $resultado;
             if ( $json['exito'] == FALSE )
                 $json['mensaje'] = $resultado['error'];
         }
@@ -360,27 +367,43 @@ class Acuerdos extends CI_Controller {
     }
 
     // Función ajax para cargar documentos
-    public function anexar_documento($acuerdo_id = NULL, $seguimiento_id = NULL){
-        $json           = array('exito' => TRUE);
-        $acuerdo_id     = ( $acuerdo_id == 'undefined' || $acuerdo_id == 'null' )? NULL : $acuerdo_id;
-        $seguimiento_id = ( $seguimiento_id == 'undefined' || $seguimiento_id == 'null' )? NULL : $seguimiento_id;
+    public function anexar_documento(){
+        $json           = array('exito' => TRUE, 'error' => '');
+        $acuerdo_id     = $this->input->post('acuerdo');
+        $seguimiento_id = $this->input->post('seguimiento');
+        $ejercicio      = date('Y');
 
-        if( ! empty($_FILES) ){ 
+        if ( !empty($_FILES) ) {
             // Carga de documentos
-            $uploadPath = ( $acuerdo_id )? "uploads/{$acuerdo_id}": 'uploads/'; 
-            $config['upload_path']   = $uploadPath; 
-            $config['allowed_types'] = '*'; 
+            $uploadFolder = ( $acuerdo_id )? "C:/SvrArchivos/sieval/Acuerdos/{$ejercicio}/{$acuerdo_id}": "C:/SvrArchivos/sieval/Acuerdos/{$ejercicio}";
 
-            if ( !file_exists($uploadPath) )    // Revisar si existe el directorio
-                mkdir( $uploadPath, 0777, true ); // Crear directorio con todos los permisos
-            
+
+            // Configuración de Libreriía CI Upload
+            $config['upload_path']   = $uploadFolder; 
+            $config['allowed_types'] = '*';
+            $config['overwrite']     = 1; 
+
+            if ( !file_exists($uploadFolder) && !is_dir($uploadFolder) )
+                mkdir( $uploadFolder, 0777, true ); // Crear directorio si no existe            
              
             // Librería de Carga de Archivos
-            $this->load->library( 'upload', $config ); 
-            $this->upload->initialize( $config ); 
+            $this->load->library( 'upload', $config );
              
-            // Subir el archivo al servidor
-            if( $this->upload->do_upload('file') ){ 
+            // Subir el archivo al servidor 
+                // Modo Múltiple
+            foreach($_FILES as $key => $file)
+            {
+                if( isset($file['file']['tmp_name']) )
+                {
+                    if ( ! $this->upload->do_upload( $file['file']['tmp_name'] ) )
+                        $json['error'] .= $this->upload->display_errors() . '<br>';
+                    else 
+                        $this->upload->data();
+                }
+            }
+
+                // Individual
+            /*if( $this->upload->do_upload('file') ){ 
                 $fileData = $this->upload->data(); 
                 $uploadData['file_name']    = $fileData['file_name']; 
                 $uploadData['uploaded_on']  = date("Y-m-d H:i:s"); 
@@ -393,11 +416,11 @@ class Acuerdos extends CI_Controller {
                     if ( array_key_exists('error', $registrar_archivos) )
                         $json['error'] = $registrar_archivos['error'];
                 } else
-                    $json['error'] = 'No fue posible guardar los nombres de los archivos anexos en el acuerdo.';
+                    $json['error'] = "No fue posible guardar la relación del archivo {$uploadData['file_name']} en el seguimiento del acuerdo.";
             } else {
                 $json['exito'] = FALSE;
-                $json['error'] = 'No se pudieron cargar el/los documento(s). Por favor, intente más tarde.';
-            }
+                $json['error'] = "No se pudo cargar el archivo.";
+            }*/
         } else {
             $json['exito'] = FALSE;
             $json['error'] = 'No se recibió ningún archivo.';

@@ -50,6 +50,7 @@
             <div class="card-body">
                 <form>
                     <input type="hidden" id="acuerdo_id" name="acuerdo_id" value="<?= $acuerdo_id ?>">
+                    <input type="hidden" id="seguimiento_id" name="seguimiento_id" value="">
                     <input type="hidden" id="remitente" name="remitente" value="<?= $historial[0]->combinacion_area_acuerdo_id ?>">
                     <div class="row">
                         <div class="col-12 mb-3">

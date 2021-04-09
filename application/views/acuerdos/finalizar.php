@@ -49,6 +49,7 @@
             <div class="card-body">
                 <form>
                     <input type="hidden" id="acuerdo_id" name="acuerdo_id" value="<?= $acuerdo_id ?>">
+                    <input type="hidden" id="seguimiento_id" name="seguimiento_id" value="">
                     <div class="row">
                         <div class="col-12 mb-3">
                             <?php $this->load->view(RUTA_TEMA_UTIL . '/alertas'); ?>
