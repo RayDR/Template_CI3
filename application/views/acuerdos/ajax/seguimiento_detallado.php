@@ -11,6 +11,9 @@
                     <p class="p-0 m-0"><b>Solicitante:</b> <?= $seguimiento[0]->usuario_registra ?></p>
                 </div>              
                 <div class="text-right">
+                    <a href="#anexos" class="descargar_anexos px-4" title="Descargar archivos adjuntos" data-title="Descargar archivos adjuntos" data-toggle="tooltip">
+                        <i class="fas fa-cloud-download-alt text-white"></i>
+                    </a>
                     <span class="badge badge-lg bg-secondary text-dark"><?= $seguimiento[0]->estatus_seguimiento ?></span>
                     <br>
                     <?php 
@@ -38,7 +41,12 @@
     </div>
 
     <div class="card card-body shadow-sm mb-4 mb-lg-0 bg-white">
-        <h2 class="h5 mb-4 text-primary">Historial del Acuerdo</h2>
+        <h2 class="h5 mb-4 text-primary">
+            Historial del Acuerdo 
+            <a href="#anexos" class="descargar_anexos" title="Descargar archivos adjuntos" data-title="Descargar archivos adjuntos" data-toggle="tooltip">
+                <i class="fas fa-cloud-download-alt text-primary"></i>
+            </a>
+        </h2>
         <div id="historial" class="container" style="max-height: 500px; overflow-y: scroll;">
             <?php $this->load->view('acuerdos/ajax/historial', ['historial' => $seguimiento]); ?>
         </div>

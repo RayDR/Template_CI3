@@ -6,50 +6,50 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="cuenta">Número de Cuenta</label>
-                        <input class="form-control" id="cuenta" type="text" value="<?= $usuario->cve_cuenta ?>" readonly>
+                        <input class="form-control" id="cuenta" name="cuenta" type="text" value="<?= $usuario->cve_cuenta ?>" readonly>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 mb-3">
                         <div>
                             <label for="nombres">Nombre(s)</label>
-                            <input class="form-control" id="nombres" type="text" value="<?= $usuario->nombres ?>" required>
+                            <input class="form-control" id="nombres" name="nombres" type="text" value="<?= $usuario->nombres ?>" required>
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
                         <div>
                             <label for="primer_apellido">Primer Apellido</label>
-                            <input class="form-control" id="primer_apellido" value="<?= $usuario->primer_apellido ?>" type="text" required>
+                            <input class="form-control" id="primer_apellido" name="primer_apellido" value="<?= $usuario->primer_apellido ?>" type="text" required>
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
                         <div>
                             <label for="segundo_apellido">Segundo Apellido</label>
-                            <input class="form-control" id="segundo_apellido" value="<?= $usuario->segundo_apellido ?>" type="text" required>
+                            <input class="form-control" id="segundo_apellido" name="segundo_apellido" value="<?= $usuario->segundo_apellido ?>" type="text" required>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="sexo">Sexo</label>
-                        <select class="form-select mb-0" id="sexo" aria-label="Selección de sexo">
+                        <select class="form-select mb-0" id="sexo" name="sexo" aria-label="Selección de sexo">
                             <option selected>Seleccione una opción</option>
-                            <option value="M">Mujer</option>
-                            <option value="H">Hombre</option>
+                            <option value="M" <?php if($usuario->sexo == 'M') echo 'selected' ?>>Mujer</option>
+                            <option value="H" <?php if($usuario->sexo == 'H') echo 'selected' ?>>Hombre</option>
                         </select>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 mb-3">
+                    <div class="col-md-6 mb-3 d-none">
                         <div class="form-group">
                             <label for="correo">Email</label>
-                            <input class="form-control" id="correo" value="" type="email" required>
+                            <input class="form-control" id="correo" name="correo" value="" type="email" required>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-3">
+                    <div class="col-md-6 mb-3 d-none">
                         <div class="form-group">
                             <label for="telefono">Telefono</label>
-                            <input class="form-control" id="telefono" type="number" required>
+                            <input class="form-control" id="telefono" name="telefono" type="number" required>
                         </div>
                     </div>
                 </div>
@@ -68,7 +68,6 @@
                         <label for="password_actual">Contraseña Actual</label>
                         <input class="form-control" id="password_actual" type="password" required>
                     </div>
-                    <hr>
                     <div class="form-group mt-2">
                         <label for="password_nueva">Nueva Contraseña</label>
                         <input class="form-control" id="password_nueva" type="password" required>
@@ -122,3 +121,5 @@
         </div> -->
     </div>
 </div>
+
+<script src="<?= base_url('assets/js/perfil/perfil.js') ?>" type="text/javascript" charset="utf-8" async defer></script>

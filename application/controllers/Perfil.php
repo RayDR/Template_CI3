@@ -33,6 +33,51 @@ class Perfil extends CI_Controller {
         $this->load->view( RUTA_TEMA . 'body', $data, FALSE );
     }
 
+/*
+|--------------------------------------------------------------------------
+| AJAX 
+|--------------------------------------------------------------------------
+*/
+    
+    // -------------- VISTAS
+    public function guardar_datos_perfil(){
+        $json = array('exito' => TRUE);
+
+        $datos = $this->input->post('datos');
+
+        if ( is_array($datos) ){
+            $respuesta = $this->model_usuarios->set_datos_usuario( $this->session->userdata('uid'), $datos);
+            $json['exito'] = $respuesta['exito'];
+
+            if ( isset($respuesta['error']) )
+                $json['error'] = $respuesta['error'];
+        }        
+        return print(json_encode( $json ));
+    }
+
+    public function cambiar_password(){
+        $json = array('exito' => TRUE);
+        $password   = $this->input->post('actual');
+        $nueva      = $this->input->post('nueva');
+
+        $db_usuario = $this->model_usuarios->get_usuarios( array(
+            'usuario_id' => $this->session->userdata('uid'), 'estatus' => 1 ) );
+        if ( $db_usuario ){
+            if ( password_verify( $password, $db_usuario->contrasena ) ){
+                $respuesta = $this->model_usuarios->set_nueva_password( $this->session->userdata('uid'), $nueva );
+                $json['exito'] = $respuesta['exito'];
+                
+                if ( isset($respuesta['error']) )
+                    $json['error'] = $respuesta['error'];
+            } else {
+                $json['exito'] = FALSE;
+                $json['error'] = 'Contraseña incorrecta.';
+            }
+        } else 
+            $json['error'] = 'Usuario inválido. Por favor, recargue la página.';
+        return print(json_encode( $json ));
+    }
+
 }
 
 /* End of file Perfil.php */

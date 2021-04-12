@@ -382,33 +382,44 @@ class Acuerdos extends CI_Controller {
 
         if ( !empty($_FILES) ) {
             // Carga de documentos
-            $uploadFolder  = ( $acuerdo_id )? "C:/SvrArchivos/sieval/Acuerdos/{$ejercicio}/{$acuerdo_id}/": "C:/SvrArchivos/sieval/Acuerdos/{$ejercicio}/";
-            $localUploads  = ( $acuerdo_id )? "uploads/{$ejercicio}/{$acuerdo_id}/": "uploads/{$ejercicio}/";
+            $rootUF        = 'C:/SvrArchivos/sieval/Acuerdos/';
+            $rootUL        = FCPATH . 'uploads/Acuerdos/';
+            $uploadFolder  = "{$rootUF}/{$ejercicio}/{$acuerdo_id}/";
+            $localUploads  = "{$rootUL}/{$ejercicio}/{$acuerdo_id}/";
 
             // Configuración de Libreriía CI Upload
             $config['upload_path']   = $uploadFolder; 
             $config['allowed_types'] = '*';
             $config['overwrite']     = 1; 
 
+            // Checar directorios Raiz y sus configuraciones
+            if ( !file_exists($rootUF) && !is_dir($rootUF) )
+                mkdir( $rootUF, 0777 ); // Crear directorio si no existe
+            if ( !file_exists($rootUL) && !is_dir($rootUL) )
+                mkdir( $rootUL, 0777 ); // Crear directorio si no existe
+
+            if ( !file_exists($rootUF . "{$ejercicio}/") && !is_dir($rootUF . "{$ejercicio}/") )
+                mkdir( $rootUF . "{$ejercicio}/", 0777 ); // Crear directorio si no existe
+            if ( !file_exists($rootUL . "{$ejercicio}/") && !is_dir($rootUL . "{$ejercicio}/") )
+                mkdir( $rootUL . "{$ejercicio}/", 0777 ); // Crear directorio si no existe
+
             if ( !file_exists($uploadFolder) && !is_dir($uploadFolder) )
                 mkdir( $uploadFolder, 0777 ); // Crear directorio si no existe
-
-            if ( !file_exists($uploadFolder) )
-                mkdir( $localUploads, 0777, true );
-             
-            // Librería de Carga de Archivos
-            //$this->load->library( 'upload', $config );
+            if ( !file_exists($localUploads) && !is_dir($localUploads) )
+                mkdir( $localUploads, 0777 ); // Crear directorio si no existe
              
             // Subir el archivo al servidor 
                 // Modo Múltiple
-
             foreach($_FILES['file']['tmp_name'] as $key => $file) {
                 $tempFile = $_FILES['file']['tmp_name'][$key];
                 $targetFile =  $uploadFolder. $_FILES['file']['name'][$key];
                 if ( move_uploaded_file($tempFile,$targetFile) ){
+                    // Mover el archivo a Uploads
+                    $previsualizador            = $localUploads . $_FILES['file']['name'][$key];
+                    $json['previsualizador']    = '';
+                    if ( !copy($targetFile, $previsualizador) )
+                        $json['previsualizador'] .= $_FILES['file']['name'][$key] . ',';
                     // Guardar info en BD
-                    $targetFile =  $localUploads. $_FILES['file']['name'][$key];
-                    move_uploaded_file($tempFile,$targetFile);
                     $this->model_acuerdos->anexos_acuerdos_seguimiento( $seguimiento_id, $_FILES['file']['name'][$key] );
                 }
                 else
