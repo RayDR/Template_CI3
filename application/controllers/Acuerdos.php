@@ -232,7 +232,7 @@ class Acuerdos extends CI_Controller {
                     $condicion = "area_id_acuerdo         = {$combinacion->area_id} ";
                     $condicion .= "OR area_id_seguimiento = {$combinacion->area_id} ";
                 }
-                $condicion .= "OR usuario_recibe_id  = {$this->session->userdata('uid')} ";
+                $condicion .= "OR usuario_id_recibe  = {$this->session->userdata('uid')} ";
             } else
                 return print(json_encode([]));
         } 
