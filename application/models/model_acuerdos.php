@@ -347,7 +347,7 @@ class Model_acuerdos extends CI_Model {
 		*
 		* @return resultado[]
 	*/
-	public function anexos_acuerdos_seguimiento($seguimiento_id, $archivo){
+	public function anexos_acuerdos_seguimiento($seguimiento_id, $archivo, $modo_edicion = FALSE){
 		$resultado = array('exito' => TRUE);
 		try {
 			$this->db->trans_begin();
@@ -355,7 +355,7 @@ class Model_acuerdos extends CI_Model {
 			$this->db->where('seguimiento_acuerdo_id', $seguimiento_id);
 			$archivos_existentes = $this->db->get('seguimientos_acuerdos')->row('archivo_anexo');
 
-			if ( $archivos_existentes )
+			if ( $archivos_existentes && !$modo_edicion )
 				$archivo = $archivo . ',' . $archivos_existentes; // Separar por coma
 						
 			$datos_db = array(

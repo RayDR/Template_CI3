@@ -331,6 +331,7 @@ class Acuerdos extends CI_Controller {
                 'estatus_acuerdo'   => 1,
                 'usuario_id'        => $this->session->userdata('uid')
             );
+
             $resultado     = $this->model_acuerdos->update_acuerdo($datos_seguimiento);
             $json['exito'] = $resultado['exito'];
             if ( $json['exito'] == FALSE )
@@ -432,6 +433,75 @@ class Acuerdos extends CI_Controller {
         return print(json_encode( $json ));
     }
 
+    // Función ajax para cargar documentos modo edición
+    public function anexar_documento_edicion(){
+        $json           = array('exito' => TRUE, 'error' => '');
+        $acuerdo_id     = $this->input->post('acuerdo');
+        $seguimiento_id = $this->input->post('seguimiento');
+        $ejercicio      = date('Y');
+
+        if ( !empty($_FILES) ) {
+            // Carga de documentos
+            $rootUF        = 'C:/SvrArchivos/sieval/Acuerdos/';
+            $rootUL        = FCPATH . 'uploads/Acuerdos/';
+            $uploadFolder  = "{$rootUF}/{$ejercicio}/{$acuerdo_id}/";
+            $localUploads  = "{$rootUL}/{$ejercicio}/{$acuerdo_id}/";
+
+            // Configuración de Libreriía CI Upload
+            $config['upload_path']   = $uploadFolder; 
+            $config['allowed_types'] = '*';
+            $config['overwrite']     = 1; 
+
+            // Checar directorios Raiz y sus configuraciones
+            if ( !file_exists($rootUF) && !is_dir($rootUF) )
+                mkdir( $rootUF, 0777 ); // Crear directorio si no existe
+            if ( !file_exists($rootUL) && !is_dir($rootUL) )
+                mkdir( $rootUL, 0777 ); // Crear directorio si no existe
+
+            if ( !file_exists($rootUF . "{$ejercicio}/") && !is_dir($rootUF . "{$ejercicio}/") )
+                mkdir( $rootUF . "{$ejercicio}/", 0777 ); // Crear directorio si no existe
+            if ( !file_exists($rootUL . "{$ejercicio}/") && !is_dir($rootUL . "{$ejercicio}/") )
+                mkdir( $rootUL . "{$ejercicio}/", 0777 ); // Crear directorio si no existe
+
+            if ( !file_exists($uploadFolder) && !is_dir($uploadFolder) )
+                mkdir( $uploadFolder, 0777 ); // Crear directorio si no existe
+            if ( !file_exists($localUploads) && !is_dir($localUploads) )
+                mkdir( $localUploads, 0777 ); // Crear directorio si no existe
+
+            $files = glob($uploadFolder); //Ficheros del directorio
+            foreach($files as $file){
+                if( is_file($file) ) unlink($file);              // Eliminando fichero
+            }
+
+            $files = glob($localUploads); //Ficheros del directorio 
+            foreach($files as $file){
+                if( is_file($file) ) unlink($file);              // Eliminando fichero
+            }
+             
+            // Subir el archivo al servidor 
+                // Modo Múltiple
+            foreach($_FILES['file']['tmp_name'] as $key => $file) {
+                $tempFile = $_FILES['file']['tmp_name'][$key];
+                $targetFile =  $uploadFolder. $_FILES['file']['name'][$key];
+                if ( move_uploaded_file($tempFile,$targetFile) ){
+                    // Mover el archivo a Uploads
+                    $previsualizador            = $localUploads . $_FILES['file']['name'][$key];
+                    $json['previsualizador']    = '';
+                    if ( !copy($targetFile, $previsualizador) )
+                        $json['previsualizador'] .= $_FILES['file']['name'][$key] . ',';
+                    // Guardar info en BD
+                    $this->model_acuerdos->anexos_acuerdos_seguimiento( $seguimiento_id, $_FILES['file']['name'][$key], FALSE );
+                }
+                else
+                    $json['fallidos'] .= $_FILES['file']['name'][$key] . ',';
+            }
+        } else {
+            $json['exito'] = FALSE;
+            $json['error'] = 'No se recibió ningún archivo.';
+        }
+        return print(json_encode( $json ));
+    }
+
     // Función de directores y administradores de asignar el acuerdo a un usuario segun su área
     public function asignar_usuario(){
         $json           = array('exito' => TRUE);
@@ -464,6 +534,10 @@ class Acuerdos extends CI_Controller {
             $json['error'] = 'No fue posible realizar la asignación del usuario. Intente más tarde';
         }
         return print(json_encode( $json ));
+    }
+
+    public function zip_archivos_acuerdo($acuerdo_id){
+
     }
 
 }
