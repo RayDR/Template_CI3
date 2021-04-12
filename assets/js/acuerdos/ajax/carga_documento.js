@@ -5,7 +5,7 @@ $(document).ready(function($) {
         paramName:  'file',
         maxFilesize:        10, // MB
         maxFiles:           5,
-        parallelUploads:    10,
+        parallelUploads:    15,
         addRemoveLinks:     true,
         autoProcessQueue:   false,
         uploadMultiple:     true,

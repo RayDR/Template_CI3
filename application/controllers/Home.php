@@ -18,8 +18,11 @@ class Home extends CI_Controller {
 */
     public function index()
     {
-        if ( ! $this->session->estatus_usuario_sesion() )
+        if ( !$this->session->estatus_usuario_sesion() ){
             redirect(base_url('index.php/Home/login'),'refresh');
+            print(json_encode(array('estatus' => 'sess_expired', 'mensaje' => 'Su sesión ha caducado. Por favor, recargue la página.')));
+        }
+
         $data = array(
             'titulo'    => 'Home ' . APLICACION  . ' | ' . EMPRESA,
             'menu'      => $this->model_catalogos->get_menus(),

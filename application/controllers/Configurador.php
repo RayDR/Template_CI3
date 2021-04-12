@@ -8,8 +8,10 @@ class Configurador extends CI_Controller {
         parent::__construct();
         $this->load->model('model_catalogos');
         
-        if ( ! $this->session->estatus_usuario_sesion() )
+        if ( !$this->session->estatus_usuario_sesion() ){
+            print(json_encode(array('estatus' => 'sess_expired', 'mensaje' => 'Su sesión ha caducado. Por favor, recargue la página.')));
             redirect(base_url('index.php/Home/login'),'refresh');
+        }
     }
 
 

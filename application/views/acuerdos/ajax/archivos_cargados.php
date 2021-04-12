@@ -1,14 +1,29 @@
-<div class="row">
+<?php 
+    $seguimiento_id = 0; 
+    $folio          = 1;
+    $ejercicio      = date('Y');
+    $uploadFolder   = ( $acuerdo_id )? "uploads/{$ejercicio}/{$acuerdo_id}": "uploads/Acuerdos/{$ejercicio}";
+?>
 <?php foreach ($archivos as $key => $archivo): ?>
-    <div class="col-md-4 justify-content-center align-items-center">
-        <div class="card" style="width: 18rem;">
-          <div class="card-body text-center">
-            <h5 class="card-title"><?= $archivo ?></h5>
-            <a href="<?= base_url("uploads/$acuerdo_id/$archivo") ?>" target="_blank" class="btn btn-primary">
-            	Ver archivo
-            </a>
-          </div>
+    <?php if ( $archivo['seguimiento_acuerdo_id'] != $seguimiento_id ): ?>
+        <?php if ( $key > 0 ): ?>
         </div>
-    </div>
+        <?php $folio++; ?>
+        <?php endif ?>
+        <div class="row mt-3">
+            <h4 class="col-12 mb-1">Seguimiento <?= $acuerdo_id ?>-<?= $folio ?> </h4>
+        <?php $seguimiento_id = $archivo['seguimiento_acuerdo_id']; ?>
+        <?php endif ?>
+            <?php $nombre_archivo = $archivo["archivo"]; $extension = strstr($nombre_archivo, '.');?>
+            <div class="col-md-4 justify-content-center align-items-center">
+                <div class="card">
+                  <div class="card-body text-center" style="<?= ( $extension == '.jpg' || $extension == '.jpeg' || $extension == '.png' || $extension == '.PNG'  )? "background-image: url('". base_url("{$uploadFolder}/{$nombre_archivo}") ."'); background-position: center; background-size: cover; ": ''; ?>">
+                    <h5 class="card-title"><?= $nombre_archivo ?></h5>
+                    <a href="<?= base_url("{$uploadFolder}/{$nombre_archivo}") ?>" target="_blank" class="btn btn-primary">
+                    	Ver archivo
+                    </a>
+                  </div>
+                </div>
+            </div>
 <?php endforeach ?>
-</div>
+        </div>

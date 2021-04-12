@@ -206,7 +206,10 @@ function fu_muestra_vista(vUrl, datos = []){
           data = JSON.parse(data);
           if ( data.exito )
             html = data.html;
+          if ( data.estatus == 'sess_expired' )
+            fu_notificacion((data.mensaje)? data.mensaje : 'Sesión expirada.', 'danger');
         } catch(e) {
+          console.log(e);
           fu_toast('Falló el cargar la vista.');
         }
   		},
@@ -215,9 +218,6 @@ function fu_muestra_vista(vUrl, datos = []){
   		},
   		error: function(xhr, textStatus, errorThrown){ 
   			fu_toast('Ha ocurrido un problema al cargar la vista');
-  		}, 
-  		complete: function(){
-  			setTimeout(function() { cargandoVista = false; }, 500);
   		}
   	});
   }
@@ -239,6 +239,8 @@ function fu_json_query(vUrl, datos = []){
       success: function(data, textStatus, xhr) {
         try {
           json = JSON.parse(data);
+          if ( json.estatus == 'sess_expired' )
+            fu_notificacion((json.mensaje)? json.mensaje : 'Sesión expirada.', 'danger');
         } catch(e) {
           fu_toast('Falló el cargar la vista.');
         }
@@ -248,9 +250,6 @@ function fu_json_query(vUrl, datos = []){
       },
       error: function(xhr, textStatus, errorThrown){ 
         fu_toast('Ha ocurrido un problema al cargar la vista');
-      }, 
-      complete: function(){
-        setTimeout(function() { cargandoVista = false; }, 500);
       }
     });
   }

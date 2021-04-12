@@ -132,6 +132,7 @@ class Model_acuerdos extends CI_Model {
 
 	public function get_archivos_acuerdo($acuerdo_id){
 		$this->db->where('acuerdo_id', $acuerdo_id);
+		$this->db->where('estatus_acuerdo_id <>', 0);
 		$db_seguimientos = $this->db->get('seguimientos_acuerdos');
 
 		$archivos = array();
@@ -140,7 +141,9 @@ class Model_acuerdos extends CI_Model {
 				if ( $seguimiento->archivo_anexo ){
 					$files = explode(',', $seguimiento->archivo_anexo);
 					foreach ($files as $key => $file) {
-						array_push($archivos, $file);
+						$archivo['seguimiento_acuerdo_id'] = $seguimiento->seguimiento_acuerdo_id;
+						$archivo['archivo'] = $file;
+						array_push($archivos, $archivo);
 					}
 				}
 			}

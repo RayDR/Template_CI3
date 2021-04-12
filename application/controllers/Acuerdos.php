@@ -9,8 +9,10 @@ class Acuerdos extends CI_Controller {
         $this->load->model('model_catalogos');
         $this->load->model('model_acuerdos');
 
-        if ( ! $this->session->estatus_usuario_sesion() )
+        if ( !$this->session->estatus_usuario_sesion() ){
+            print(json_encode(array('estatus' => 'sess_expired', 'mensaje' => 'Su sesión ha caducado. Por favor, recargue la página.')));
             redirect(base_url('index.php/Home/login'),'refresh');
+        }
     }
 
 
@@ -230,6 +232,7 @@ class Acuerdos extends CI_Controller {
                     $condicion = "area_id_acuerdo         = {$combinacion->area_id} ";
                     $condicion .= "OR area_id_seguimiento = {$combinacion->area_id} ";
                 }
+                $condicion = "OR usuario_recibe_id  = {$this->session->userdata('uid')} ";
             } else
                 return print(json_encode([]));
         } 
@@ -243,6 +246,7 @@ class Acuerdos extends CI_Controller {
         $area_destino   = $this->input->post('area_destino');
         $acuerdos       = $this->input->post('acuerdos');
         $tema           = $this->input->post('tema');
+        $ejercicio      = date('Y');
 
         if ( ! $area_origen || ! $area_destino || ! $acuerdos || ! $tema ){
             $json['exito']   = FALSE;
@@ -253,7 +257,7 @@ class Acuerdos extends CI_Controller {
                 'area_destino'  => $area_destino,
                 'acuerdos'      => $acuerdos,
                 'tema'          => $tema,
-                'ejercicio'     => date('Y'),
+                'ejercicio'     => $ejercicio,
                 'usuario_id'    => $this->session->userdata('uid')
             );
             $resultado     = $this->model_acuerdos->set_nuevo_acuerdo($datos_acuerdo);
@@ -275,6 +279,7 @@ class Acuerdos extends CI_Controller {
         $acuerdo_id     = $this->input->post('acuerdo_id');
         $area_destino   = $this->input->post('area_destino');
         $acuerdos       = $this->input->post('acuerdos');
+        $ejercicio      = date('Y');
 
         if ( ! $acuerdo_id || ! $area_destino || ! $acuerdos ){
             $json['exito']   = FALSE;
@@ -283,7 +288,7 @@ class Acuerdos extends CI_Controller {
             $datos_seguimiento  = array(
                 'area_destino'      => $area_destino,
                 'acuerdos'          => $acuerdos,
-                'ejercicio'         => date('Y'),
+                'ejercicio'         => $ejercicio,
                 'usuario_id'        => $this->session->userdata('uid'),
                 'estatus_acuerdo'   => 2
             );
@@ -310,6 +315,7 @@ class Acuerdos extends CI_Controller {
         $acuerdo_id     = $this->input->post('acuerdo_id');
         $acuerdos       = $this->input->post('acuerdos');
         $tema           = $this->input->post('tema');
+        $ejercicio      = date('Y');
 
         if ( ! $seguimiento_id || ! $acuerdo_id || ! $acuerdos || ! $destino || ! $tema ){
             $json['exito']   = FALSE;
@@ -321,7 +327,7 @@ class Acuerdos extends CI_Controller {
                 'area_destino'  => $destino,
                 'acuerdos'      => $acuerdos,
                 'tema'          => $tema,
-                'ejercicio'     => date('Y'),
+                'ejercicio'     => $ejercicio,
                 'estatus_acuerdo'   => 1,
                 'usuario_id'        => $this->session->userdata('uid')
             );
@@ -339,6 +345,7 @@ class Acuerdos extends CI_Controller {
         $acuerdo_id     = $this->input->post('acuerdo_id');
         $area_destino   = $this->input->post('destino');
         $acuerdos       = $this->input->post('acuerdos');
+        $ejercicio      = date('Y');
 
         if ( ! $acuerdo_id || ! $area_destino || ! $acuerdos ){
             $json['exito']   = FALSE;
@@ -349,7 +356,7 @@ class Acuerdos extends CI_Controller {
                 $datos_seguimiento  = array(
                     'area_destino'      => $area_destino,
                     'acuerdos'          => $acuerdos,
-                    'ejercicio'         => date('Y'),
+                    'ejercicio'         => $ejercicio,
                     'usuario_id'        => $this->session->userdata('uid'),
                     'estatus_acuerdo'   => 3
                 );
@@ -375,8 +382,8 @@ class Acuerdos extends CI_Controller {
 
         if ( !empty($_FILES) ) {
             // Carga de documentos
-            $uploadFolder = ( $acuerdo_id )? "C:/SvrArchivos/sieval/Acuerdos/{$ejercicio}/{$acuerdo_id}": "C:/SvrArchivos/sieval/Acuerdos/{$ejercicio}";
-
+            $uploadFolder  = ( $acuerdo_id )? "C:/SvrArchivos/sieval/Acuerdos/{$ejercicio}/{$acuerdo_id}/": "C:/SvrArchivos/sieval/Acuerdos/{$ejercicio}/";
+            $localUploads  = ( $acuerdo_id )? "uploads/{$ejercicio}/{$acuerdo_id}/": "uploads/{$ejercicio}/";
 
             // Configuración de Libreriía CI Upload
             $config['upload_path']   = $uploadFolder; 
@@ -384,43 +391,29 @@ class Acuerdos extends CI_Controller {
             $config['overwrite']     = 1; 
 
             if ( !file_exists($uploadFolder) && !is_dir($uploadFolder) )
-                mkdir( $uploadFolder, 0777, true ); // Crear directorio si no existe            
+                mkdir( $uploadFolder, 0777 ); // Crear directorio si no existe
+
+            if ( !file_exists($uploadFolder) )
+                mkdir( $localUploads, 0777, true );
              
             // Librería de Carga de Archivos
-            $this->load->library( 'upload', $config );
+            //$this->load->library( 'upload', $config );
              
             // Subir el archivo al servidor 
                 // Modo Múltiple
-            foreach($_FILES as $key => $file)
-            {
-                if( isset($file['file']['tmp_name']) )
-                {
-                    if ( ! $this->upload->do_upload( $file['file']['tmp_name'] ) )
-                        $json['error'] .= $this->upload->display_errors() . '<br>';
-                    else 
-                        $this->upload->data();
+
+            foreach($_FILES['file']['tmp_name'] as $key => $file) {
+                $tempFile = $_FILES['file']['tmp_name'][$key];
+                $targetFile =  $uploadFolder. $_FILES['file']['name'][$key];
+                if ( move_uploaded_file($tempFile,$targetFile) ){
+                    // Guardar info en BD
+                    $targetFile =  $localUploads. $_FILES['file']['name'][$key];
+                    move_uploaded_file($tempFile,$targetFile);
+                    $this->model_acuerdos->anexos_acuerdos_seguimiento( $seguimiento_id, $_FILES['file']['name'][$key] );
                 }
+                else
+                    $json['fallidos'] .= $_FILES['file']['name'][$key] . ',';
             }
-
-                // Individual
-            /*if( $this->upload->do_upload('file') ){ 
-                $fileData = $this->upload->data(); 
-                $uploadData['file_name']    = $fileData['file_name']; 
-                $uploadData['uploaded_on']  = date("Y-m-d H:i:s"); 
-
-                if ( $acuerdo_id && $seguimiento_id ){
-                    // Registrar documentos en la BD
-                    $registrar_archivos = $this->model_acuerdos->anexos_acuerdos_seguimiento($seguimiento_id, $uploadData['file_name']);
-
-                    $json['exito'] = $registrar_archivos['exito'];
-                    if ( array_key_exists('error', $registrar_archivos) )
-                        $json['error'] = $registrar_archivos['error'];
-                } else
-                    $json['error'] = "No fue posible guardar la relación del archivo {$uploadData['file_name']} en el seguimiento del acuerdo.";
-            } else {
-                $json['exito'] = FALSE;
-                $json['error'] = "No se pudo cargar el archivo.";
-            }*/
         } else {
             $json['exito'] = FALSE;
             $json['error'] = 'No se recibió ningún archivo.';
