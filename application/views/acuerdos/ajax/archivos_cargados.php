@@ -2,7 +2,7 @@
     $seguimiento_id = 0; 
     $folio          = 1;
     $ejercicio      = date('Y');
-    $uploadFolder   = ( $acuerdo_id )? FCPATH . "uploads/Acuerdos/{$ejercicio}/{$acuerdo_id}": FCPATH . "uploads/Acuerdos/{$ejercicio}";
+    $uploadFolder   = "uploads/Acuerdos/{$ejercicio}/{$acuerdo_id}";
 ?>
 <?php foreach ($archivos as $key => $archivo): ?>
     <?php if ( $archivo['seguimiento_acuerdo_id'] != $seguimiento_id ): ?>
