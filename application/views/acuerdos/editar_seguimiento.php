@@ -65,7 +65,7 @@
             <div class="card-body">
                 <form>
                     <input type="hidden" id="acuerdo_id" name="acuerdo_id" value="<?= $acuerdo_id ?>">
-                    <input type="hidden" id="seguimiento_id" name="seguimiento_id" value="">
+                    <input type="hidden" id="seguimiento_id" name="seguimiento_id" value="<?= $historial[0]->seguimiento_acuerdo_id ?>">
                     <input type="hidden" id="remitente" name="remitente" value="<?= $historial[0]->combinacion_area_acuerdo_id ?>">
                     <div class="row">
                         <div class="col-12 mb-3">
@@ -84,7 +84,7 @@
                         <div class="col-12 mb-3">
                             <div>
                                 <label for="acuerdos">Acuerdos</label>
-                                <textarea class="form-control" placeholder="Detalle del acuerdo" id="acuerdos" name="acuerdos" rows="5"></textarea>
+                                <textarea class="form-control" placeholder="Detalle del acuerdo" id="acuerdos" name="acuerdos" rows="5"><?= $historial[0]->seguimiento ?></textarea>
                             </div>
                         </div>
                     </div>
@@ -107,4 +107,4 @@
         </div>
     </div>
 </div>
-<script src="<?= base_url('assets/js/acuerdos/seguimiento.js') ?>" type="text/javascript" charset="utf-8" async defer></script>
+<script src="<?= base_url('assets/js/acuerdos/editar_seguimiento.js') ?>" type="text/javascript" charset="utf-8" async defer></script>

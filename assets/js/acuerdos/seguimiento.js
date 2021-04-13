@@ -10,6 +10,8 @@ $(document).ready(function() {
                     'more': true
                 }
             });
+
+            $('#area_destino').val($('#remitente').val()).trigger('change');
         }
     }
 });
@@ -60,29 +62,51 @@ function fguardar(e){
                 if ( respuesta.acuerdo_id ) $('#acuerdo_id').val(respuesta.acuerdo_id);
                 if ( respuesta.seguimiento_id ) $('#seguimiento_id').val(respuesta.seguimiento_id);
                 
-                fu_notificacion('Se ha registrado el acuerdo exitosamente.', 'success');
                 if ( carga_doctos ){
                     $('#guardar').prop({disabled: true});
+                    $('#guardar').parent().html('');
                     var documentos = Dropzone.forElement("div#cargar_documento");
-                    if ( documentos.processQueue() ) {
-                        setTimeout(function() {
-                            window.location.replace( url('Acuerdos') ); 
-                        }, 3000);
-                    }
+                    if ( documentos ){
+                        documentos.processQueue();
+                        documentos.on("successmultiple", function(files, response) {
+                            // Evento al finalizar la carga
+                        });
+                        var historial = fu_muestra_vista(
+                            url('Acuerdos/get_historial', true, false), 
+                            {
+                                'acuerdo_id'     : $('#acuerdo_id').val(),
+                                'seguimiento_id' : $('#seguimiento_id').val()
+                            }
+                        );
+                        if ( historial )
+                            $('#ver-historial').html( historial ); 
+                        // Mostrar modal de guardado exitoso
+                        fu_modal(
+                            '', fu_muestra_vista(url('Acuerdos/get_modal_exitoso', true, false)),
+                            '<button onclick="frecargar()" type="button" class="btn btn-lg btn-white text-tertiary">Salir</button>',
+                            'lg','exito', false
+                        );
+                        $(".progress-bar").animate({
+                            width: "100%"
+                        }, 1000);
+                    } else 
+                        frecargar();
                 } else{
-                    $('#guardar').prop({disabled: true});
-                    window.location.replace( url('Acuerdos') ); 
+                    $('#guardar').prop({disabled: false});
+                    frecargar();
                 }
+                
             } else
                 fu_notificacion(respuesta.mensaje, 'danger');
         } else {
+            $('#guardar').prop({disabled: false});
+            $('#guardar').html(`Guardar`);
             fu_alerta(errores, 'danger');
             fu_notificacion('Existen campos pendientes por llenar.', 'success');    
         }
-    } catch(e) {
+    } catch(e) {        
+        $('#guardar').prop({disabled: false});
+        $('#guardar').html(`Guardar`);
         fu_alerta('Ha ocurrido un error al guardar el acuerdo, intentelo más tarde.', 'danger');
     }
-
-    $('#guardar').prop({disabled: false});
-    $('#guardar').html(`Guardar`);
 }

@@ -26,21 +26,35 @@
                 <p class="ml-2 mb-0"><b>Origen:</b> <?= $historial[0]->area_acuerdo ?></p>
             </div>
         </div>
-
+        <!-- Ver Historial General -->
         <div class="accordion my-3" id="ver-historial">
             <div class="accordion-item">
-                <h2 class="accordion-header" id="titulo">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#historial" aria-expanded="true" aria-controls="historial">
-                    Mostrar historial completo
+                <h2 class="accordion-header" id="seguimientos">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#historial-seguimiento" aria-expanded="false" aria-controls="historial-seguimiento">
+                    Mostrar historial de seguimiento
                     </button>
                 </h2>
-                <div id="historial" class="accordion-collapse collapse" aria-labelledby="titulo" data-bs-parent="#ver-historial">
+                <div id="historial-seguimiento" class="accordion-collapse collapse" aria-labelledby="seguimientos" data-bs-parent="#ver-historial">
                     <div class="accordion-body">
-                    <?php $this->load->view('acuerdos/ajax/historial', ['historial' => $historial]); ?>
+                    <?php $this->load->view('acuerdos/ajax/historial_seguimiento', ['historial' => $historial]); ?>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="archivos">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#historial-archivos" aria-expanded="false" aria-controls="historial-archivos">
+                    Mostrar historial de archivos
+                    </button>
+                </h2>
+                <div id="historial-archivos" class="accordion-collapse collapse" aria-labelledby="archivos" data-bs-parent="#ver-historial">
+                    <div class="accordion-body">
+                    <?php $this->load->view('acuerdos/ajax/historial_archivos', ['acuerdo_id' => $historial[0]->acuerdo_id, 'archivos' => $archivos]); ?>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- FIN Historial General -->
     </div>
 </div>
 <div class="row">
@@ -69,20 +83,6 @@
                         <h5>» Evidencias</h5>
                         <div class="col-12 mb-3" class="dropzone">
                             <?php $this->load->view('acuerdos/ajax/carga_documento'); ?>
-                        </div>
-                    </div>
-                    <div class="accordion mb-3" id="ver-archivos">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="titulo">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#archivos" aria-expanded="true" aria-controls="archivos">
-                                Mostrar archivos cargados
-                                </button>
-                            </h2>
-                            <div id="archivos" class="accordion-collapse collapse" aria-labelledby="titulo" data-bs-parent="#ver-archivos">
-                                <div class="accordion-body">
-                                <?php $this->load->view('acuerdos/ajax/archivos_cargados', ['acuerdo_id' => $historial[0]->acuerdo_id, 'archivos' => $archivos]); ?>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <div class="mt-3">

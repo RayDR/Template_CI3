@@ -58,20 +58,22 @@
                             <?php $this->load->view('acuerdos/ajax/carga_documento'); ?>
                         </div>
                     </div>
-                    <div class="accordion mb-3" id="ver-archivos">
+                    <!-- Ver Historial General -->
+                    <div class="accordion my-3" id="ver-historial">                        
                         <div class="accordion-item">
-                            <h2 class="accordion-header" id="titulo">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#archivos" aria-expanded="true" aria-controls="archivos">
-                                Mostrar archivos cargados
+                            <h2 class="accordion-header" id="archivos">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#historial-archivos" aria-expanded="false" aria-controls="historial-archivos">
+                                Mostrar historial de archivos
                                 </button>
                             </h2>
-                            <div id="archivos" class="accordion-collapse collapse" aria-labelledby="titulo" data-bs-parent="#ver-archivos">
+                            <div id="historial-archivos" class="accordion-collapse collapse" aria-labelledby="archivos" data-bs-parent="#ver-historial">
                                 <div class="accordion-body">
-                                <?php $this->load->view('acuerdos/ajax/archivos_cargados', ['acuerdo_id' => $historial->acuerdo_id, 'archivos' => $archivos]); ?>
+                                <?php $this->load->view('acuerdos/ajax/historial_archivos', ['acuerdo_id' => $historial->acuerdo_id, 'archivos' => $archivos]); ?>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <!-- FIN Historial General -->
                     <div class="mt-3">
                         <button id="guardar" type="submit" class="btn btn-dark">Guardar</button>
                     </div>

@@ -1,4 +1,5 @@
 <div class="container">
+    <div class="text-white">
     <div class="card card-body shadow-sm mb-4 mb-lg-0 bg-transparent">
         <h2 class="h5 mb-4">Datos del Acuerdo #<?= $acuerdo[0]->acuerdo_id ?></h2>
         <input type="hidden" value="<?= $seguimiento[0]->acuerdo_id ?>" id="acuerdo" name="acuerdo">
@@ -9,9 +10,27 @@
                     <p class="p-0 m-0"><b>Asunto:</b> <?= $acuerdo[0]->asunto ?></p>
                     <p class="p-0 m-0"><b>Tema:</b> <?= $acuerdo[0]->tema ?></p>
                     <p class="p-0 m-0"><b>Solicitante:</b> <?= $seguimiento[0]->usuario_registra ?></p>
+                    <p class="p-0 m-0">
+                        <b>
+                        <?php if ( $seguimiento[0]->estatus_acuerdo_id == 3 ): ?>
+                            Fecha de respuesta:
+                        <?php else: ?>
+                            Fecha de probable respuesta:
+                        <?php endif ?>
+                        </b>
+                    <?PHP 
+                        $fecha_probable = strtotime($acuerdo[0]->fecha_creacion_acuerdo . " + {$acuerdo[0]->fecha_respuesta} days");
+                        if ( $seguimiento[0]->estatus_acuerdo_id == 3 )
+                            echo mdate('%d/%m/%Y', strtotime($seguimiento[0]->fecha_creacion_acuerdo));
+                        else if ( time() > $fecha_probable ) 
+                            echo mdate('%d/%m/%Y', time());
+                        else
+                            echo mdate('%d/%m/%Y', $fecha_probable);
+                    ?>
+                    </p>
                 </div>              
                 <div class="text-right">
-                    <a href="#anexos" class="descargar_anexos px-4" title="Descargar archivos adjuntos" data-title="Descargar archivos adjuntos" data-toggle="tooltip">
+                    <a href="<?= base_url('index.php/Acuerdos/descargar_zip/' . $acuerdo[0]->acuerdo_id) ?>" class="px-4" title="Descargar archivos adjuntos" data-title="Descargar archivos adjuntos" data-toggle="tooltip">
                         <i class="fas fa-cloud-download-alt text-white"></i>
                     </a>
                     <span class="badge badge-lg bg-secondary text-dark"><?= $seguimiento[0]->estatus_seguimiento ?></span>
@@ -43,12 +62,12 @@
     <div class="card card-body shadow-sm mb-4 mb-lg-0 bg-white">
         <h2 class="h5 mb-4 text-primary">
             Historial del Acuerdo 
-            <a href="#anexos" class="descargar_anexos" title="Descargar archivos adjuntos" data-title="Descargar archivos adjuntos" data-toggle="tooltip">
+            <a href="<?= base_url('index.php/Acuerdos/descargar_zip/' . $acuerdo[0]->acuerdo_id) ?>" title="Descargar archivos adjuntos" data-title="Descargar archivos adjuntos" data-toggle="tooltip">
                 <i class="fas fa-cloud-download-alt text-primary"></i>
             </a>
         </h2>
         <div id="historial" class="container" style="max-height: 500px; overflow-y: scroll;">
-            <?php $this->load->view('acuerdos/ajax/historial', ['historial' => $seguimiento]); ?>
+            <?php $this->load->view('acuerdos/ajax/historial_seguimiento', ['historial' => $seguimiento]); ?>
         </div>
     </div>
 </div>

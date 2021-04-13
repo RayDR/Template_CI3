@@ -3,6 +3,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Acuerdos extends CI_Controller {
 
+    private $rootPR = 'C:/SvrArchivos/sieval/Acuerdos/'; // PATH a archivos locales ( Dentro de la app )
+    private $rootPL = FCPATH . 'uploads/Acuerdos/';      // PATH para guardarlo en otro directorio ( Fuera de la app )
+
 	public function __construct()
     {
         parent::__construct();
@@ -50,7 +53,11 @@ class Acuerdos extends CI_Controller {
         // Validar que la edición este permitida
         if ( $acuerdo_id ){
             $historial = $this->model_acuerdos->get_acuerdos_detalle($acuerdo_id);
-            if ( $historial[0]->estatus_seguimiento == 'Nuevo' ){                
+            $usuario   = $this->session->userdata('uid');
+            if (
+                $historial[0]->estatus_seguimiento == 'Nuevo' &&
+                ( $historial[0]->usuario_id_registra == $usuario || $historial[0]->usuario_id_envia == $usuario ) 
+            ){                
                 $data = array(
                     'titulo'    => 'Edición Acuerdo',
                     'view'      => 'acuerdos/editar',
@@ -59,9 +66,18 @@ class Acuerdos extends CI_Controller {
                     'historial' => $historial[0]
                 );
                 $json['html'] = $this->load->view( $data['view'], $data, TRUE );
+            } else if( ( $historial[0]->usuario_id_registra == $usuario || $historial[0]->usuario_id_envia == $usuario ) ){
+                $data = array(
+                    'titulo'        => 'Nuevo Seguimiento',
+                    'view'          => 'acuerdos/editar_seguimiento',
+                    'archivos'      => $this->model_acuerdos->get_archivos_acuerdo($acuerdo_id),
+                    'acuerdo_id'    =>  $acuerdo_id,
+                    'historial'     =>  $historial
+                );
+                $json['html'] = $this->load->view( $data['view'], $data, TRUE );
             } else {
                 $json['exito'] = FALSE;
-                $json['error'] = 'No es posible editar este acuerdo, debido a que este proceso ya ha iniciado.';
+                $json['error'] = 'No tiene permisos para editar este acuerdo.';
             }
         } else {
             $json['exito'] = FALSE;
@@ -129,6 +145,30 @@ class Acuerdos extends CI_Controller {
             $json['error'] = 'No se recibió el número de acuerdo';
         }
         return print(json_encode($json));
+    }
+
+    public function descargar_zip($acuerdo_id){
+        try{
+            $this->load->library('zip');
+
+            $db_acuerdo = $this->model_acuerdos->get_acuerdos(['acuerdo_id' => $acuerdo_id, 'estatus' => 1]);
+            if ( !$db_acuerdo )
+                throw new Exception("No se encontró el acuerdo.", 1);
+            $fecha         = date('dmY');
+            $localUploads  = "{$this->rootPL}/{$db_acuerdo[0]->ejercicio_acuerdo}/{$acuerdo_id}/";
+
+            if ( is_file($localUploads) || is_dir($localUploads)){
+                $this->zip->read_dir( $localUploads, FALSE );
+                // $this->zip->clear_data(); // Usado para agregar multiples carpetas
+                $this->zip->download( "Anexos-{$acuerdo_id}_{$fecha}.zip" );
+            } else 
+                throw new Exception("No se encontró el directorio.", 2);
+             
+
+        }catch( Exception $e ){
+            header("HTTP/1.1 404 Not Found");
+            echo 'Error: ',  $e->getMessage(), "\n";
+        }
     }
 
 /*
@@ -204,7 +244,35 @@ class Acuerdos extends CI_Controller {
         $data = array(
             'titulo'    => 'Planificador de Acuerdos',
             'acuerdos'  => $acuerdos,
-            'view'      => 'acuerdos/ajax/scheduler'
+            'view'      => 'acuerdos/ajax/planificador_acuerdos'
+        );
+        $json['html'] = $this->load->view( $data['view'], $data, TRUE );
+        return print(json_encode( $json ));
+    }
+
+    public function get_historial(){
+        $json = array('exito' => TRUE);
+        
+        $acuerdo_id     = $this->input->post('acuerdo_id');
+        $seguimiento_id = $this->input->post('seguimiento_id');
+        $historial      = $this->model_acuerdos->get_acuerdos_detalle($acuerdo_id);
+        $archivos       = $this->model_acuerdos->get_archivos_acuerdo($acuerdo_id);
+        $data = array(
+            'acuerdo_id'        => $acuerdo_id,
+            'seguimiento_id'    => $seguimiento_id,
+            'historial'         => $historial,
+            'archivos'          => $archivos,
+            'view'      => 'acuerdos/ajax/historial_completo'
+        );
+        $json['html'] = $this->load->view( $data['view'], $data, TRUE );
+        return print(json_encode( $json ));
+    }
+
+    public function get_modal_exitoso(){
+        $json = array('exito' => TRUE);
+        
+        $data = array(
+            'view'      => 'acuerdos/mensajes/guardado'
         );
         $json['html'] = $this->load->view( $data['view'], $data, TRUE );
         return print(json_encode( $json ));
@@ -317,25 +385,41 @@ class Acuerdos extends CI_Controller {
         $tema           = $this->input->post('tema');
         $ejercicio      = date('Y');
 
-        if ( ! $seguimiento_id || ! $acuerdo_id || ! $acuerdos || ! $destino || ! $tema ){
+        if ( !$seguimiento_id || !$acuerdo_id || !$acuerdos || !$destino ){
             $json['exito']   = FALSE;
             $json['mensaje'] = 'Falló al recibir los datos para seguimiento al acuerdo';
-        } else {               
-            $datos_seguimiento  = array(
-                'seguimiento_id'=> $seguimiento_id,
-                'acuerdo_id'    => $acuerdo_id,
-                'area_destino'  => $destino,
-                'acuerdos'      => $acuerdos,
-                'tema'          => $tema,
-                'ejercicio'     => $ejercicio,
-                'estatus_acuerdo'   => 1,
-                'usuario_id'        => $this->session->userdata('uid')
-            );
+        } else {
+            if ( $tema ){
+                $datos_seguimiento  = array(
+                    'seguimiento_id'=> $seguimiento_id,
+                    'acuerdo_id'    => $acuerdo_id,
+                    'area_destino'  => $destino,
+                    'acuerdos'      => $acuerdos,
+                    'tema'          => $tema,
+                    'ejercicio'     => $ejercicio,
+                    'estatus_acuerdo'   => 1,
+                    'usuario_id'        => $this->session->userdata('uid')
+                );
 
-            $resultado     = $this->model_acuerdos->update_acuerdo($datos_seguimiento);
-            $json['exito'] = $resultado['exito'];
-            if ( $json['exito'] == FALSE )
-                $json['mensaje'] = $resultado['error'];
+                $resultado     = $this->model_acuerdos->update_acuerdo($datos_seguimiento);
+                $json['exito'] = $resultado['exito'];
+                if ( $json['exito'] == FALSE )
+                    $json['mensaje'] = $resultado['error'];
+            } else {
+                $datos_seguimiento  = array(
+                    'seguimiento_id'=> $seguimiento_id,
+                    'area_destino'  => $destino,
+                    'acuerdos'      => $acuerdos,
+                    'ejercicio'     => $ejercicio,
+                    'estatus_acuerdo'   => 2,
+                    'usuario_id'        => $this->session->userdata('uid')
+                );
+
+                $resultado     = $this->model_acuerdos->update_seguimiento($datos_seguimiento);
+                $json['exito'] = $resultado['exito'];
+                if ( $json['exito'] == FALSE )
+                    $json['mensaje'] = $resultado['error'];
+            }            
         }
         return print(json_encode($json));
     }
@@ -377,16 +461,17 @@ class Acuerdos extends CI_Controller {
     // Función ajax para cargar documentos
     public function anexar_documento(){
         $json           = array('exito' => TRUE, 'error' => '');
+        $ejercicio      = date('Y');
         $acuerdo_id     = $this->input->post('acuerdo');
         $seguimiento_id = $this->input->post('seguimiento');
-        $ejercicio      = date('Y');
+        $editar         = $this->input->post('modalidad')? 
+                            filter_var( $this->input->post('modalidad'), FILTER_VALIDATE_BOOLEAN ): 
+                            FALSE;
 
         if ( !empty($_FILES) ) {
             // Carga de documentos
-            $rootUF        = 'C:/SvrArchivos/sieval/Acuerdos/';
-            $rootUL        = FCPATH . 'uploads/Acuerdos/';
-            $uploadFolder  = "{$rootUF}/{$ejercicio}/{$acuerdo_id}/";
-            $localUploads  = "{$rootUL}/{$ejercicio}/{$acuerdo_id}/";
+            $uploadFolder  = "{$this->rootPR}/{$ejercicio}/{$acuerdo_id}/";
+            $localUploads  = "{$this->rootPL}/{$ejercicio}/{$acuerdo_id}/";
 
             // Configuración de Libreriía CI Upload
             $config['upload_path']   = $uploadFolder; 
@@ -394,20 +479,32 @@ class Acuerdos extends CI_Controller {
             $config['overwrite']     = 1; 
 
             // Checar directorios Raiz y sus configuraciones
-            if ( !file_exists($rootUF) && !is_dir($rootUF) )
-                mkdir( $rootUF, 0777 ); // Crear directorio si no existe
-            if ( !file_exists($rootUL) && !is_dir($rootUL) )
-                mkdir( $rootUL, 0777 ); // Crear directorio si no existe
+            if ( !file_exists($this->rootPR) && !is_dir($this->rootPR) )
+                mkdir( $this->rootPR, 0777 ); // Crear directorio si no existe
+            if ( !file_exists($this->rootPL) && !is_dir($this->rootPL) )
+                mkdir( $this->rootPL, 0777 ); // Crear directorio si no existe
 
-            if ( !file_exists($rootUF . "{$ejercicio}/") && !is_dir($rootUF . "{$ejercicio}/") )
-                mkdir( $rootUF . "{$ejercicio}/", 0777 ); // Crear directorio si no existe
-            if ( !file_exists($rootUL . "{$ejercicio}/") && !is_dir($rootUL . "{$ejercicio}/") )
-                mkdir( $rootUL . "{$ejercicio}/", 0777 ); // Crear directorio si no existe
+            if ( !file_exists($this->rootPR . "{$ejercicio}/") && !is_dir($this->rootPR . "{$ejercicio}/") )
+                mkdir( $this->rootPR . "{$ejercicio}/", 0777 ); // Crear directorio si no existe
+            if ( !file_exists($this->rootPL . "{$ejercicio}/") && !is_dir($this->rootPL . "{$ejercicio}/") )
+                mkdir( $this->rootPL . "{$ejercicio}/", 0777 ); // Crear directorio si no existe
 
             if ( !file_exists($uploadFolder) && !is_dir($uploadFolder) )
                 mkdir( $uploadFolder, 0777 ); // Crear directorio si no existe
             if ( !file_exists($localUploads) && !is_dir($localUploads) )
                 mkdir( $localUploads, 0777 ); // Crear directorio si no existe
+
+            if ( $editar ){
+                $files = glob($uploadFolder); //Ficheros del directorio
+                foreach($files as $file){
+                    if( is_file($file) ) unlink($file);              // Eliminando fichero
+                }
+
+                $files = glob($localUploads); //Ficheros del directorio 
+                foreach($files as $file){
+                    if( is_file($file) ) unlink($file);              // Eliminando fichero
+                }                 
+            }
              
             // Subir el archivo al servidor 
                 // Modo Múltiple
@@ -422,75 +519,6 @@ class Acuerdos extends CI_Controller {
                         $json['previsualizador'] .= $_FILES['file']['name'][$key] . ',';
                     // Guardar info en BD
                     $this->model_acuerdos->anexos_acuerdos_seguimiento( $seguimiento_id, $_FILES['file']['name'][$key] );
-                }
-                else
-                    $json['fallidos'] .= $_FILES['file']['name'][$key] . ',';
-            }
-        } else {
-            $json['exito'] = FALSE;
-            $json['error'] = 'No se recibió ningún archivo.';
-        }
-        return print(json_encode( $json ));
-    }
-
-    // Función ajax para cargar documentos modo edición
-    public function anexar_documento_edicion(){
-        $json           = array('exito' => TRUE, 'error' => '');
-        $acuerdo_id     = $this->input->post('acuerdo');
-        $seguimiento_id = $this->input->post('seguimiento');
-        $ejercicio      = date('Y');
-
-        if ( !empty($_FILES) ) {
-            // Carga de documentos
-            $rootUF        = 'C:/SvrArchivos/sieval/Acuerdos/';
-            $rootUL        = FCPATH . 'uploads/Acuerdos/';
-            $uploadFolder  = "{$rootUF}/{$ejercicio}/{$acuerdo_id}/";
-            $localUploads  = "{$rootUL}/{$ejercicio}/{$acuerdo_id}/";
-
-            // Configuración de Libreriía CI Upload
-            $config['upload_path']   = $uploadFolder; 
-            $config['allowed_types'] = '*';
-            $config['overwrite']     = 1; 
-
-            // Checar directorios Raiz y sus configuraciones
-            if ( !file_exists($rootUF) && !is_dir($rootUF) )
-                mkdir( $rootUF, 0777 ); // Crear directorio si no existe
-            if ( !file_exists($rootUL) && !is_dir($rootUL) )
-                mkdir( $rootUL, 0777 ); // Crear directorio si no existe
-
-            if ( !file_exists($rootUF . "{$ejercicio}/") && !is_dir($rootUF . "{$ejercicio}/") )
-                mkdir( $rootUF . "{$ejercicio}/", 0777 ); // Crear directorio si no existe
-            if ( !file_exists($rootUL . "{$ejercicio}/") && !is_dir($rootUL . "{$ejercicio}/") )
-                mkdir( $rootUL . "{$ejercicio}/", 0777 ); // Crear directorio si no existe
-
-            if ( !file_exists($uploadFolder) && !is_dir($uploadFolder) )
-                mkdir( $uploadFolder, 0777 ); // Crear directorio si no existe
-            if ( !file_exists($localUploads) && !is_dir($localUploads) )
-                mkdir( $localUploads, 0777 ); // Crear directorio si no existe
-
-            $files = glob($uploadFolder); //Ficheros del directorio
-            foreach($files as $file){
-                if( is_file($file) ) unlink($file);              // Eliminando fichero
-            }
-
-            $files = glob($localUploads); //Ficheros del directorio 
-            foreach($files as $file){
-                if( is_file($file) ) unlink($file);              // Eliminando fichero
-            }
-             
-            // Subir el archivo al servidor 
-                // Modo Múltiple
-            foreach($_FILES['file']['tmp_name'] as $key => $file) {
-                $tempFile = $_FILES['file']['tmp_name'][$key];
-                $targetFile =  $uploadFolder. $_FILES['file']['name'][$key];
-                if ( move_uploaded_file($tempFile,$targetFile) ){
-                    // Mover el archivo a Uploads
-                    $previsualizador            = $localUploads . $_FILES['file']['name'][$key];
-                    $json['previsualizador']    = '';
-                    if ( !copy($targetFile, $previsualizador) )
-                        $json['previsualizador'] .= $_FILES['file']['name'][$key] . ',';
-                    // Guardar info en BD
-                    $this->model_acuerdos->anexos_acuerdos_seguimiento( $seguimiento_id, $_FILES['file']['name'][$key], FALSE );
                 }
                 else
                     $json['fallidos'] .= $_FILES['file']['name'][$key] . ',';
