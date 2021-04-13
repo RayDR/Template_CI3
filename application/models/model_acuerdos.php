@@ -312,6 +312,41 @@ class Model_acuerdos extends CI_Model {
 	}
 
 	/**
+		* Actualizar el seguimiento
+		*
+		* @access public
+		* @param  array   $datos 		Datos a iterar para actualizar
+		*
+		* @return resultado[]
+	*/
+	public function update_seguimiento($datos){
+		$resultado = array('exito' => TRUE);
+		try {
+			$this->db->trans_begin();
+
+			if ( is_array($datos) ){
+				$datos_db = array(
+					'seguimiento' 				=> $datos['acuerdos'],
+					'combinacion_area_id' 		=> $datos['area_destino'],
+					'usuario_acuerda_id' 		=> $datos['usuario_id'],
+					'ejercicio' 				=> $datos['ejercicio'],
+					'estatus_acuerdo_id' 		=> $datos['estatus_acuerdo']
+				);
+				$this->db->where('seguimiento_acuerdo_id', $datos['seguimiento_id']);
+				$this->db->update('seguimientos_acuerdos', $datos_db);
+			} else 
+				throw new Exception('La estructura de los datos es incorrecta.');
+
+			$this->db->trans_commit();
+		} catch (Exception $e) {
+			$this->db->trans_rollback();
+			$resultado['exito'] = FALSE;
+			$resultado['error'] = $e->getMessage();
+		}
+		return $resultado;
+	}
+
+	/**
 		* Actualizar el usuario que recibe de seguimiento
 		*
 		* @access public
@@ -347,7 +382,7 @@ class Model_acuerdos extends CI_Model {
 		*
 		* @return resultado[]
 	*/
-	public function anexos_acuerdos_seguimiento($seguimiento_id, $archivo){
+	public function anexos_acuerdos_seguimiento($seguimiento_id, $archivo, $modo_edicion = FALSE){
 		$resultado = array('exito' => TRUE);
 		try {
 			$this->db->trans_begin();
@@ -355,7 +390,7 @@ class Model_acuerdos extends CI_Model {
 			$this->db->where('seguimiento_acuerdo_id', $seguimiento_id);
 			$archivos_existentes = $this->db->get('seguimientos_acuerdos')->row('archivo_anexo');
 
-			if ( $archivos_existentes )
+			if ( $archivos_existentes && !$modo_edicion )
 				$archivo = $archivo . ',' . $archivos_existentes; // Separar por coma
 						
 			$datos_db = array(

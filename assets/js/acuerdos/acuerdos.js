@@ -185,3 +185,9 @@ function ffinalizar_acuerdo(e){
             fu_notificacion(respuesta.error, 'danger', 2000);
     }
 }
+
+function frecargar(){
+    setTimeout(function() {
+        window.location.replace( url('Acuerdos') ); 
+    }, 1000);
+}

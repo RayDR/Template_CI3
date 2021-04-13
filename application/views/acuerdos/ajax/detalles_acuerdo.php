@@ -6,11 +6,10 @@
         <span class="sr-only">Mostrar más</span>
     </button>
     <div class="dropdown-menu">
-        <?php if ( 
-        	( $acuerdos[0]->usuario_id_registra == $this->session->userdata('uid')
+        <?php if (
+        	$acuerdos[0]->usuario_id_registra 	== $this->session->userdata('uid')
         		||
-        	  $acuerdos[0]->usuario_id_envia 	== $this->session->userdata('uid') ) &&
-        	$acuerdos[0]->estatus_seguimiento == 'Nuevo' 
+        	$acuerdos[0]->usuario_id_envia 		== $this->session->userdata('uid')
         ): ?>
         <a class="dropdown-item editar-acuerdo" href="#editar-acuerdo" data-acuerdo="<?= $acuerdos[0]->acuerdo_id ?>">Editar</a>
         <div class="dropdown-divider"></div>

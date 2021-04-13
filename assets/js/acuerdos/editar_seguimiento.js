@@ -1,5 +1,19 @@
 $(document).ready(function() {
     $('#guardar').click(fguardar);
+
+    var datos_select2 = fu_json_query(url('Configurador/get_areas_select2'));
+    if ( datos_select2 ){
+        if ( datos_select2.exito ){
+            $('.areas_select2').select2({
+                data: datos_select2.result,
+                pagination: {
+                    'more': true
+                }
+            });
+
+            $('#area_destino').val($('#remitente').val()).trigger('change');
+        }
+    }
 });
 
 function fguardar(e){
@@ -17,11 +31,15 @@ function fguardar(e){
             'nombre': 'acuerdo_id'
         },
         {
-            'nombre': 'destino'
+            'nombre': 'seguimiento_id'
+        },
+        {
+            'nombre': 'area_destino',
+            'texto' : 'Área de Destino'
         },
         {
             'nombre': 'acuerdos',
-            'texto' : 'Resumen'
+            'texto' : 'Acuerdos'
         }
     ];
 
@@ -30,14 +48,17 @@ function fguardar(e){
         inputs.forEach( function(input, index) {
             let valor           = $(`#${input.nombre}`).val();
             datos[input.nombre] = valor;
-
-            if (  valor == '' )
-                errores += `El campo <a href="#${input.nombre}">${input.texto}</a> es requerido.`;
+            if (  valor == '' ){
+                if ( input.nombre == 'acuerdo_id' )
+                    errores += 'No se recibió el número de acuerdo, por favor recargue la página';
+                else
+                    errores += `El campo <a href="#${input.nombre}">${input.texto}</a> es requerido.`;
+            }
         });
 
         if ( ! errores ){
             respuesta   = fu_json_query(
-                url('Acuerdos/finalizar_acuerdo', true, false),
+                url('Acuerdos/edicion_acuerdo', true, false),
                 datos 
             );
             if ( respuesta.exito ){
@@ -51,12 +72,17 @@ function fguardar(e){
                     if ( documentos ){
                         documentos.processQueue();
                         documentos.on("successmultiple", function(files, response) {
-                            console.log(response)                           ;
-                            console.log(files)                           ;
+                            // Evento al finalizar la carga
                         });
-                        var historial = fu_muestra_vista(url('Acuerdos/get_historial',true,false));
+                        var historial = fu_muestra_vista(
+                            url('Acuerdos/get_historial', true, false), 
+                            {
+                                'acuerdo_id'     : $('#acuerdo_id').val(),
+                                'seguimiento_id' : $('#seguimiento_id').val()
+                            }
+                        );
                         if ( historial )
-                            $('#ver-historial').html(historial.html); 
+                            $('#ver-historial').html( historial ); 
                         // Mostrar modal de guardado exitoso
                         fu_modal(
                             '', fu_muestra_vista(url('Acuerdos/get_modal_exitoso', true, false)),
@@ -71,7 +97,7 @@ function fguardar(e){
                 } else{
                     $('#guardar').prop({disabled: false});
                     frecargar();
-                }                
+                }
             } else
                 fu_notificacion(respuesta.mensaje, 'danger');
         } else {
@@ -83,6 +109,6 @@ function fguardar(e){
     } catch(e) {
         $('#guardar').prop({disabled: false});
         $('#guardar').html(`Guardar`);
-        fu_alerta('Ha ocurrido un error al actualizar el estatus del acuerdo, intentelo más tarde.', 'danger');
+        fu_alerta('Ha ocurrido un error al guardar el acuerdo, intentelo más tarde.', 'danger');
     }
 }
