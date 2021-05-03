@@ -51,7 +51,7 @@ class Model_catalogos extends CI_Model {
 				}
 			} else
 				$this->db->where('estatus', 1);
-			$menus = $this->db->get('unidades_medida');
+			$menus = $this->db->get('vw_unidades_medida');
 			if ( $tipo_retorno )
 				return $menus->result();
 			else
@@ -140,7 +140,7 @@ class Model_catalogos extends CI_Model {
 					$this->db->where($key, $filtro);
 				}
 			}
-			$lineas_accion = $this->db->get('lineas_accion');
+			$lineas_accion = $this->db->get('vw_linea_accion');
 			if ( $tipo_retorno )
 				return $lineas_accion->result();
 			else
@@ -168,6 +168,60 @@ class Model_catalogos extends CI_Model {
 				}
 			}
 			$temas = $this->db->get('temas');
+			if ( $tipo_retorno )
+				return $temas->result();
+			else
+				return $temas->result_array();
+		} catch (Exception $e) {
+			return [];
+		}
+	}
+
+	/**
+		* Obtener listado de municipios
+		*
+		* @access public
+		* @param  array   $filtros 			filtros a iterar
+		* @param  boolean $tipo_retorno 	Modo de retonro: 
+		*								 		TRUE - Objeto
+		*								 		FALSE - Array
+		* @return municipios
+	*/
+	public function get_municipios($filtros = NULL, $tipo_retorno = TRUE){
+		try {			
+			if ( is_array($filtros) ){
+				foreach ($filtros as $key => $filtro) {
+					$this->db->where($key, $filtro);
+				}
+			}
+			$temas = $this->db->get('municipios');
+			if ( $tipo_retorno )
+				return $temas->result();
+			else
+				return $temas->result_array();
+		} catch (Exception $e) {
+			return [];
+		}
+	}
+
+	/**
+		* Obtener listado de localidades
+		*
+		* @access public
+		* @param  array   $filtros 			filtros a iterar
+		* @param  boolean $tipo_retorno 	Modo de retonro: 
+		*								 		TRUE - Objeto
+		*								 		FALSE - Array
+		* @return localidades
+	*/
+	public function get_localidades($filtros = NULL, $tipo_retorno = TRUE){
+		try {			
+			if ( is_array($filtros) ){
+				foreach ($filtros as $key => $filtro) {
+					$this->db->where($key, $filtro);
+				}
+			}
+			$temas = $this->db->get('localidades');
 			if ( $tipo_retorno )
 				return $temas->result();
 			else

@@ -8,7 +8,7 @@
     </nav>
     <div class="d-flex justify-content-between w-100 flex-wrap">
         <div class="mb-3 mb-lg-0">
-            <h1 class="h4">Registrar Actividad</h1>
+            <h1 class="h4">Editar Actividad</h1>
         </div>
     </div>
 </div>
@@ -16,15 +16,13 @@
     <div class="col-12 mb-4">
         <div class="card border-light shadow-sm components-section">
             <div class="card-body">
-                <div class="mb-3">
-                    <?php $this->load->view(RUTA_TEMA_UTIL . '/alertas'); ?>
-                </div>
+                <?php $this->load->view(RUTA_TEMA_UTIL . '/alertas'); ?>
                 <form>
                     <div class="row">
                         <?php if( $this->session->userdata('tuser') == 1 ): ?>
                         <div class="col-12 mb-3">
-                            <label class="my-1 me-2" for="area_origen">Áreas</label>
-                            <select class="form-select areas_select2" id="area_origen" aria-label="Áreas">
+                            <label class="my-1 me-2" for="areas">Áreas</label>
+                            <select class="form-select areas_select2" id="area" aria-label="Áreas">
                                 <option selected disabled>Seleccione una opción</option>
                             </select>
                         </div>

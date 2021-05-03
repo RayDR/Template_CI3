@@ -13,7 +13,7 @@
                             <label for="text">Número de Cuenta</label>
                             <div class="input-group">
                                 <span class="input-group-text" id="basic-addon1"><span class="fas fa-user-tie"></span></span>
-                                <input id="usuario" type="text" class="form-control" placeholder="Ej: 123450" autofocus required>
+                                <input id="usuario" type="text" class="form-control" placeholder="Ej: 123450" maxlength="8" autofocus required>
                             </div>
                         </div>
                         <!-- End of Form -->
@@ -23,7 +23,7 @@
                                 <label for="password">Contraseña</label>
                                 <div class="input-group">
                                     <span class="input-group-text" id="basic-addon2"><span class="fas fa-unlock-alt"></span></span>
-                                    <input type="password" placeholder="Ingrese su contraseña" class="form-control" id="password" required>
+                                    <input type="password" placeholder="Ingrese su contraseña" class="form-control" id="password" maxlength="30" required>
                                 </div>
                             </div>
                             <!-- End of Form -->
