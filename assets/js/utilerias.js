@@ -306,7 +306,7 @@ function fu_form_controller(fUrl, formconf = [], inputs = [], contenedor = "main
 |   Requiere un contenido para motrarse
 |   Parametro html = true para insertar código HTML
  */
-function fu_modal(titulo, contenido = "", botones = "", anchura = "lg", tipo = '', static = true){
+function fu_modal(titulo, contenido = "", botones = "", anchura = "xl", tipo = '', static = true){
   var contenedor  = $("#modales"),
       modal       = $("#modal"),
       tiempo      = 100;
@@ -344,7 +344,7 @@ function fu_modal(titulo, contenido = "", botones = "", anchura = "lg", tipo = '
   if( contenido == "" )
     return;
 
-  contenedor.html(fu_muestra_vista( url('Home/modales'), {tipo: tipo} ));
+  contenedor.html(fu_muestra_vista( url('Home/modales', true, false), {tipo: tipo} ));
 
   contenedor  = $("#modales"),
   modal       = $("#modal");

@@ -66,6 +66,9 @@ class Home extends CI_Controller {
             case 'notificacion':
                 $json['html'] = $this->load->view(RUTA_TEMA_EXTRAS .'/modales/modal_notificacion', NULL, TRUE);
                 break;
+            case 'exito':
+                $json['html'] = $this->load->view(RUTA_TEMA_EXTRAS .'/modales/modal_exito', NULL, TRUE);
+                break;
             default:
                 $json['html'] = $this->load->view(RUTA_TEMA_EXTRAS .'/modales/modal_generico', NULL, TRUE);
                 break;
