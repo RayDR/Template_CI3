@@ -10,11 +10,13 @@
             <h1 class="h4">Detalle de Actividades</h1>
         </div>
     </div>
+    <?php if ( $this->session->userdata('tuser') != 2 ): //No consultores ?> 
     <div class="btn-toolbar dropdown">
       <a id="nueva_actividad" href="#registrar" class="btn btn-dark btn-sm me-2 dropdown-toggle">
         <span class="fas fa-plus me-2"></span>Nueva Actividad
       </a>
     </div>
+    <?php endif; ?>
 </div>
 <div class="card border-light shadow-sm mb-4">
     <div class="card-body">

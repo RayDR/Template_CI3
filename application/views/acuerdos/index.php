@@ -10,6 +10,7 @@
             <h1 class="h4">Seguimiento de Acuerdos</h1>
         </div>
     </div>
+    <?php if ( $this->session->userdata('tuser') != 2 ): //No consultores ?> 
     <div class="btn-group" role="group" aria-label="Botones de Acción">
         <a id="nuevo_acuerdo" href="#registrar" class="btn btn-dark btn-sm">
             <span class="fas fa-plus me-2"></span><span class="d-none d-md-inline">Nuevo Acuerdo</span>
@@ -21,6 +22,7 @@
             <span class="fas fa-search me-2"></span><span class="d-none d-md-inline">Buscar Acuerdo</span>
         </button>
     </div>
+    <?php endif; ?>
 </div>
 <div class="card border-light shadow-sm mb-4">
     <div class="card-body">

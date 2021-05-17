@@ -210,18 +210,39 @@ class Actividades extends CI_Controller {
         $unidad_medida                  = $this->input->post('unidad_medida');
         $tipo_medicion                  = $this->input->post('tipo_medicion');
         $grupo_beneficiado              = $this->input->post('grupo_beneficiado');
-        $fisico_objetivo_anual          = $this->input->post('fisico_objetivo_anual');
-        $programado_fisico              = $this->input->post('programado-fisico');
-        $financiero_objetivo_anual      = $this->input->post('financiero_objetivo_anual');
-        $programado_financiero          = $this->input->post('programado-financiero');
+        $programado_fisico              = $this->input->post('fisico_objetivo_anual');
+        $programado_fisico_mensual      = $this->input->post('programado-fisico');
+        $programado_financiero          = $this->input->post('financiero_objetivo_anual');
+        $programado_financiero_mensual  = $this->input->post('programado-financiero');
         $municipio                      = $this->input->post('municipio');
         $localidad                      = $this->input->post('localidad');
+
+        $datos  = array(
+            'area_origen'                   => $area_origen,
+            'linea_accion'                  => $linea_accion,
+            'detalle_actividad'             => $detalle_actividad,
+            'unidad_medida'                 => $unidad_medida,
+            'tipo_medicion'                 => $tipo_medicion,
+            'grupo_beneficiado'             => $grupo_beneficiado,
+            'programado_fisico'             => $programado_fisico,
+            'programado_fisico_mensual'     => $programado_fisico_mensual,
+            'programado_financiero'         => $programado_financiero,
+            'programado_financiero_mensual' => $programado_financiero_mensual,
+            'usuario_id'                    => $this->session->userdata('uid'),
+            'ejercicio'                     => date('Y')
+        );
+
         if ( $programa_presupuestario ) // Proyecto
         {
-
+            $datos['programa_presupuestario'] = $programa_presupuestario;
+            $json = $this->model_actividades->set_nueva_actividad($datos, TRUE);
+            $json['modo'] = 'proyecto';
         } else                          // Preproyecto 
         {
-
+            $datos['municipio'] = $municipio;
+            $datos['localidad'] = $localidad;
+            $json = $this->model_actividades->set_nueva_actividad($datos, FALSE);
+            $json['modo'] = 'pre-proyecto';
         }
         return print(json_encode($json));
     }
@@ -233,8 +254,10 @@ class Actividades extends CI_Controller {
 
         $condicion = array( 'direccion_id' => $combinacion->direccion_id );
         $json['unidades_medida'] = $this->model_catalogos->get_unidades_medida($condicion);
+
         if ( !$json['unidades_medida'] )
             $json['unidades_medida'] = $this->model_catalogos->get_unidades_medida();
+
         return print(json_encode($json));
     }
 
