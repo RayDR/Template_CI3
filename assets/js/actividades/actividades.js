@@ -5,6 +5,8 @@ var dt,
     vRegistro    = 'Actividades/registrar',
     vSeguimiento = 'Actividades/seguimiento';
 
+$(document).off('click.detalle', 'tbody tr')
+           .on('click.detalle' , 'tbody tr', fmostrar_detalle);
 $(document).ready(function() {
     $('#nueva_actividad').click( fnueva_actividad );
     fCargar_DataTable();
@@ -47,12 +49,71 @@ function fCargar_DataTable(){
             columns: [
                 { data: 'actividad_id' },
                 { data: 'actividad_general' },
-                { data: 'actividad' },
-                { data: null },
-                { data: null },
-                { data: 'beneficiados' },     
+                { data: 'programado_fisico' },
+                { data: 'realizado_fisico' },
+                {
+                    data: null,
+                    render: function(data){
+                        var progreso = 0,
+                            color    = 'dark',
+                            html     = '';
+                        if ( data.realizado_fisico ){
+                            progreso = data.realizado_fisico / data.programado_fisico * 100;
+                        }
+                        html  = `
+                            <div class="progress-wrapper">
+                                <div class="progress-info">
+                                    <div class="progress-label">
+                                        <span class="text-${color}">Progreso físico</span>
+                                    </div>
+                                    <div class="progress-percentage">
+                                        <span>${progreso}%</span>
+                                    </div>
+                                </div>
+                                <div class="progress progress-xl">
+                                    <div class="progress-bar bg-${color}" role="progressbar" style="width: ${progreso}%;" aria-valuenow="${progreso}" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        `;
+                        return html;
+                    }
+                },
+                { data: 'programado_financiero' },
+                { data: 'realizado_financiero' },
+                {
+                    data: null,
+                    render: function(data){
+                        var progreso = 0,
+                            color    = 'dark',
+                            html     = '';
+                        if ( data.realizado_financiero ){
+                            progreso = data.realizado_financiero / data.programado_financiero * 100;
+                        }
+                        html  = `
+                            <div class="progress-wrapper">
+                                <div class="progress-info">
+                                    <div class="progress-label">
+                                        <span class="text-${color}">Progreso financiero</span>
+                                    </div>
+                                    <div class="progress-percentage">
+                                        <span>${progreso}%</span>
+                                    </div>
+                                </div>
+                                <div class="progress progress-xl">
+                                    <div class="progress-bar bg-${color}" role="progressbar" style="width: ${progreso}%;" 
+                                         aria-valuenow="${progreso}" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        `;
+                        return html;
+                    }
+                },
+                { data: 'beneficiados' },
+                { data: 'cantidad_beneficiario' },
                 { data: 'unidad_medida' },
-                { data: 'estatus_actividad' }
+                { data: 'linea_accion' },
+                { data: 'objetivo_programa' },
+                { data: 'estrategia_programa' }
             ],
             drawCallback: function (settings) {
                 $('[data-toggle="tooltip"]').tooltip({ boundary: 'window' });
@@ -70,4 +131,13 @@ function fnueva_actividad(e){
     var vista = fu_muestra_vista('Actividades/registrar');
     if ( vista )
         $('#ajax-html').html(vista);
+}
+
+function fmostrar_detalle(){
+    var actividad = dt.row($(this).closest('tr')).data();
+    var html = fu_muestra_vista(url('Actividades/detalles_actividad'), { actividad_id: actividad.actividad_id });
+    if ( html ){
+        fu_modal('Detalle de Actividad', html );
+    } else 
+        fu_modal('404');
 }

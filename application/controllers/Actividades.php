@@ -10,7 +10,15 @@ class Actividades extends CI_Controller {
         $this->load->model('model_actividades');
         
         if ( !$this->session->estatus_usuario_sesion() ){
-            print(json_encode(array('estatus' => 'sess_expired', 'mensaje' => 'Su sesión ha caducado. Por favor, recargue la página.')));
+            print(
+                json_encode(
+                    array('exito'   => FALSE, 
+                          'error'   => 'Sesión caducada. Recargue la página',
+                          'estatus' => 'sess_expired', 
+                          'mensaje' => 'Su sesión ha caducado. Por favor, recargue la página.'
+                    )
+                )
+            );
             redirect(base_url('index.php/Home/login'),'refresh');
         }
     }
@@ -53,6 +61,49 @@ class Actividades extends CI_Controller {
         return print(json_encode($json));
     
     }
+
+    public function editar()
+    {
+        $json = array('exito' => TRUE);
+        $actividad_id = $this->input->post('actividad');
+        if ( $actividad_id ){
+            $encabezado   = $this->model_actividades->get_actividad($actividad_id);
+            $detalles     = $this->model_actividades->get_seguimiento_actividades($actividad_id);
+            $data = array(
+                'titulo'    => 'Registrar',
+                'view'      => 'actividades/editar',
+                'encabezado'=> $encabezado,
+                'detalles'  => $detalles,
+            );
+            $json['html'] = $this->load->view( $data['view'], $data, TRUE );
+        } else 
+            $json = array('exito' => FALSE, 'error' => 'No se recibió el folio de la actividad.');
+        return print(json_encode($json));
+    
+    }
+
+    public function reporte()
+    {
+        $json = array('exito' => TRUE);
+        $actividad_id = $this->input->post('actividad');
+        if ( $actividad_id ){
+            $encabezado   = $this->model_actividades->get_actividad($actividad_id);
+            $detalles     = $this->model_actividades->get_seguimiento_actividades($actividad_id);
+            if ( $encabezado && $detalles ){
+                $data = array(
+                    'titulo'    => 'Registrar',
+                    'view'      => 'actividades/reporte',
+                    'encabezado'=> $encabezado,
+                    'detalles'  => $detalles,
+                );
+                $json['html'] = $this->load->view( $data['view'], $data, TRUE );
+            } else 
+                $json = array('exito' => FALSE, 'error' => 'No se recuperó información sobre esta actividad.');
+        } else 
+            $json = array('exito' => FALSE, 'error' => 'No se recibió el folio de la actividad.');
+        return print(json_encode($json));    
+    }
+
 /*
 |--------------------------------------------------------------------------
 | AJAX 
@@ -60,6 +111,22 @@ class Actividades extends CI_Controller {
 */
     
     // -------------- VISTAS
+
+    public function detalles_actividad(){
+        $json = array('exito' => TRUE);
+        $actividad_id = $this->input->post('actividad_id');
+        if ( $actividad_id ){
+            $data = array(
+                'titulo'    => 'Detalle de Actividad',
+                'encabezado'=> $this->model_actividades->get_actividad($actividad_id),
+                'detalles'  => $this->model_actividades->get_seguimiento_actividades($actividad_id),
+                'view'      => 'actividades/detalle_actividad'
+            );
+            $json['html'] = $this->load->view( $data['view'], $data, TRUE );
+        } else 
+            $json = array('exito' => FALSE, 'error' => 'No se obtuvo el número de actividad.');
+        return print(json_encode($json));
+    }
 
     private function registro_proyecto(){
         $json = array('exito' => TRUE);

@@ -1,4 +1,4 @@
-    <div id="modal" class="modal fade" data-backdrop="static" data-keyboard="false">
+    <div id="modal" class="modal fade" data-backdrop="static" data-keyboard="true">
         <div class="modal-dialog modal-tertiary modal-dialog-centered modal-xl" role="document">
             <div class="modal-content bg-dark text-white">
                 <div class="modal-header">

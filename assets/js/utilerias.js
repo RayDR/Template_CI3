@@ -1,3 +1,9 @@
+(function(){
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+})();
 /*
 |--------------------------------------------------------------------------
 | FUNCIONES GENERALES
@@ -17,7 +23,8 @@ const notyf = new Notyf({
           tagName: 'span',
           color: '#fff'
       },
-      dismissible: true
+      dismissible: true,
+      duration: 5000
     },
     {
       type: 'info',
@@ -27,7 +34,8 @@ const notyf = new Notyf({
           tagName: 'span',
           color: '#fff'
       },
-      dismissible: true
+      dismissible: true,
+      duration: 2500
     },
     {
       type: 'success',
@@ -37,7 +45,8 @@ const notyf = new Notyf({
           tagName: 'span',
           color: '#fff'
       },
-      dismissible: true
+      dismissible: true,
+      duration: 3500
     }
   ]
 });
@@ -160,10 +169,11 @@ function fu_toast(encabezado = "", notificacion = "", tipo = "danger", duracion 
   }, duracion * 1000);
 }
 
-function fu_notificacion(notificacion, tipo='info' ){  
+function fu_notificacion(notificacion, tipo='info', duracion ){  
   notyf.open({
     type: tipo,
-    message: notificacion
+    message: notificacion,
+    duration: duracion
   });
 }
 
@@ -206,8 +216,10 @@ function fu_muestra_vista(vUrl, datos = []){
           data = JSON.parse(data);
           if ( data.exito )
             html = data.html;
-          if ( data.estatus == 'sess_expired' )
-            fu_notificacion((data.mensaje)? data.mensaje : 'Sesión expirada.', 'danger');
+          if ( data.error )
+            fu_notificacion(data.error, 'danger', 5000);
+          if ( data.mensaje )
+            fu_notificacion(data.mensaje, 'info', 2500);
         } catch(e) {
           console.log(e);
           fu_toast('Falló el cargar la vista.');

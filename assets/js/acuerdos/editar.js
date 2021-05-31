@@ -98,12 +98,12 @@ function fguardar(e){
                     frecargar();
                 }
             } else
-                fu_notificacion(respuesta.mensaje, 'danger');
+                fu_notificacion(respuesta.mensaje, 'danger', 5000);
         } else {
             $('#guardar').prop({disabled: false});
             $('#guardar').html(`Guardar`);
             fu_alerta(errores, 'danger');
-            fu_notificacion('Existen campos pendientes por llenar.', 'success');    
+            fu_notificacion('Existen campos pendientes por llenar.', 'success', 3500);    
         }
     } catch(e) {
         $('#guardar').prop({disabled: false});

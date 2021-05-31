@@ -63,8 +63,7 @@ function finicia_datatable(){
             { data: 'folio' },
             { data: 'seguimiento' },
             { data: 'fecha_creacion_acuerdo' },
-            { data: 'fecha_creacion_seguimiento' },
-            { data: 'estatus_seguimiento' }
+            { data: 'fecha_creacion_seguimiento' }
         ],
         drawCallback: function (settings) {
             $('[data-toggle="tooltip"]').tooltip({ boundary: 'window' });
@@ -154,7 +153,7 @@ function fnuevo_seguimiento(e){
         if ( respuesta.exito )
             $('#ajax-html').html(respuesta.html);
         else
-            fu_notificacion(respuesta.error, 'danger', 2000);
+            fu_notificacion(respuesta.error, 'danger', 5000);
     }
 }
 
@@ -168,7 +167,7 @@ function feditar_acuerdo(e){
         if ( respuesta.exito )
             $('#ajax-html').html(respuesta.html);
         else
-            fu_notificacion(respuesta.error, 'danger', 2000);
+            fu_notificacion(respuesta.error, 'danger', 5000);
     }
 }
 
@@ -182,7 +181,7 @@ function ffinalizar_acuerdo(e){
         if ( respuesta.exito )
             $('#ajax-html').html(respuesta.html);
         else
-            fu_notificacion(respuesta.error, 'danger', 2000);
+            fu_notificacion(respuesta.error, 'danger', 5000);
     }
 }
 

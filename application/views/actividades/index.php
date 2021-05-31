@@ -21,17 +21,23 @@
 <div class="card border-light shadow-sm mb-4">
     <div class="card-body">
         <div class="table-responsive">
-            <table id="dtActividades" class="table table-centered table-nowrap mb-0 rounded">
+            <table id="dtActividades" class="table table-hover table-centered table-nowrap mb-0 rounded w-100">
                 <thead class="thead-light">
                     <tr>
                         <th class="">#</th>
                         <th class="">Actividad General</th>
-                        <th class="">Actividad Detallada</th>
-                        <th class="">Programado</th>
-                        <th class="">Realizado</th>
-                        <th class="">Beneficiados</th>
-                        <th class="">Medición</th>
-                        <th class="">Estatus</th>
+                        <th class="">Programado Físico</th>
+                        <th class="">Realizado Físico</th>
+                        <th class="">Progreso Físico</th>
+                        <th class="">Programado Financiero</th>
+                        <th class="">Realizado Financiero</th>
+                        <th class="">Progreso Financiero</th>
+                        <th class="">Beneficiario</th>
+                        <th class="">Cantidad Beneficiados</th>
+                        <th class="">Unidad de Medida</th>
+                        <th class="">Línea de Acción</th>
+                        <th class="">Objetivo</th>
+                        <th class="">Estrategia</th>
                     </tr>
                 </thead>
             </table>

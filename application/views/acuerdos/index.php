@@ -41,7 +41,6 @@
                         <th class="align-middle">Último Acuerdo</th>
                         <th class="align-middle">Fecha Creación</th>
                         <th class="align-middle">Última Modificación</th>
-                        <th class="align-middle">Estatus</th>
                     </tr>
                 </thead>
             </table>

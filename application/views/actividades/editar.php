@@ -87,4 +87,4 @@
     </div>
 </div>
 
-<script src="<?= base_url('assets/js/actividades/registrar.js') ?>" type="text/javascript" charset="utf-8" async defer></script>
+<script src="<?= base_url('assets/js/actividades/editar.js') ?>" type="text/javascript" charset="utf-8" async defer></script>

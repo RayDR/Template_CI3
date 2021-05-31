@@ -33,6 +33,36 @@ class Model_actividades extends CI_Model {
     }
 
     /**
+        * Obtener actividad por id
+        *
+        * @access public
+        * @param  int     $actividad_id     ID
+        * @param  array   $filtros          filtros a iterar
+        * @param  boolean $tipo_retorno     Modo de retonro: 
+        *                                       TRUE - Objeto
+        *                                       FALSE - Array
+        * @return actividad
+    */
+    public function get_actividad($actividad_id, $filtros = NULL, $tipo_retorno = TRUE){
+        try {           
+            if ( is_array($filtros) ){
+                foreach ($filtros as $key => $filtro) {
+                    $this->db->where($key, $filtro);
+                }
+            }
+            $this->db->where('actividad_id', $actividad_id);
+            $actividades = $this->db->get('vw_proyecto_actividades');
+
+            if ( $tipo_retorno )
+                return $actividades->row();
+            else
+                return $actividades->row_array();
+        } catch (Exception $e) {
+            return [];
+        }
+    }
+
+    /**
         * Obtener el seguimiento de las actividades
         *
         * @access public
@@ -52,7 +82,7 @@ class Model_actividades extends CI_Model {
             }
             $this->db->where('actividad_id', $actividad_id);
 
-            $actividades = $this->db->get('vw_seguimiento_acuerdos');
+            $actividades = $this->db->get('vw_seguimiento_actividades');
 
             if ( $tipo_retorno )
                 return $actividades->result();
@@ -100,7 +130,7 @@ class Model_actividades extends CI_Model {
                 if ( isset($preproyecto) )
                     $db_datos['preproyecto'] = $preproyecto;
                 if ( isset($datos['programa_presupuestario']) )
-                    $db_datos['programa_presupuestario'] = $programa_presupuestario;
+                    $db_datos['programa_presupuestario_id'] = $datos['programa_presupuestario'];
 
                 $this->db->insert('proyectos_actividades', $db_datos);
                 $proyecto = $this->db->insert_id();

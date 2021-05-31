@@ -163,7 +163,7 @@ function fajustar_meses(){
 
     if ( total <= 0 ){              // Bloquea
         $(`#programado-${tipo} .meses`).val('').attr({readonly : true});
-    } else if ( total < 100 ){      // Autodistribuye
+    } else if ( total < 10000000000 ){      // Autodistribuye
         let index = 1;
         while( total > 0 ){
             switch (index) {        // Agregar valor a mes
@@ -245,7 +245,6 @@ function fejecuta_calculo_total(tipo){
             `);
         else
             $(`#${tipo}_rebase`).html(`Ajuste el <b>Objetivo Anual</b> o redistribuya el <b>Mensual Ponderado</b> según sea necesario.`);
-        fu_notificacion('Ajuste el Objetivo Anual o el valor mensual según aplique.', 'danger');
     } else {
         meses.each(function(index, mes) { $(mes).removeClass('is-invalid').addClass('is-valid'); });
         exito = true;

@@ -111,12 +111,12 @@ function fguardar(e){
                     window.location.replace( url('Acuerdos') ); 
                 }
             } else
-                fu_notificacion(respuesta.mensaje, 'danger');
+                fu_notificacion(respuesta.mensaje, 'danger', 5000);
         } else {
             $('#guardar').prop({disabled: false});
             $('#guardar').html(`Guardar`);
             fu_alerta(errores, 'danger');
-            fu_notificacion('Existen campos pendientes por llenar.', 'danger');    
+            fu_notificacion('Existen campos pendientes por llenar.', 'danger', 3500);    
         }
     } catch(e) {
         $('#guardar').prop({disabled: false});

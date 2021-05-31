@@ -68,9 +68,6 @@ function fguardar(e){
                     var documentos = Dropzone.forElement("div#cargar_documento");
                     if ( documentos ){
                         documentos.processQueue();
-                        documentos.on("successmultiple", function(files, response) {
-                            // Evento al finalizar la carga
-                        });
                         var historial = fu_muestra_vista(
                             url('Acuerdos/get_historial', true, false), 
                             {
@@ -97,12 +94,12 @@ function fguardar(e){
                 }
                 
             } else
-                fu_notificacion(respuesta.mensaje, 'danger');
+                fu_notificacion(respuesta.mensaje, 'danger', 5000);
         } else {
             $('#guardar').prop({disabled: false});
             $('#guardar').html(`Guardar`);
             fu_alerta(errores, 'danger');
-            fu_notificacion('Existen campos pendientes por llenar.', 'success');    
+            fu_notificacion('Existen campos pendientes por llenar.', 'success', 3500);    
         }
     } catch(e) {        
         $('#guardar').prop({disabled: false});

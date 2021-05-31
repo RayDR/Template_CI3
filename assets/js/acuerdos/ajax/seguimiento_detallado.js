@@ -17,14 +17,14 @@ function fasignar_usuario(){
 		);
 		if ( asignacion ){
 			if ( asignacion.exito ){
-				fu_notificacion('Usuario asignado exitosamente', 'success');
+				fu_notificacion('Usuario asignado exitosamente', 'success', 3000);
 				factualizar_historial();
 			}
 			else
 				fu_notificacion(asignacion.error, 'danger');
 		}
 	} else 
-		fu_notificacion('Falló la operacion. Por favor recargue su ventana', 'danger');
+		fu_notificacion('Falló la operacion. Por favor recargue su ventana', 'danger', 5000);
 }
 
 function factualizar_historial(){
