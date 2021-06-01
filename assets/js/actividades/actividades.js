@@ -67,11 +67,12 @@ function fCargar_DataTable(){
                                         <span class="text-${color}">Progreso físico</span>
                                     </div>
                                     <div class="progress-percentage">
-                                        <span>${progreso}%</span>
+                                        <span>${progreso.toFixed(2)}%</span>
                                     </div>
                                 </div>
                                 <div class="progress progress-xl">
-                                    <div class="progress-bar bg-${color}" role="progressbar" style="width: ${progreso}%;" aria-valuenow="${progreso}" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-${color}" role="progressbar" style="width: ${progreso.toFixed(2)}%;" 
+                                         aria-valuenow="${progreso.toFixed(2)}" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                             </div>
                         `;
@@ -96,12 +97,12 @@ function fCargar_DataTable(){
                                         <span class="text-${color}">Progreso financiero</span>
                                     </div>
                                     <div class="progress-percentage">
-                                        <span>${progreso}%</span>
+                                        <span>${progreso.toFixed(2)}%</span>
                                     </div>
                                 </div>
                                 <div class="progress progress-xl">
-                                    <div class="progress-bar bg-${color}" role="progressbar" style="width: ${progreso}%;" 
-                                         aria-valuenow="${progreso}" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-${color}" role="progressbar" style="width: ${progreso.toFixed(2)}%;" 
+                                         aria-valuenow="${progreso.toFixed(2)}" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                             </div>
                         `;
@@ -140,4 +141,10 @@ function fmostrar_detalle(){
         fu_modal('Detalle de Actividad', html );
     } else 
         fu_modal('404');
+}
+
+function frecargar(){
+    setTimeout(function() {
+        window.location.replace( url('Actividades') ); 
+    }, 1000);
 }

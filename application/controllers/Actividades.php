@@ -3,6 +3,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Actividades extends CI_Controller {
 
+    private $rootPathRemoto = 'C:/SvrArchivos/sieval/Actividades/'; // PATH a archivos locales ( Dentro de la app )
+    private $rootPathLocal  = FCPATH . 'uploads/Actividades/';      // PATH para guardarlo en otro directorio ( Fuera de la app )
+
     public function __construct()
     {
         parent::__construct();
@@ -314,6 +317,34 @@ class Actividades extends CI_Controller {
         return print(json_encode($json));
     }
 
+    public function registrar_reporte(){
+        $json = array('exito' => TRUE);
+        $actividad_detallada = $this->input->post('actividad_detallada');
+
+        if ( $actividad_detallada ){
+            $mes        = $this->input->post('mes');
+            $fisico     = $this->input->post('fisico');
+            $financiero = $this->input->post('financiero');
+
+            $datos  = array(
+                'mes'                   => $mes,
+                'realizado_fisico'      => $fisico,
+                'realizado_financiero'  => $financiero,
+                'usuario_id'            => $this->session->userdata('uid'),
+            );
+
+            $reporte = $this->model_actividades->actualizar_reporte($actividad_detallada, $datos);
+            if ( $reporte ){
+                $json['exito'] = $reporte['exito'];
+                if ( isset($reporte['error']) )
+                    $json['error'] = $reporte['error'];
+            } else
+                $json = array('exito' => FALSE, 'error' => 'No se pudo realizar el reporte del mes.');
+        } else 
+            $json = array('exito' => FALSE, 'error' => 'No se recibió el mes a reportar.');
+        return print(json_encode($json));
+    }
+
     public function select_unidades_medida(){
         $json = array('exito' => TRUE);
         $area_usuario   = array('combinacion_area_id' => $this->input->post('combinacion_area'));
@@ -350,6 +381,62 @@ class Actividades extends CI_Controller {
                 break;
         }
         return print(json_encode($json));
+    }
+
+    // Función ajax para cargar documentos
+    public function anexar_documento(){
+        $json           = array('exito' => TRUE, 'error' => '', 'fallidos' => '');
+        $ejercicio      = date('Y');
+        $actividad_id   = $this->input->post('actividad_id');
+
+        if ( !empty($_FILES) ) {
+            // Carga de documentos
+            $uploadFolder  = "{$this->rootPathRemoto}/{$ejercicio}/{$actividad_id}/";
+            $localUploads  = "{$this->rootPathLocal}/{$ejercicio}/{$actividad_id}/";
+
+            // Configuración de Libreriía CI Upload
+            $config['upload_path']   = $uploadFolder; 
+            $config['allowed_types'] = '*';
+            $config['overwrite']     = 1;
+
+            // Checar directorios Raiz y sus configuraciones
+            if ( !file_exists($this->rootPathRemoto) && !is_dir($this->rootPathRemoto) )
+                mkdir( $this->rootPathRemoto, 0777 ); // Crear directorio si no existe
+            if ( !file_exists($this->rootPathLocal) && !is_dir($this->rootPathLocal) )
+                mkdir( $this->rootPathLocal, 0777 ); // Crear directorio si no existe
+
+            if ( !file_exists($this->rootPathRemoto . "{$ejercicio}/") && !is_dir($this->rootPathRemoto . "{$ejercicio}/") )
+                mkdir( $this->rootPathRemoto . "{$ejercicio}/", 0777 ); // Crear directorio si no existe
+            if ( !file_exists($this->rootPathLocal . "{$ejercicio}/") && !is_dir($this->rootPathLocal . "{$ejercicio}/") )
+                mkdir( $this->rootPathLocal . "{$ejercicio}/", 0777 ); // Crear directorio si no existe
+
+            if ( !file_exists($uploadFolder) && !is_dir($uploadFolder) )
+                mkdir( $uploadFolder, 0777 ); // Crear directorio si no existe
+            if ( !file_exists($localUploads) && !is_dir($localUploads) )
+                mkdir( $localUploads, 0777 ); // Crear directorio si no existe
+
+            // Subir el archivo al servidor 
+            // Modo Múltiple
+            foreach($_FILES['file']['tmp_name'] as $key => $file) {
+                $tempFile   = $_FILES['file']['tmp_name'][$key];
+                $targetFile =  $uploadFolder. $_FILES['file']['name'][$key];
+                if ( move_uploaded_file($tempFile,$targetFile) ){
+                    // Mover el archivo a Uploads
+                    $previsualizador            = $localUploads . $_FILES['file']['name'][$key];
+                    $json['previsualizador']    = '';
+                    if ( !copy($targetFile, $previsualizador) )
+                        $json['previsualizador'] .= $_FILES['file']['name'][$key] . ',';
+                    // Guardar info en BD
+                    $this->model_actividades->registrar_documento( $actividad_id, $_FILES['file']['name'][$key] );
+                }
+                else
+                    $json['fallidos'] .= $_FILES['file']['name'][$key] . ',';
+            }
+        } else {
+            $json['exito'] = FALSE;
+            $json['error'] = 'No se recibió ningún archivo.';
+        }
+        return print(json_encode( $json ));
     }
 
 }

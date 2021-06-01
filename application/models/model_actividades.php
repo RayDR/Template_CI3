@@ -177,6 +177,61 @@ class Model_actividades extends CI_Model {
         return $resultado;
     }
 
+    /**
+        * Actualizar reporte
+        *
+        * @access public
+        * @param  integer  $actividad_detallada_id      ID
+        * @param  arrary   $datos                       Datos del documento
+        *
+        * @return resultado[]
+    */
+    function actualizar_reporte($actividad_detallada_id, $datos){
+        $resultado = array('exito' => TRUE);
+        try {
+            $this->db->trans_begin();
+
+            $this->db->where( 'actividad_detallada_id', $actividad_detallada_id);
+            $this->db->update('actividades_detalladas', $datos);
+
+            $this->db->trans_commit();
+        } catch (Exception $e) {
+            $this->db->trans_rollback();
+            $resultado['exito'] = FALSE;
+            $resultado['error'] = $e;
+        }
+        return $resultado;
+    }
+
+    /**
+        * Registrar documento de actividad
+        *
+        * @access public
+        * @param  integer  $actividad_detallada_id      ID
+        * @param  string   $documento                   Nombre del documento
+        *
+        * @return resultado[]
+    */
+    function registrar_documento($actividad_detallada_id, $documento){
+        $resultado = array('exito' => TRUE);
+        try {
+            $this->db->trans_begin();
+
+            $db_datos = array(
+                'documento' => $documento
+            );
+            $this->db->where('actividad_detallada_id', $actividad_detallada_id);
+            $this->db->update('actividades_detalladas', $db_datos);
+
+            $this->db->trans_commit();
+        } catch (Exception $e) {
+            $this->db->trans_rollback();
+            $resultado['exito'] = FALSE;
+            $resultado['error'] = $e;
+        }
+        return $resultado;
+    }
+
 }
 
 /* End of file model_actividades.php */

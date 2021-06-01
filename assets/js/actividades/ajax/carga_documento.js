@@ -1,13 +1,13 @@
 $(document).ready(function($) {
     carga_doctos    = new Dropzone("div#cargar_documento", 
     { 
-        url:        url(`Acuerdos/anexar_documento`, true, false),
+        url:        url(`Actividades/anexar_documento`, true, false),
         paramName:  'file',
         maxFilesize:        10, // MB
-        maxFiles:           5,
-        parallelUploads:    15,
+        maxFiles:           1,
+        parallelUploads:    1,
         addRemoveLinks:     true,
-        autoProcessQueue:   false,
+        autoProcessQueue:   true,
         uploadMultiple:     true,
         timeout: 180000, // 3minutos
         // TRADUCCIONES
@@ -31,8 +31,7 @@ $(document).ready(function($) {
     });
 
     carga_doctos.on("sendingmultiple", function(file, xhr, formData) {
-        formData.append("acuerdo", $('#acuerdo_id').val());
-        formData.append("seguimiento", $('#seguimiento_id').val());
+        formData.append("actividad_id", $('#actividad_detallada_id').val());
     });
 
     carga_doctos.on("errormultiple", function(file, response) {
@@ -46,7 +45,7 @@ $(document).ready(function($) {
                 if ( response.error )
                     fu_notificacion(response.error, 'info');
                 else
-                    fu_notificacion('Documentos guardados', 'success');
+                    fu_notificacion('Documento guardado', 'success');
             }
             if ( response.error )
                 fu_notificacion(response.error, (response.exito)? 'info': 'danger');
