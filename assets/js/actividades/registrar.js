@@ -1,6 +1,6 @@
 var inputs;
 
-$(document).off('change','.objetivos').on('change','.objetivos',fajustar_meses);
+//$(document).off('change','.objetivos').on('change','.objetivos',fajustar_meses);
 $(document).off('change','.meses').on('change','.meses',fcalcular_total);
 
 $(document).ready(function() {
