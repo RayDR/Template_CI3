@@ -8,7 +8,7 @@ var dt,
 $(document).off('click.detalle', 'tbody tr')
            .on('click.detalle' , 'tbody tr', fmostrar_detalle);
 $(document).ready(function() {
-    $('#nueva_preproyecto').click( fnueva_preproyecto );
+    $('#nuevo_preproyecto').click( fnuevo_preproyecto );
     fCargar_DataTable();
 });
 
@@ -48,73 +48,12 @@ function fCargar_DataTable(){
             },
             columns: [
                 { data: 'preproyecto_id' },
-                { data: 'preproyecto_general' },
-                { data: 'programado_fisico' },
-                { data: 'realizado_fisico' },
-                {
-                    data: null,
-                    render: function(data){
-                        var progreso = 0,
-                            color    = 'dark',
-                            html     = '';
-                        if ( data.realizado_fisico ){
-                            progreso = data.realizado_fisico / data.programado_fisico * 100;
-                        }
-                        html  = `
-                            <div class="progress-wrapper">
-                                <div class="progress-info">
-                                    <div class="progress-label">
-                                        <span class="text-${color}">Progreso físico</span>
-                                    </div>
-                                    <div class="progress-percentage">
-                                        <span>${progreso.toFixed(2)}%</span>
-                                    </div>
-                                </div>
-                                <div class="progress progress-xl">
-                                    <div class="progress-bar bg-${color}" role="progressbar" style="width: ${progreso.toFixed(2)}%;" 
-                                         aria-valuenow="${progreso.toFixed(2)}" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                        `;
-                        return html;
-                    }
-                },
-                { data: 'programado_financiero' },
-                { data: 'realizado_financiero' },
-                {
-                    data: null,
-                    render: function(data){
-                        var progreso = 0,
-                            color    = 'dark',
-                            html     = '';
-                        if ( data.realizado_financiero ){
-                            progreso = data.realizado_financiero / data.programado_financiero * 100;
-                        }
-                        html  = `
-                            <div class="progress-wrapper">
-                                <div class="progress-info">
-                                    <div class="progress-label">
-                                        <span class="text-${color}">Progreso financiero</span>
-                                    </div>
-                                    <div class="progress-percentage">
-                                        <span>${progreso.toFixed(2)}%</span>
-                                    </div>
-                                </div>
-                                <div class="progress progress-xl">
-                                    <div class="progress-bar bg-${color}" role="progressbar" style="width: ${progreso.toFixed(2)}%;" 
-                                         aria-valuenow="${progreso.toFixed(2)}" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                        `;
-                        return html;
-                    }
-                },
-                { data: 'beneficiados' },
-                { data: 'cantidad_beneficiario' },
-                { data: 'unidad_medida' },
-                { data: 'linea_accion' },
-                { data: 'objetivo_programa' },
-                { data: 'estrategia_programa' }
+                { data: 'actividad' },
+                { data: 'cantidad_beneficiarios' },
+                { data: 'inversion' },
+                { data: 'fecha_inicio' },
+                { data: 'fecha_termino' },
+                { data: 'url' }
             ],
             drawCallback: function (settings) {
                 $('[data-toggle="tooltip"]').tooltip({ boundary: 'window' });
@@ -126,7 +65,7 @@ function fCargar_DataTable(){
     }
 }
 
-function fnueva_preproyecto(e){
+function fnuevo_preproyecto(e){
     if ( e == null || e == undefined )
         return;
     var vista = fu_muestra_vista('Preproyectos/registrar');

@@ -215,14 +215,7 @@ class Actividades extends CI_Controller {
 
         return print(json_encode($json));
     }
-
-    public function select_localidades(){
-        $json = array('exito' => TRUE);
-        $condicion = array( 'municipio_id' => $this->input->post('municipio') );
-        $json['localidades']  = $this->model_catalogos->get_localidades();
-        return print(json_encode($json));
-    }
-
+    
     // Función ajax para cargar documentos
     public function anexar_documento(){
         $json           = array('exito' => TRUE, 'error' => '', 'fallidos' => '');

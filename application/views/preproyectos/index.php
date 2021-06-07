@@ -12,8 +12,8 @@
     </div>
     <?php if ( $this->session->userdata('tuser') != 2 ): //No consultores ?> 
     <div class="btn-toolbar dropdown">
-      <a id="nueva_actividad" href="#registrar" class="btn btn-dark btn-sm me-2 dropdown-toggle">
-        <span class="fas fa-plus me-2"></span>Nueva Preproyecto
+      <a id="nuevo_preproyecto" href="#registrar" class="btn btn-dark btn-sm me-2 dropdown-toggle">
+        <span class="fas fa-plus me-2"></span>Nuevo Preproyecto
       </a>
     </div>
     <?php endif; ?>
@@ -25,19 +25,12 @@
                 <thead class="thead-light">
                     <tr>
                         <th class="">#</th>
-                        <th class="">Preproyecto General</th>
-                        <th class="">Programado Físico</th>
-                        <th class="">Realizado Físico</th>
-                        <th class="">Progreso Físico</th>
-                        <th class="">Programado Financiero</th>
-                        <th class="">Realizado Financiero</th>
-                        <th class="">Progreso Financiero</th>
-                        <th class="">Beneficiario</th>
-                        <th class="">Cantidad Beneficiados</th>
-                        <th class="">Unidad de Medida</th>
-                        <th class="">Línea de Acción</th>
-                        <th class="">Objetivo</th>
-                        <th class="">Estrategia</th>
+                        <th class="">Actividad</th>
+                        <th class="">Beneficiarios</th>
+                        <th class="">Inversión</th>
+                        <th class="">Fecha Inicio</th>
+                        <th class="">Fecha Término</th>
+                        <th class="">URL</th>
                     </tr>
                 </thead>
             </table>

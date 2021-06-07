@@ -111,7 +111,7 @@ CREATE TABLE `actividades` (
   KEY `beneficiado_id` (`beneficiado_id`),
   CONSTRAINT `actividades_ibfk_1` FOREIGN KEY (`proyecto_actividad_id`) REFERENCES `proyectos_actividades` (`proyecto_actividad_id`),
   CONSTRAINT `actividades_ibfk_2` FOREIGN KEY (`beneficiado_id`) REFERENCES `beneficiados` (`beneficiado_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -120,7 +120,6 @@ CREATE TABLE `actividades` (
 
 LOCK TABLES `actividades` WRITE;
 /*!40000 ALTER TABLE `actividades` DISABLE KEYS */;
-INSERT INTO `actividades` VALUES (1,'DOJASBDASMDPLASMD','2021-06-07 00:12:36','2021-06-07 00:12:36',1,1,58,1,3,100.00,1,25.00,NULL,NULL);
 /*!40000 ALTER TABLE `actividades` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -148,7 +147,7 @@ CREATE TABLE `actividades_detalladas` (
   PRIMARY KEY (`actividad_detallada_id`) USING BTREE,
   KEY `actividad_id` (`actividad_id`),
   CONSTRAINT `actividades_detalladas_ibfk_1` FOREIGN KEY (`actividad_id`) REFERENCES `actividades` (`actividad_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -157,7 +156,6 @@ CREATE TABLE `actividades_detalladas` (
 
 LOCK TABLES `actividades_detalladas` WRITE;
 /*!40000 ALTER TABLE `actividades_detalladas` DISABLE KEYS */;
-INSERT INTO `actividades_detalladas` VALUES (1,1,'DOJASBDASMDPLASMD',NULL,'2021-06-07 00:12:36','2021-06-07 00:12:36',1,1,10.00,NULL,5.00,NULL,1),(2,1,'DOJASBDASMDPLASMD',NULL,'2021-06-07 00:12:36','2021-06-07 00:12:36',1,2,10.00,NULL,5.00,NULL,1),(3,1,'DOJASBDASMDPLASMD',NULL,'2021-06-07 00:12:36','2021-06-07 00:12:36',1,3,10.00,NULL,5.00,NULL,1),(4,1,'DOJASBDASMDPLASMD',NULL,'2021-06-07 00:12:36','2021-06-07 00:12:36',1,4,10.00,NULL,5.00,NULL,1),(5,1,'DOJASBDASMDPLASMD',NULL,'2021-06-07 00:12:36','2021-06-07 00:12:36',1,5,10.00,NULL,5.00,NULL,1),(6,1,'DOJASBDASMDPLASMD',NULL,'2021-06-07 00:12:36','2021-06-07 00:12:36',1,6,10.00,NULL,0.00,NULL,1),(7,1,'DOJASBDASMDPLASMD',NULL,'2021-06-07 00:12:36','2021-06-07 00:12:36',1,7,10.00,NULL,0.00,NULL,1),(8,1,'DOJASBDASMDPLASMD',NULL,'2021-06-07 00:12:36','2021-06-07 00:12:36',1,8,10.00,NULL,0.00,NULL,1),(9,1,'DOJASBDASMDPLASMD',NULL,'2021-06-07 00:12:36','2021-06-07 00:12:36',1,9,10.00,NULL,0.00,NULL,1),(10,1,'DOJASBDASMDPLASMD',NULL,'2021-06-07 00:12:36','2021-06-07 00:12:36',1,10,10.00,NULL,0.00,NULL,1),(11,1,'DOJASBDASMDPLASMD',NULL,'2021-06-07 00:12:36','2021-06-07 00:12:36',1,11,0.00,NULL,0.00,NULL,1),(12,1,'DOJASBDASMDPLASMD',NULL,'2021-06-07 00:12:36','2021-06-07 00:12:36',1,12,0.00,NULL,0.00,NULL,1);
 /*!40000 ALTER TABLE `actividades_detalladas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -183,7 +181,7 @@ CREATE TABLE `acuerdos` (
   KEY `tema_id` (`tema_id`),
   CONSTRAINT `acuerdos_ibfk_1` FOREIGN KEY (`tema_id`) REFERENCES `temas` (`tema_id`),
   CONSTRAINT `fk_combinacion_area` FOREIGN KEY (`combinacion_area_id`) REFERENCES `combinaciones_areas` (`combinacion_area_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -192,7 +190,6 @@ CREATE TABLE `acuerdos` (
 
 LOCK TABLES `acuerdos` WRITE;
 /*!40000 ALTER TABLE `acuerdos` DISABLE KEYS */;
-INSERT INTO `acuerdos` VALUES (1,3,'SDsadjasdi',1,1,2021,103,'2021-06-07 00:16:27','2021-06-07 00:16:27');
 /*!40000 ALTER TABLE `acuerdos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -876,6 +873,7 @@ CREATE TABLE `preproyectos` (
   `seccion` int(11) DEFAULT NULL,
   `incluido` int(11) DEFAULT NULL,
   `estatus_id` int(11) DEFAULT NULL,
+  `usuario_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`preproyecto_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -955,7 +953,7 @@ CREATE TABLE `proyectos_actividades` (
   CONSTRAINT `proyectos_actividades_ibfk_2` FOREIGN KEY (`programa_presupuestario_id`) REFERENCES `programas_presupuestarios` (`programa_presupuestario_id`),
   CONSTRAINT `proyectos_actividades_ibfk_3` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`usuario_id`),
   CONSTRAINT `proyectos_actividades_ibfk_4` FOREIGN KEY (`linea_accion_id`) REFERENCES `lineas_accion` (`linea_accion_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -964,7 +962,6 @@ CREATE TABLE `proyectos_actividades` (
 
 LOCK TABLES `proyectos_actividades` WRITE;
 /*!40000 ALTER TABLE `proyectos_actividades` DISABLE KEYS */;
-INSERT INTO `proyectos_actividades` VALUES (1,1,2,NULL,NULL,4,0,NULL,'2021-06-07 00:12:36','2021-06-07 00:12:36','2021',1,1,NULL,0);
 /*!40000 ALTER TABLE `proyectos_actividades` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1058,7 +1055,7 @@ CREATE TABLE `seguimientos_acuerdos` (
   CONSTRAINT `fk_combinacion_area_sa` FOREIGN KEY (`combinacion_area_id`) REFERENCES `combinaciones_areas` (`combinacion_area_id`),
   CONSTRAINT `fk_estatus_acuerdos` FOREIGN KEY (`estatus_acuerdo_id`) REFERENCES `estatus_acuerdos` (`estatus_acuerdo_id`),
   CONSTRAINT `seguimientos_acuerdos_ibfk_1` FOREIGN KEY (`acuerdo_id`) REFERENCES `acuerdos` (`acuerdo_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1067,7 +1064,6 @@ CREATE TABLE `seguimientos_acuerdos` (
 
 LOCK TABLES `seguimientos_acuerdos` WRITE;
 /*!40000 ALTER TABLE `seguimientos_acuerdos` DISABLE KEYS */;
-INSERT INTO `seguimientos_acuerdos` VALUES (1,1,1,2021,'SDsadjasdi',103,1,NULL,NULL,'2021-06-07 00:16:27','2021-06-07 00:16:27',1);
 /*!40000 ALTER TABLE `seguimientos_acuerdos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1761,14 +1757,17 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `area_id_seguimiento`,
  1 AS `estatus_acuerdo_id`,
  1 AS `estatus_seguimiento`,
+ 1 AS `usuario_id_registra`,
  1 AS `nombres_usuario_registra`,
  1 AS `primer_apellido_usuario_registra`,
  1 AS `segundo_apellido_usuario_registra`,
  1 AS `usuario_registra`,
+ 1 AS `usuario_id_envia`,
  1 AS `nombres_usuario_envia`,
  1 AS `primer_apellido_usuario_envia`,
  1 AS `segundo_apellido_usuario_envia`,
  1 AS `usuario_envia`,
+ 1 AS `usuario_id_recibe`,
  1 AS `nombres_usuario_recibe`,
  1 AS `primer_apellido_usuario_recibe`,
  1 AS `segundo_apellido_usuario_recibe`,
@@ -1898,8 +1897,11 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `area_acuerdo`,
  1 AS `area_seguimiento`,
  1 AS `estatus_seguimiento`,
+ 1 AS `usuario_id_registra`,
  1 AS `usuario_registra`,
+ 1 AS `usuario_id_envia`,
  1 AS `usuario_envia`,
+ 1 AS `usuario_id_recibe`,
  1 AS `usuario_recibe`,
  1 AS `fecha_respuesta`*/;
 SET character_set_client = @saved_cs_client;
@@ -2210,7 +2212,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_seguimiento_acuerdo_ag` AS select `a`.`acuerdo_id` AS `acuerdo_id`,`a`.`tema` AS `tema`,`a`.`tema_id` AS `tema_id`,`sa`.`seguimiento_acuerdo_id` AS `seguimiento_acuerdo_id`,`sa`.`folio` AS `folio`,`a`.`asunto` AS `asunto`,`sa`.`seguimiento` AS `seguimiento`,`a`.`fecha_creacion_acuerdo` AS `fecha_creacion_acuerdo`,`sa`.`fecha_creacion_seguimiento` AS `fecha_creacion_seguimiento`,`sa`.`fecha_actualizacion_seguimiento` AS `fecha_actualizacion_seguimiento`,`a`.`combinacion_area_acuerdo_id` AS `combinacion_area_acuerdo_id`,`sa`.`combinacion_area_seguimiento_id` AS `combinacion_area_seguimiento_id`,concat(`a`.`direccion_acuerdo`,' ',`a`.`subdireccion_acuerdo`,' ',`a`.`departamento_acuerdo`,' ',`a`.`area_acuerdo`) AS `area_acuerdo`,concat(`sa`.`direccion_seguimiento`,' ',`sa`.`subdireccion_seguimiento`,' ',`sa`.`departamento_seguimiento`,' ',`sa`.`area_seguimiento`) AS `area_seguimiento`,`a`.`direccion_id_acuerdo` AS `direccion_id_acuerdo`,`a`.`subdireccion_id_acuerdo` AS `subdireccion_id_acuerdo`,`a`.`departamento_id_acuerdo` AS `departamento_id_acuerdo`,`a`.`area_id_acuerdo` AS `area_id_acuerdo`,`sa`.`direccion_seguimiento_id` AS `direccion_id_seguimiento`,`sa`.`subdireccion_seguimiento_id` AS `subdireccion_id_seguimiento`,`sa`.`departamento_seguimiento_id` AS `departamento_id_seguimiento`,`sa`.`area_seguimiento_id` AS `area_id_seguimiento`,`sa`.`estatus_acuerdo_id` AS `estatus_acuerdo_id`,`sa`.`estatus_seguimiento` AS `estatus_seguimiento`,`sa`.`nombres_usuario_registra` AS `nombres_usuario_registra`,`sa`.`primer_apellido_usuario_registra` AS `primer_apellido_usuario_registra`,`sa`.`segundo_apellido_usuario_registra` AS `segundo_apellido_usuario_registra`,concat_ws(' ',`sa`.`nombres_usuario_registra`,`sa`.`primer_apellido_usuario_registra`,`sa`.`segundo_apellido_usuario_registra`) AS `usuario_registra`,`sa`.`nombres_usuario_envia` AS `nombres_usuario_envia`,`sa`.`primer_apellido_usuario_envia` AS `primer_apellido_usuario_envia`,`sa`.`segundo_apellido_usuario_envia` AS `segundo_apellido_usuario_envia`,concat_ws(' ',`sa`.`nombres_usuario_envia`,`sa`.`primer_apellido_usuario_envia`,`sa`.`segundo_apellido_usuario_envia`) AS `usuario_envia`,`sa`.`nombres_usuario_recibe` AS `nombres_usuario_recibe`,`sa`.`primer_apellido_usuario_recibe` AS `primer_apellido_usuario_recibe`,`sa`.`segundo_apellido_usuario_recibe` AS `segundo_apellido_usuario_recibe`,concat_ws(' ',`sa`.`nombres_usuario_recibe`,`sa`.`primer_apellido_usuario_recibe`,`sa`.`segundo_apellido_usuario_recibe`) AS `usuario_recibe`,`a`.`fecha_respuesta` AS `fecha_respuesta` from (`vw_acuerdos` `a` left join `vw_seguimiento_acuerdos` `sa` on((`sa`.`acuerdo_id` = `a`.`acuerdo_id`))) order by `a`.`acuerdo_id`,`sa`.`seguimiento_acuerdo_id` desc */;
+/*!50001 VIEW `vw_seguimiento_acuerdo_ag` AS select `a`.`acuerdo_id` AS `acuerdo_id`,`a`.`tema` AS `tema`,`a`.`tema_id` AS `tema_id`,`sa`.`seguimiento_acuerdo_id` AS `seguimiento_acuerdo_id`,`sa`.`folio` AS `folio`,`a`.`asunto` AS `asunto`,`sa`.`seguimiento` AS `seguimiento`,`a`.`fecha_creacion_acuerdo` AS `fecha_creacion_acuerdo`,`sa`.`fecha_creacion_seguimiento` AS `fecha_creacion_seguimiento`,`sa`.`fecha_actualizacion_seguimiento` AS `fecha_actualizacion_seguimiento`,`a`.`combinacion_area_acuerdo_id` AS `combinacion_area_acuerdo_id`,`sa`.`combinacion_area_seguimiento_id` AS `combinacion_area_seguimiento_id`,concat(`a`.`direccion_acuerdo`,' ',`a`.`subdireccion_acuerdo`,' ',`a`.`departamento_acuerdo`,' ',`a`.`area_acuerdo`) AS `area_acuerdo`,concat(`sa`.`direccion_seguimiento`,' ',`sa`.`subdireccion_seguimiento`,' ',`sa`.`departamento_seguimiento`,' ',`sa`.`area_seguimiento`) AS `area_seguimiento`,`a`.`direccion_id_acuerdo` AS `direccion_id_acuerdo`,`a`.`subdireccion_id_acuerdo` AS `subdireccion_id_acuerdo`,`a`.`departamento_id_acuerdo` AS `departamento_id_acuerdo`,`a`.`area_id_acuerdo` AS `area_id_acuerdo`,`sa`.`direccion_seguimiento_id` AS `direccion_id_seguimiento`,`sa`.`subdireccion_seguimiento_id` AS `subdireccion_id_seguimiento`,`sa`.`departamento_seguimiento_id` AS `departamento_id_seguimiento`,`sa`.`area_seguimiento_id` AS `area_id_seguimiento`,`sa`.`estatus_acuerdo_id` AS `estatus_acuerdo_id`,`sa`.`estatus_seguimiento` AS `estatus_seguimiento`,`sa`.`usuario_id_registra` AS `usuario_id_registra`,`sa`.`nombres_usuario_registra` AS `nombres_usuario_registra`,`sa`.`primer_apellido_usuario_registra` AS `primer_apellido_usuario_registra`,`sa`.`segundo_apellido_usuario_registra` AS `segundo_apellido_usuario_registra`,concat_ws(' ',`sa`.`nombres_usuario_registra`,`sa`.`primer_apellido_usuario_registra`,`sa`.`segundo_apellido_usuario_registra`) AS `usuario_registra`,`sa`.`usuario_id_envia` AS `usuario_id_envia`,`sa`.`nombres_usuario_envia` AS `nombres_usuario_envia`,`sa`.`primer_apellido_usuario_envia` AS `primer_apellido_usuario_envia`,`sa`.`segundo_apellido_usuario_envia` AS `segundo_apellido_usuario_envia`,concat_ws(' ',`sa`.`nombres_usuario_envia`,`sa`.`primer_apellido_usuario_envia`,`sa`.`segundo_apellido_usuario_envia`) AS `usuario_envia`,`sa`.`usuario_id_recibe` AS `usuario_id_recibe`,`sa`.`nombres_usuario_recibe` AS `nombres_usuario_recibe`,`sa`.`primer_apellido_usuario_recibe` AS `primer_apellido_usuario_recibe`,`sa`.`segundo_apellido_usuario_recibe` AS `segundo_apellido_usuario_recibe`,concat_ws(' ',`sa`.`nombres_usuario_recibe`,`sa`.`primer_apellido_usuario_recibe`,`sa`.`segundo_apellido_usuario_recibe`) AS `usuario_recibe`,`a`.`fecha_respuesta` AS `fecha_respuesta` from (`vw_acuerdos` `a` left join `vw_seguimiento_acuerdos` `sa` on((`sa`.`acuerdo_id` = `a`.`acuerdo_id`))) order by `a`.`acuerdo_id`,`sa`.`seguimiento_acuerdo_id` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -2264,7 +2266,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_ultimo_seguimiento` AS select `ag`.`acuerdo_id` AS `acuerdo_id`,`ag`.`tema` AS `tema`,`ag`.`tema_id` AS `tema_id`,`ag`.`seguimiento_acuerdo_id` AS `seguimiento_acuerdo_id`,`ag`.`folio` AS `folio`,`ag`.`asunto` AS `asunto`,`ag`.`seguimiento` AS `seguimiento`,`ag`.`fecha_creacion_acuerdo` AS `fecha_creacion_acuerdo`,`ag`.`fecha_creacion_seguimiento` AS `fecha_creacion_seguimiento`,`ag`.`fecha_actualizacion_seguimiento` AS `fecha_actualizacion_seguimiento`,`ag`.`combinacion_area_acuerdo_id` AS `combinacion_area_acuerdo_id`,`ag`.`direccion_id_acuerdo` AS `direccion_id_acuerdo`,`ag`.`subdireccion_id_acuerdo` AS `subdireccion_id_acuerdo`,`ag`.`departamento_id_acuerdo` AS `departamento_id_acuerdo`,`ag`.`area_id_acuerdo` AS `area_id_acuerdo`,`ag`.`direccion_id_seguimiento` AS `direccion_id_seguimiento`,`ag`.`subdireccion_id_seguimiento` AS `subdireccion_id_seguimiento`,`ag`.`departamento_id_seguimiento` AS `departamento_id_seguimiento`,`ag`.`area_id_seguimiento` AS `area_id_seguimiento`,`ag`.`combinacion_area_seguimiento_id` AS `combinacion_area_seguimiento_id`,`ag`.`area_acuerdo` AS `area_acuerdo`,`ag`.`area_seguimiento` AS `area_seguimiento`,`ag`.`estatus_seguimiento` AS `estatus_seguimiento`,`ag`.`usuario_registra` AS `usuario_registra`,`ag`.`usuario_envia` AS `usuario_envia`,`ag`.`usuario_recibe` AS `usuario_recibe`,`ag`.`fecha_respuesta` AS `fecha_respuesta` from (`vw_seguimiento_acuerdo_ag` `ag` join (select max(`vw_seguimiento_acuerdo_ag`.`seguimiento_acuerdo_id`) AS `seguimiento_acuerdo_id` from `vw_seguimiento_acuerdo_ag` group by `vw_seguimiento_acuerdo_ag`.`acuerdo_id`) `x` on((`x`.`seguimiento_acuerdo_id` = `ag`.`seguimiento_acuerdo_id`))) */;
+/*!50001 VIEW `vw_ultimo_seguimiento` AS select `ag`.`acuerdo_id` AS `acuerdo_id`,`ag`.`tema` AS `tema`,`ag`.`tema_id` AS `tema_id`,`ag`.`seguimiento_acuerdo_id` AS `seguimiento_acuerdo_id`,`ag`.`folio` AS `folio`,`ag`.`asunto` AS `asunto`,`ag`.`seguimiento` AS `seguimiento`,`ag`.`fecha_creacion_acuerdo` AS `fecha_creacion_acuerdo`,`ag`.`fecha_creacion_seguimiento` AS `fecha_creacion_seguimiento`,`ag`.`fecha_actualizacion_seguimiento` AS `fecha_actualizacion_seguimiento`,`ag`.`combinacion_area_acuerdo_id` AS `combinacion_area_acuerdo_id`,`ag`.`direccion_id_acuerdo` AS `direccion_id_acuerdo`,`ag`.`subdireccion_id_acuerdo` AS `subdireccion_id_acuerdo`,`ag`.`departamento_id_acuerdo` AS `departamento_id_acuerdo`,`ag`.`area_id_acuerdo` AS `area_id_acuerdo`,`ag`.`direccion_id_seguimiento` AS `direccion_id_seguimiento`,`ag`.`subdireccion_id_seguimiento` AS `subdireccion_id_seguimiento`,`ag`.`departamento_id_seguimiento` AS `departamento_id_seguimiento`,`ag`.`area_id_seguimiento` AS `area_id_seguimiento`,`ag`.`combinacion_area_seguimiento_id` AS `combinacion_area_seguimiento_id`,`ag`.`area_acuerdo` AS `area_acuerdo`,`ag`.`area_seguimiento` AS `area_seguimiento`,`ag`.`estatus_seguimiento` AS `estatus_seguimiento`,`ag`.`usuario_id_registra` AS `usuario_id_registra`,`ag`.`usuario_registra` AS `usuario_registra`,`ag`.`usuario_id_envia` AS `usuario_id_envia`,`ag`.`usuario_envia` AS `usuario_envia`,`ag`.`usuario_id_recibe` AS `usuario_id_recibe`,`ag`.`usuario_recibe` AS `usuario_recibe`,`ag`.`fecha_respuesta` AS `fecha_respuesta` from (`vw_seguimiento_acuerdo_ag` `ag` join (select max(`vw_seguimiento_acuerdo_ag`.`seguimiento_acuerdo_id`) AS `seguimiento_acuerdo_id` from `vw_seguimiento_acuerdo_ag` group by `vw_seguimiento_acuerdo_ag`.`acuerdo_id`) `x` on((`x`.`seguimiento_acuerdo_id` = `ag`.`seguimiento_acuerdo_id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -2314,4 +2316,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-06-07 12:07:28
+-- Dump completed on 2021-06-07 15:33:58

@@ -21,16 +21,6 @@
                 </div>
                 <form>
                     <div class="row">
-                        <?php if( $this->session->userdata('tuser') == 1 ): ?>
-                        <div class="col-12 mb-3">
-                            <label class="my-1 me-2" for="area_origen">Áreas</label>
-                            <select class="form-select areas_select2" id="area_origen" aria-label="Áreas">
-                                <option selected disabled>Seleccione una opción</option>
-                            </select>
-                        </div>
-                        <?php else: ?>
-                            <input type="hidden" id="area_origen" name="area_origen" value="<?= $this->session->userdata('combinacion_area') ?>">
-                        <?php endif ?>
                         <div class="row">
                             <div class="col-12 mb-3">
                                 <label class="my-1 me-2" for="municipio">Municipio</label>
@@ -58,51 +48,56 @@
                             </div>
                             <div id="datos_linea_accion" class="col-12"></div>
                         </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="cantidad_beneficiarios">Cantidad de Beneficiarios</label>
+                            <input type="number" class="form-control" id="cantidad_beneficiarios" value="0" required>
+                        </div>
+                        <div class="col-lg-6 mb-3">
+                            <label for="inversion">Inversión</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-dollar-sign"></i>
+                                </span>                                
+                                <input type="number" class="form-control" min="0" step="any" id="inversion" value="0" required>
+                            </div>
+                        </div>  
                     </div>
                     <div class="row">
                         <div class="col-12 mb-3">
                             <div>
-                                <label for="detalle_actividad">Detalle la Preproyecto</label>
-                                <textarea class="form-control" placeholder="¿Que actividades se desempeñaran?" id="detalle_actividad" rows="4"></textarea>
+                                <label for="detalle_preproyecto">Detalle de Actividad</label>
+                                <textarea class="form-control" placeholder="¿Que actividades se desempeñaran para este preproyecto?" id="detalle_preproyecto" rows="4"></textarea>
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="my-1 me-2" for="unidad_medida">Unidad de Medida</label>
-                            <select class="form-select" id="unidad_medida" aria-label="Default select example">
-                                <option selected disabled>Seleccione una opción</option>
-                                <?php foreach ($u_medida as $key => $um): ?>
-                                <option value="<?= $um->unidad_medida_id ?>"><?= $um->descripcion ?> (<?= $um->cve_medida ?>)</option>
-                                <?php endforeach; ?>  
-                            </select>
+                        <div class="col-md-6">
+                            <label for="fecha_inicio">Fecha de Inicio</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="far fa-calendar-alt"></i>
+                                </span>
+                                <input data-datepicker="" class="form-control" id="fecha_inicio" name="fecha_inicio" type="date" placeholder="dd/mm/yyyy" required>
+                            </div>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="my-1 me-2" for="tipo_medicion">Tipo de Medición</label>
-                            <select class="form-select" id="tipo_medicion" aria-label="Default select example">
-                                <option selected disabled>Seleccione una opción</option>
-                                <option value="1">Absoluto</option>
-                                <option value="2">Porcentaje</option>
-                                <option value="3">Promedio</option>
-                            </select>
+                        <div class="col-md-6">
+                            <label for="fecha_termino">Fecha de Término</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="far fa-calendar-check"></i>
+                                </span>
+                                <input data-datepicker="" class="form-control" id="fecha_termino" name="fecha_termino" type="date" placeholder="dd/mm/yyyy" required>
+                            </div>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="my-1 me-2" for="grupo_beneficiado">Grupo Beneficiado</label>
-                            <select class="form-select" id="grupo_beneficiado" aria-label="Default select example">
-                                <option selected disabled>Seleccione una opción</option>
-                                <option value="1">Masculino</option>
-                                <option value="2">Femenino</option>
-                                <option value="3">Ambos</option>
-                                <option value="4">No Aplica</option>
-                            </select>
-                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12 mb-3">
+                            <label for="url">URL</label>
+                            <input type="url" class="form-control" id="url" name="url" placeholder="https://ejemplo.com"  pattern="https?://.+" onblur="validity.valid||(value='');">
+                        </div>  
                     </div>
 
-                    <div id="programados" class="card card-body my-3 mx-2" style="display: none;">
-                        <?php $this->load->view('actividades/tipos_registro/programado_fisico'); ?>
-                        <?php $this->load->view('actividades/tipos_registro/programado_financiero'); ?>
-                    </div>
-                    
                     <div class="mt-3">
                         <button id="guardar" type="button" class="btn btn-dark">Guardar</button>
                     </div>
@@ -112,4 +107,8 @@
     </div>
 </div>
 
-<script src="<?= base_url('assets/js/actividades/registrar.js') ?>" type="text/javascript" charset="utf-8" async defer></script>
+<script type="text/javascript">
+    var inputs = JSON.parse('<?php print(json_encode($inputs, JSON_HEX_TAG)); ?>');
+    console.info(Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN'}).format($('#inversion').val()));
+</script>
+<script src="<?= base_url('assets/js/preproyectos/registrar.js') ?>" type="text/javascript" charset="utf-8" async defer></script>

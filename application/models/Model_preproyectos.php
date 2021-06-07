@@ -99,72 +99,30 @@ class Model_preproyectos extends CI_Model {
         *
         * @access public
         * @param  array   $datos                Datos a almacenar en preproyectos
-        * @param  boolean $tipo_preproyecto       Proyecto o Preproyecto
         *
         * @return resultado[]
     */
-    public function set_nueva_preproyecto($datos, $tipo_preproyecto = TRUE){
+    public function set_nuevo_preproyecto($datos){
         $resultado = array('exito' => TRUE);
         try {
             $this->db->trans_begin();
 
             if ( is_array($datos) ){
-                if ( !$tipo_preproyecto ){                    
-                    // Preproyecto
-                    $db_datos = array(
-                        'linea_accion_id'               => $datos['linea_accion'],
-                        'preproyecto'                     => $datos['detalle_preproyecto'],
-                        'cantidad_beneficiarios'        => $datos['programado_fisico']
-                    );
-                    $this->db->insert('preproyectos', $db_datos);
-                    $preproyecto = $this->db->insert_id();
-                    $resultado['preproyecto'] = $preproyecto;
-                }
-                // Preproyecto - Actividad
                 $db_datos = array(
-                    'combinacion_area_id'           => $datos['area_origen'],
-                    'linea_accion_id'               => $datos['linea_accion'],
-                    'usuario_id'                    => $datos['usuario_id'],
-                    'ejercicio'                     => $datos['ejercicio']
-                );
-                if ( isset($preproyecto) )
-                    $db_datos['preproyecto'] = $preproyecto;
-                if ( isset($datos['programa_presupuestario']) )
-                    $db_datos['programa_presupuestario_id'] = $datos['programa_presupuestario'];
-
-                $this->db->insert('proyectos_preproyectos', $db_datos);
-                $proyecto = $this->db->insert_id();
-                $resultado['proyecto'] = $proyecto;
-                
-                // Creación de preproyecto
-                $db_datos = array(
-                    'descripcion'           => $datos['detalle_preproyecto'],
-                    'proyecto_preproyecto_id' => $proyecto,
-                    'unidad_medida_id'      => $datos['unidad_medida'],
-                    'medicion_id'           => $datos['tipo_medicion'],
-                    'beneficiado_id'        => $datos['grupo_beneficiado'],
-                    'cantidad_beneficiario' => $datos['programado_fisico'],
-                    'monto_presupuestado'   => $datos['programado_financiero'],
-                    'usuario_id'            => $datos['usuario_id'],
-                    'unidad_medida_id'      => $datos['unidad_medida']
+                    'municipio_id'              => $datos['municipio'],
+                    'localidad_id'              => $datos['localidad'],
+                    'linea_accion_id'           => $datos['linea_accion'],
+                    'actividad'                 => $datos['detalle_preproyecto'],
+                    'cantidad_beneficiarios'    => $datos['cantidad_beneficiarios'],
+                    'inversion'                 => $datos['inversion'],
+                    'fecha_inicio'              => $datos['fecha_inicio'],
+                    'fecha_termino'             => $datos['fecha_termino'],
+                    'url'                       => $datos['url'],
+                    'usuario_id'                => $datos['usuario_id'],
                 );
                 $this->db->insert('preproyectos', $db_datos);
                 $preproyecto = $this->db->insert_id();
                 $resultado['preproyecto'] = $preproyecto;
-
-                // Detalle de preproyecto
-                $meses_financieros = $datos['programado_financiero_mensual'];
-                foreach ($datos['programado_fisico_mensual'] as $key => $mes_fisico) {
-                    $db_datos = array(
-                        'preproyecto_id'          => $preproyecto,
-                        'descripcion'           => $datos['detalle_preproyecto'],
-                        'mes'                   => $key + 1,
-                        'programado_fisico'     => $mes_fisico,
-                        'programado_financiero' => $meses_financieros[$key],
-                        'usuario_id'            => $datos['usuario_id']
-                    );
-                    $this->db->insert('preproyectos_detalladas', $db_datos);
-                }
             } else
                 throw new Exception('La estructura de los datos es incorrecta.');
 

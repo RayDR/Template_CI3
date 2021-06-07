@@ -54,11 +54,13 @@ class Preproyectos extends CI_Controller {
                      array( 'direccion_id' => $combinacion->direccion_id );
                      
         $data = array(
-            'titulo'    => 'Registrar',
-            'programas' =>  $this->model_catalogos->get_programas(),
-            'l_accion'  =>  $this->model_catalogos->get_lineas_accion(),
-            'u_medida'  =>  $this->model_catalogos->get_unidades_medida($condicion),
-            'view'      => 'preproyectos/registrar'
+            'titulo'        => 'Registrar',
+            'programas'     =>  $this->model_catalogos->get_programas(),            
+            'municipios'    => $this->model_catalogos->get_municipios(),
+            'l_accion'      => $this->model_catalogos->get_lineas_accion(),
+            'u_medida'      =>  $this->model_catalogos->get_unidades_medida($condicion),
+            'inputs'        => $this->inputs_registro(),
+            'view'          => 'preproyectos/registrar'
         );
         $json['html'] = $this->load->view( $data['view'], $data, TRUE );
         return print(json_encode($json));
@@ -131,85 +133,8 @@ class Preproyectos extends CI_Controller {
         return print(json_encode($json));
     }
 
-    private function registro_proyecto(){
-        $json = array('exito' => TRUE);
-        $data = array(
-            'titulo'    => 'Registrar',
-            'programas' =>  $this->model_catalogos->get_programas(),
-            'l_accion'  =>  $this->model_catalogos->get_lineas_accion(),
-            'view'      => 'preproyectos/tipos_registro/proyecto'
-        );
-        $json['html']   = $this->load->view( $data['view'], $data, TRUE );
-        $json['inputs'] = array(
-            [
-                'nombre'=> 'area_origen',
-                'texto' => 'Área',
-                'tipo'  => 'select'
-            ],
-            [
-                'nombre'=> 'programa_presupuestario',
-                'texto' => 'Programa Presupuestario',
-                'tipo'  => 'select'
-            ],
-            [
-                'nombre'=> 'linea_accion',
-                'texto' => 'Línea de Acción',
-                'tipo'  => 'select'
-            ],
-            [
-                'nombre'=> 'detalle_preproyecto',
-                'texto' => 'Detalle de la Actividad'
-            ],
-            [
-                'nombre'=> 'unidad_medida',
-                'texto' => 'Unidad de Medida',
-                'tipo'  => 'select'
-            ],
-            [
-                'nombre'=> 'tipo_medicion',
-                'texto' => 'Tipo de Medición',
-                'tipo'  => 'select'
-            ],
-            [
-                'nombre'=> 'grupo_beneficiado',
-                'texto' => 'Grupo Beneficiado',
-                'tipo'  => 'select'
-            ],
-            [
-                'nombre'=> 'fisico_objetivo_anual',
-                'texto' => 'Objetivo Anual (Físico)'
-            ],
-            [
-                'nombre'=> 'programado-fisico',
-                'texto' => 'Distribución Mensual Ponderada (Físico)'
-            ],
-            [
-                'nombre'=> 'financiero_objetivo_anual',
-                'texto' => 'Objetivo Anual (Financiero)'
-            ],
-            [
-                'nombre'=> 'programado-financiero',
-                'texto' => 'Distribución Mensual Ponderada (Financiero)'
-            ]
-        );
-        return $json;
-    }
-
-    private function registro_preproyecto(){
-        $json = array('exito' => TRUE);
-        $data = array(
-            'titulo'        => 'Registrar',
-            'municipios'    =>  $this->model_catalogos->get_municipios(),
-            'l_accion'      =>  $this->model_catalogos->get_lineas_accion(),
-            'view'          => 'preproyectos/tipos_registro/preproyecto'
-        );
-        $json['html']   = $this->load->view( $data['view'], $data, TRUE );
-        $json['inputs'] = array(
-            [
-                'nombre'=> 'area_origen',
-                'texto' => 'Área',
-                'tipo'  => 'select'
-            ],
+    private function inputs_registro(){
+        return array(
             [
                 'nombre'=> 'municipio',
                 'texto' => 'Municipio',
@@ -230,38 +155,26 @@ class Preproyectos extends CI_Controller {
                 'texto' => 'Detalle de la Actividad'
             ],
             [
-                'nombre'=> 'unidad_medida',
-                'texto' => 'Unidad de Medida',
-                'tipo'  => 'select'
+                'nombre'=> 'cantidad_beneficiarios',
+                'texto' => 'Cantidad de Beneficiarios'
             ],
             [
-                'nombre'=> 'tipo_medicion',
-                'texto' => 'Tipo de Medición',
-                'tipo'  => 'select'
+                'nombre'=> 'inversion',
+                'texto' => 'Inversión'
             ],
             [
-                'nombre'=> 'grupo_beneficiado',
-                'texto' => 'Grupo Beneficiado',
-                'tipo'  => 'select'
+                'nombre'=> 'fecha_inicio',
+                'texto' => 'Fecha de Inicio'
             ],
             [
-                'nombre'=> 'fisico_objetivo_anual',
-                'texto' => 'Objetivo Anual (Físico)'
+                'nombre'=> 'fecha_termino',
+                'texto' => 'Fecha de Termino'
             ],
             [
-                'nombre'=> 'programado-fisico',
-                'texto' => 'Distribución Mensual Ponderada (Físico)'
-            ],
-            [
-                'nombre'=> 'financiero_objetivo_anual',
-                'texto' => 'Objetivo Anual (Financiero)'
-            ],
-            [
-                'nombre'=> 'programado-financiero',
-                'texto' => 'Distribución Mensual Ponderada (Financiero)'
+                'nombre'=> 'url',
+                'texto' => 'URL'
             ]
         );
-        return $json;
     }
 
     // -------------- DATOS
@@ -273,47 +186,23 @@ class Preproyectos extends CI_Controller {
 
     public function guardar(){
         $json = array('exito' => TRUE);
-        $area_origen                    = $this->input->post('area_origen');
-        $programa_presupuestario        = $this->input->post('programa_presupuestario');
-        $linea_accion                   = $this->input->post('linea_accion');
-        $detalle_preproyecto              = $this->input->post('detalle_preproyecto');
-        $unidad_medida                  = $this->input->post('unidad_medida');
-        $tipo_medicion                  = $this->input->post('tipo_medicion');
-        $grupo_beneficiado              = $this->input->post('grupo_beneficiado');
-        $programado_fisico              = $this->input->post('fisico_objetivo_anual');
-        $programado_fisico_mensual      = $this->input->post('programado-fisico');
-        $programado_financiero          = $this->input->post('financiero_objetivo_anual');
-        $programado_financiero_mensual  = $this->input->post('programado-financiero');
-        $municipio                      = $this->input->post('municipio');
-        $localidad                      = $this->input->post('localidad');
 
         $datos  = array(
-            'area_origen'                   => $area_origen,
-            'linea_accion'                  => $linea_accion,
-            'detalle_preproyecto'             => $detalle_preproyecto,
-            'unidad_medida'                 => $unidad_medida,
-            'tipo_medicion'                 => $tipo_medicion,
-            'grupo_beneficiado'             => $grupo_beneficiado,
-            'programado_fisico'             => $programado_fisico,
-            'programado_fisico_mensual'     => $programado_fisico_mensual,
-            'programado_financiero'         => $programado_financiero,
-            'programado_financiero_mensual' => $programado_financiero_mensual,
-            'usuario_id'                    => $this->session->userdata('uid'),
-            'ejercicio'                     => date('Y')
+            'linea_accion'              => $this->input->post('linea_accion'),
+            'municipio'                 => $this->input->post('municipio'),
+            'localidad'                 => $this->input->post('localidad'),
+            'detalle_preproyecto'       => $this->input->post('detalle_preproyecto'),
+            'cantidad_beneficiarios'    => $this->input->post('cantidad_beneficiarios'),
+            'inversion'                 => $this->input->post('inversion'),
+            'fecha_inicio'              => $this->input->post('fecha_inicio'),
+            'fecha_termino'             => $this->input->post('fecha_termino'),
+            'url'                       => $this->input->post('url'),
+            'usuario_id'                => $this->session->userdata('uid'),
+            'ejercicio'                 => date('Y')
         );
 
-        if ( $programa_presupuestario ) // Proyecto
-        {
-            $datos['programa_presupuestario'] = $programa_presupuestario;
-            $json = $this->model_preproyectos->set_nueva_preproyecto($datos, TRUE);
-            $json['modo'] = 'proyecto';
-        } else                          // Preproyecto 
-        {
-            $datos['municipio'] = $municipio;
-            $datos['localidad'] = $localidad;
-            $json = $this->model_preproyectos->set_nueva_preproyecto($datos, FALSE);
-            $json['modo'] = 'pre-proyecto';
-        }
+        $json = $this->model_preproyectos->set_nuevo_preproyecto($datos, FALSE);
+
         return print(json_encode($json));
     }
 
@@ -345,24 +234,10 @@ class Preproyectos extends CI_Controller {
         return print(json_encode($json));
     }
 
-    public function select_unidades_medida(){
-        $json = array('exito' => TRUE);
-        $area_usuario   = array('combinacion_area_id' => $this->input->post('combinacion_area'));
-        $combinacion    = $this->model_catalogos->get_areas( $area_usuario );
-
-        $condicion = array( 'direccion_id' => $combinacion->direccion_id );
-        $json['unidades_medida'] = $this->model_catalogos->get_unidades_medida($condicion);
-
-        if ( !$json['unidades_medida'] )
-            $json['unidades_medida'] = $this->model_catalogos->get_unidades_medida();
-
-        return print(json_encode($json));
-    }
-
     public function select_localidades(){
         $json = array('exito' => TRUE);
         $condicion = array( 'municipio_id' => $this->input->post('municipio') );
-        $json['localidades']  = $this->model_catalogos->get_localidades();
+        $json['localidades']  = $this->model_catalogos->get_localidades($condicion);
         return print(json_encode($json));
     }
 
