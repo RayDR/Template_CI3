@@ -1,16 +1,16 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Actividades extends CI_Controller {
+class Preproyectos extends CI_Controller {
 
-    private $rootPathRemoto = 'C:/SvrArchivos/sieval/Actividades/'; // PATH a archivos locales ( Dentro de la app )
-    private $rootPathLocal  = FCPATH . 'uploads/Actividades/';      // PATH para guardarlo en otro directorio ( Fuera de la app )
+    private $rootPathRemoto = 'C:/SvrArchivos/sieval/Preproyectos/'; // PATH a archivos locales ( Dentro de la app )
+    private $rootPathLocal  = FCPATH . 'uploads/Preproyectos/';      // PATH para guardarlo en otro directorio ( Fuera de la app )
 
     public function __construct()
     {
         parent::__construct();
         $this->load->model('model_catalogos');
-        $this->load->model('model_actividades');
+        $this->load->model('model_preproyectos');
         
         if ( !$this->session->estatus_usuario_sesion() ){
             print(
@@ -35,9 +35,9 @@ class Actividades extends CI_Controller {
     public function index()
     {
         $data = array(
-            'titulo'        => 'Actividades ' . APLICACION  . ' | ' . EMPRESA,
+            'titulo'        => 'Preproyectos ' . APLICACION  . ' | ' . EMPRESA,
             'menu'          => $this->model_catalogos->get_menus(),
-            'view'          => 'actividades/index'
+            'view'          => 'preproyectos/index'
         );
         $this->load->view( RUTA_TEMA . 'body', $data, FALSE );
     }
@@ -54,12 +54,11 @@ class Actividades extends CI_Controller {
                      array( 'direccion_id' => $combinacion->direccion_id );
                      
         $data = array(
-            'titulo'    => 'Registrar',            
+            'titulo'    => 'Registrar',
             'programas' =>  $this->model_catalogos->get_programas(),
             'l_accion'  =>  $this->model_catalogos->get_lineas_accion(),
             'u_medida'  =>  $this->model_catalogos->get_unidades_medida($condicion),
-            'inputs'    =>  $this->inputs_registro(),
-            'view'      => 'actividades/registrar'
+            'view'      => 'preproyectos/registrar'
         );
         $json['html'] = $this->load->view( $data['view'], $data, TRUE );
         return print(json_encode($json));
@@ -69,19 +68,19 @@ class Actividades extends CI_Controller {
     public function editar()
     {
         $json = array('exito' => TRUE);
-        $actividad_id = $this->input->post('actividad');
-        if ( $actividad_id ){
-            $encabezado   = $this->model_actividades->get_actividad($actividad_id);
-            $detalles     = $this->model_actividades->get_seguimiento_actividades($actividad_id);
+        $preproyecto_id = $this->input->post('preproyecto');
+        if ( $preproyecto_id ){
+            $encabezado   = $this->model_preproyectos->get_preproyecto($preproyecto_id);
+            $detalles     = $this->model_preproyectos->get_seguimiento_preproyectos($preproyecto_id);
             $data = array(
                 'titulo'    => 'Registrar',
-                'view'      => 'actividades/editar',
+                'view'      => 'preproyectos/editar',
                 'encabezado'=> $encabezado,
                 'detalles'  => $detalles,
             );
             $json['html'] = $this->load->view( $data['view'], $data, TRUE );
         } else 
-            $json = array('exito' => FALSE, 'error' => 'No se recibió el folio de la actividad.');
+            $json = array('exito' => FALSE, 'error' => 'No se recibió el folio de la preproyecto.');
         return print(json_encode($json));
     
     }
@@ -89,22 +88,22 @@ class Actividades extends CI_Controller {
     public function reporte()
     {
         $json = array('exito' => TRUE);
-        $actividad_id = $this->input->post('actividad');
-        if ( $actividad_id ){
-            $encabezado   = $this->model_actividades->get_actividad($actividad_id);
-            $detalles     = $this->model_actividades->get_seguimiento_actividades($actividad_id);
+        $preproyecto_id = $this->input->post('preproyecto');
+        if ( $preproyecto_id ){
+            $encabezado   = $this->model_preproyectos->get_preproyecto($preproyecto_id);
+            $detalles     = $this->model_preproyectos->get_seguimiento_preproyectos($preproyecto_id);
             if ( $encabezado && $detalles ){
                 $data = array(
                     'titulo'    => 'Registrar',
-                    'view'      => 'actividades/reporte',
+                    'view'      => 'preproyectos/reporte',
                     'encabezado'=> $encabezado,
                     'detalles'  => $detalles,
                 );
                 $json['html'] = $this->load->view( $data['view'], $data, TRUE );
             } else 
-                $json = array('exito' => FALSE, 'error' => 'No se recuperó información sobre esta actividad.');
+                $json = array('exito' => FALSE, 'error' => 'No se recuperó información sobre esta preproyecto.');
         } else 
-            $json = array('exito' => FALSE, 'error' => 'No se recibió el folio de la actividad.');
+            $json = array('exito' => FALSE, 'error' => 'No se recibió el folio de la preproyecto.');
         return print(json_encode($json));    
     }
 
@@ -116,175 +115,32 @@ class Actividades extends CI_Controller {
     
     // -------------- VISTAS
 
-    public function detalles_actividad(){
+    public function detalles_preproyecto(){
         $json = array('exito' => TRUE);
-        $actividad_id = $this->input->post('actividad_id');
-        if ( $actividad_id ){
+        $preproyecto_id = $this->input->post('preproyecto_id');
+        if ( $preproyecto_id ){
             $data = array(
                 'titulo'    => 'Detalle de Actividad',
-                'encabezado'=> $this->model_actividades->get_actividad($actividad_id),
-                'detalles'  => $this->model_actividades->get_seguimiento_actividades($actividad_id),
-                'view'      => 'actividades/detalle_actividad'
+                'encabezado'=> $this->model_preproyectos->get_preproyecto($preproyecto_id),
+                'detalles'  => $this->model_preproyectos->get_seguimiento_preproyectos($preproyecto_id),
+                'view'      => 'preproyectos/detalle_preproyecto'
             );
             $json['html'] = $this->load->view( $data['view'], $data, TRUE );
         } else 
-            $json = array('exito' => FALSE, 'error' => 'No se obtuvo el número de actividad.');
+            $json = array('exito' => FALSE, 'error' => 'No se obtuvo el número de preproyecto.');
         return print(json_encode($json));
     }
 
-
-    // -------------- DATOS
-
-
-    public function datatable_actividades(){
-        return print(json_encode( $this->model_actividades->get_actividades() ));
-    }
-
-    public function guardar(){
+    private function registro_proyecto(){
         $json = array('exito' => TRUE);
-        $area_origen                    = $this->input->post('area_origen');
-        $programa_presupuestario        = $this->input->post('programa_presupuestario');
-        $linea_accion                   = $this->input->post('linea_accion');
-        $detalle_actividad              = $this->input->post('detalle_actividad');
-        $unidad_medida                  = $this->input->post('unidad_medida');
-        $tipo_medicion                  = $this->input->post('tipo_medicion');
-        $grupo_beneficiado              = $this->input->post('grupo_beneficiado');
-        $programado_fisico              = $this->input->post('fisico_objetivo_anual');
-        $programado_fisico_mensual      = $this->input->post('programado-fisico');
-        $programado_financiero          = $this->input->post('financiero_objetivo_anual');
-        $programado_financiero_mensual  = $this->input->post('programado-financiero');
-
-        $datos  = array(
-            'area_origen'                   => $area_origen,
-            'linea_accion'                  => $linea_accion,
-            'detalle_actividad'             => $detalle_actividad,
-            'unidad_medida'                 => $unidad_medida,
-            'tipo_medicion'                 => $tipo_medicion,
-            'grupo_beneficiado'             => $grupo_beneficiado,
-            'programado_fisico'             => $programado_fisico,
-            'programado_fisico_mensual'     => $programado_fisico_mensual,
-            'programado_financiero'         => $programado_financiero,
-            'programado_financiero_mensual' => $programado_financiero_mensual,
-            'usuario_id'                    => $this->session->userdata('uid'),
-            'ejercicio'                     => date('Y')
+        $data = array(
+            'titulo'    => 'Registrar',
+            'programas' =>  $this->model_catalogos->get_programas(),
+            'l_accion'  =>  $this->model_catalogos->get_lineas_accion(),
+            'view'      => 'preproyectos/tipos_registro/proyecto'
         );
-
-        $datos['programa_presupuestario'] = $programa_presupuestario;
-        $json = $this->model_actividades->set_nueva_actividad($datos, TRUE);
-        return print(json_encode($json));
-    }
-
-    public function registrar_reporte(){
-        $json = array('exito' => TRUE);
-        $actividad_detallada = $this->input->post('actividad_detallada');
-
-        if ( $actividad_detallada ){
-            $mes        = $this->input->post('mes');
-            $fisico     = $this->input->post('fisico');
-            $financiero = $this->input->post('financiero');
-
-            $datos  = array(
-                'mes'                   => $mes,
-                'realizado_fisico'      => $fisico,
-                'realizado_financiero'  => $financiero,
-                'usuario_id'            => $this->session->userdata('uid'),
-            );
-
-            $reporte = $this->model_actividades->actualizar_reporte($actividad_detallada, $datos);
-            if ( $reporte ){
-                $json['exito'] = $reporte['exito'];
-                if ( isset($reporte['error']) )
-                    $json['error'] = $reporte['error'];
-            } else
-                $json = array('exito' => FALSE, 'error' => 'No se pudo realizar el reporte del mes.');
-        } else 
-            $json = array('exito' => FALSE, 'error' => 'No se recibió el mes a reportar.');
-        return print(json_encode($json));
-    }
-
-    public function select_unidades_medida(){
-        $json = array('exito' => TRUE);
-        $area_usuario   = array('combinacion_area_id' => $this->input->post('combinacion_area'));
-        $combinacion    = $this->model_catalogos->get_areas( $area_usuario );
-
-        $condicion = array( 'direccion_id' => $combinacion->direccion_id );
-        $json['unidades_medida'] = $this->model_catalogos->get_unidades_medida($condicion);
-
-        if ( !$json['unidades_medida'] )
-            $json['unidades_medida'] = $this->model_catalogos->get_unidades_medida();
-
-        return print(json_encode($json));
-    }
-
-    public function select_localidades(){
-        $json = array('exito' => TRUE);
-        $condicion = array( 'municipio_id' => $this->input->post('municipio') );
-        $json['localidades']  = $this->model_catalogos->get_localidades();
-        return print(json_encode($json));
-    }
-
-    // Función ajax para cargar documentos
-    public function anexar_documento(){
-        $json           = array('exito' => TRUE, 'error' => '', 'fallidos' => '');
-        $ejercicio      = date('Y');
-        $actividad_id   = $this->input->post('actividad_id');
-
-        if ( !empty($_FILES) ) {
-            // Carga de documentos
-            $uploadFolder  = "{$this->rootPathRemoto}/{$ejercicio}/{$actividad_id}/";
-            $localUploads  = "{$this->rootPathLocal}/{$ejercicio}/{$actividad_id}/";
-
-            // Configuración de Libreriía CI Upload
-            $config['upload_path']   = $uploadFolder; 
-            $config['allowed_types'] = '*';
-            $config['overwrite']     = 1;
-
-            // Checar directorios Raiz y sus configuraciones
-            if ( !file_exists($this->rootPathRemoto) && !is_dir($this->rootPathRemoto) )
-                mkdir( $this->rootPathRemoto, 0777 ); // Crear directorio si no existe
-            if ( !file_exists($this->rootPathLocal) && !is_dir($this->rootPathLocal) )
-                mkdir( $this->rootPathLocal, 0777 ); // Crear directorio si no existe
-
-            if ( !file_exists($this->rootPathRemoto . "{$ejercicio}/") && !is_dir($this->rootPathRemoto . "{$ejercicio}/") )
-                mkdir( $this->rootPathRemoto . "{$ejercicio}/", 0777 ); // Crear directorio si no existe
-            if ( !file_exists($this->rootPathLocal . "{$ejercicio}/") && !is_dir($this->rootPathLocal . "{$ejercicio}/") )
-                mkdir( $this->rootPathLocal . "{$ejercicio}/", 0777 ); // Crear directorio si no existe
-
-            if ( !file_exists($uploadFolder) && !is_dir($uploadFolder) )
-                mkdir( $uploadFolder, 0777 ); // Crear directorio si no existe
-            if ( !file_exists($localUploads) && !is_dir($localUploads) )
-                mkdir( $localUploads, 0777 ); // Crear directorio si no existe
-
-            // Subir el archivo al servidor 
-            // Modo Múltiple
-            foreach($_FILES['file']['tmp_name'] as $key => $file) {
-                $tempFile   = $_FILES['file']['tmp_name'][$key];
-                $targetFile =  $uploadFolder. $_FILES['file']['name'][$key];
-                if ( move_uploaded_file($tempFile,$targetFile) ){
-                    // Mover el archivo a Uploads
-                    $previsualizador            = $localUploads . $_FILES['file']['name'][$key];
-                    $json['previsualizador']    = '';
-                    if ( !copy($targetFile, $previsualizador) )
-                        $json['previsualizador'] .= $_FILES['file']['name'][$key] . ',';
-                    // Guardar info en BD
-                    $this->model_actividades->registrar_documento( $actividad_id, $_FILES['file']['name'][$key] );
-                }
-                else
-                    $json['fallidos'] .= $_FILES['file']['name'][$key] . ',';
-            }
-        } else {
-            $json['exito'] = FALSE;
-            $json['error'] = 'No se recibió ningún archivo.';
-        }
-        return print(json_encode( $json ));
-    }
-
-/*  ----------------------------------------------------
-*  --- FUNCIONES PRIVADAS 
-*   ------------------------------------ */
-    
-    private function inputs_registro(){
-        return array(
+        $json['html']   = $this->load->view( $data['view'], $data, TRUE );
+        $json['inputs'] = array(
             [
                 'nombre'=> 'area_origen',
                 'texto' => 'Área',
@@ -301,7 +157,7 @@ class Actividades extends CI_Controller {
                 'tipo'  => 'select'
             ],
             [
-                'nombre'=> 'detalle_actividad',
+                'nombre'=> 'detalle_preproyecto',
                 'texto' => 'Detalle de la Actividad'
             ],
             [
@@ -336,9 +192,254 @@ class Actividades extends CI_Controller {
                 'texto' => 'Distribución Mensual Ponderada (Financiero)'
             ]
         );
+        return $json;
+    }
+
+    private function registro_preproyecto(){
+        $json = array('exito' => TRUE);
+        $data = array(
+            'titulo'        => 'Registrar',
+            'municipios'    =>  $this->model_catalogos->get_municipios(),
+            'l_accion'      =>  $this->model_catalogos->get_lineas_accion(),
+            'view'          => 'preproyectos/tipos_registro/preproyecto'
+        );
+        $json['html']   = $this->load->view( $data['view'], $data, TRUE );
+        $json['inputs'] = array(
+            [
+                'nombre'=> 'area_origen',
+                'texto' => 'Área',
+                'tipo'  => 'select'
+            ],
+            [
+                'nombre'=> 'municipio',
+                'texto' => 'Municipio',
+                'tipo'  => 'select'
+            ],
+            [
+                'nombre'=> 'localidad',
+                'texto' => 'Localidad',
+                'tipo'  => 'select'
+            ],
+            [
+                'nombre'=> 'linea_accion',
+                'texto' => 'Línea de Acción',
+                'tipo'  => 'select'
+            ],
+            [
+                'nombre'=> 'detalle_preproyecto',
+                'texto' => 'Detalle de la Actividad'
+            ],
+            [
+                'nombre'=> 'unidad_medida',
+                'texto' => 'Unidad de Medida',
+                'tipo'  => 'select'
+            ],
+            [
+                'nombre'=> 'tipo_medicion',
+                'texto' => 'Tipo de Medición',
+                'tipo'  => 'select'
+            ],
+            [
+                'nombre'=> 'grupo_beneficiado',
+                'texto' => 'Grupo Beneficiado',
+                'tipo'  => 'select'
+            ],
+            [
+                'nombre'=> 'fisico_objetivo_anual',
+                'texto' => 'Objetivo Anual (Físico)'
+            ],
+            [
+                'nombre'=> 'programado-fisico',
+                'texto' => 'Distribución Mensual Ponderada (Físico)'
+            ],
+            [
+                'nombre'=> 'financiero_objetivo_anual',
+                'texto' => 'Objetivo Anual (Financiero)'
+            ],
+            [
+                'nombre'=> 'programado-financiero',
+                'texto' => 'Distribución Mensual Ponderada (Financiero)'
+            ]
+        );
+        return $json;
+    }
+
+    // -------------- DATOS
+
+
+    public function datatable_preproyectos(){
+        return print(json_encode( $this->model_preproyectos->get_preproyectos() ));
+    }
+
+    public function guardar(){
+        $json = array('exito' => TRUE);
+        $area_origen                    = $this->input->post('area_origen');
+        $programa_presupuestario        = $this->input->post('programa_presupuestario');
+        $linea_accion                   = $this->input->post('linea_accion');
+        $detalle_preproyecto              = $this->input->post('detalle_preproyecto');
+        $unidad_medida                  = $this->input->post('unidad_medida');
+        $tipo_medicion                  = $this->input->post('tipo_medicion');
+        $grupo_beneficiado              = $this->input->post('grupo_beneficiado');
+        $programado_fisico              = $this->input->post('fisico_objetivo_anual');
+        $programado_fisico_mensual      = $this->input->post('programado-fisico');
+        $programado_financiero          = $this->input->post('financiero_objetivo_anual');
+        $programado_financiero_mensual  = $this->input->post('programado-financiero');
+        $municipio                      = $this->input->post('municipio');
+        $localidad                      = $this->input->post('localidad');
+
+        $datos  = array(
+            'area_origen'                   => $area_origen,
+            'linea_accion'                  => $linea_accion,
+            'detalle_preproyecto'             => $detalle_preproyecto,
+            'unidad_medida'                 => $unidad_medida,
+            'tipo_medicion'                 => $tipo_medicion,
+            'grupo_beneficiado'             => $grupo_beneficiado,
+            'programado_fisico'             => $programado_fisico,
+            'programado_fisico_mensual'     => $programado_fisico_mensual,
+            'programado_financiero'         => $programado_financiero,
+            'programado_financiero_mensual' => $programado_financiero_mensual,
+            'usuario_id'                    => $this->session->userdata('uid'),
+            'ejercicio'                     => date('Y')
+        );
+
+        if ( $programa_presupuestario ) // Proyecto
+        {
+            $datos['programa_presupuestario'] = $programa_presupuestario;
+            $json = $this->model_preproyectos->set_nueva_preproyecto($datos, TRUE);
+            $json['modo'] = 'proyecto';
+        } else                          // Preproyecto 
+        {
+            $datos['municipio'] = $municipio;
+            $datos['localidad'] = $localidad;
+            $json = $this->model_preproyectos->set_nueva_preproyecto($datos, FALSE);
+            $json['modo'] = 'pre-proyecto';
+        }
+        return print(json_encode($json));
+    }
+
+    public function registrar_reporte(){
+        $json = array('exito' => TRUE);
+        $preproyecto_detallada = $this->input->post('preproyecto_detallada');
+
+        if ( $preproyecto_detallada ){
+            $mes        = $this->input->post('mes');
+            $fisico     = $this->input->post('fisico');
+            $financiero = $this->input->post('financiero');
+
+            $datos  = array(
+                'mes'                   => $mes,
+                'realizado_fisico'      => $fisico,
+                'realizado_financiero'  => $financiero,
+                'usuario_id'            => $this->session->userdata('uid'),
+            );
+
+            $reporte = $this->model_preproyectos->actualizar_reporte($preproyecto_detallada, $datos);
+            if ( $reporte ){
+                $json['exito'] = $reporte['exito'];
+                if ( isset($reporte['error']) )
+                    $json['error'] = $reporte['error'];
+            } else
+                $json = array('exito' => FALSE, 'error' => 'No se pudo realizar el reporte del mes.');
+        } else 
+            $json = array('exito' => FALSE, 'error' => 'No se recibió el mes a reportar.');
+        return print(json_encode($json));
+    }
+
+    public function select_unidades_medida(){
+        $json = array('exito' => TRUE);
+        $area_usuario   = array('combinacion_area_id' => $this->input->post('combinacion_area'));
+        $combinacion    = $this->model_catalogos->get_areas( $area_usuario );
+
+        $condicion = array( 'direccion_id' => $combinacion->direccion_id );
+        $json['unidades_medida'] = $this->model_catalogos->get_unidades_medida($condicion);
+
+        if ( !$json['unidades_medida'] )
+            $json['unidades_medida'] = $this->model_catalogos->get_unidades_medida();
+
+        return print(json_encode($json));
+    }
+
+    public function select_localidades(){
+        $json = array('exito' => TRUE);
+        $condicion = array( 'municipio_id' => $this->input->post('municipio') );
+        $json['localidades']  = $this->model_catalogos->get_localidades();
+        return print(json_encode($json));
+    }
+
+    public function tipo_registro(){
+        $json = array('exito' => TRUE);
+        $tipo = $this->input->post('tipo');
+        switch ($tipo) {
+            case 'proyecto':
+                $json = $this->registro_proyecto();
+                break;
+            case 'preproyecto':
+                $json = $this->registro_preproyecto();
+                break;
+            default:
+                $json = array('exito' => FALSE, 'mensaje' => 'Opción inválida');
+                break;
+        }
+        return print(json_encode($json));
+    }
+
+    // Función ajax para cargar documentos
+    public function anexar_documento(){
+        $json           = array('exito' => TRUE, 'error' => '', 'fallidos' => '');
+        $ejercicio      = date('Y');
+        $preproyecto_id   = $this->input->post('preproyecto_id');
+
+        if ( !empty($_FILES) ) {
+            // Carga de documentos
+            $uploadFolder  = "{$this->rootPathRemoto}/{$ejercicio}/{$preproyecto_id}/";
+            $localUploads  = "{$this->rootPathLocal}/{$ejercicio}/{$preproyecto_id}/";
+
+            // Configuración de Libreriía CI Upload
+            $config['upload_path']   = $uploadFolder; 
+            $config['allowed_types'] = '*';
+            $config['overwrite']     = 1;
+
+            // Checar directorios Raiz y sus configuraciones
+            if ( !file_exists($this->rootPathRemoto) && !is_dir($this->rootPathRemoto) )
+                mkdir( $this->rootPathRemoto, 0777 ); // Crear directorio si no existe
+            if ( !file_exists($this->rootPathLocal) && !is_dir($this->rootPathLocal) )
+                mkdir( $this->rootPathLocal, 0777 ); // Crear directorio si no existe
+
+            if ( !file_exists($this->rootPathRemoto . "{$ejercicio}/") && !is_dir($this->rootPathRemoto . "{$ejercicio}/") )
+                mkdir( $this->rootPathRemoto . "{$ejercicio}/", 0777 ); // Crear directorio si no existe
+            if ( !file_exists($this->rootPathLocal . "{$ejercicio}/") && !is_dir($this->rootPathLocal . "{$ejercicio}/") )
+                mkdir( $this->rootPathLocal . "{$ejercicio}/", 0777 ); // Crear directorio si no existe
+
+            if ( !file_exists($uploadFolder) && !is_dir($uploadFolder) )
+                mkdir( $uploadFolder, 0777 ); // Crear directorio si no existe
+            if ( !file_exists($localUploads) && !is_dir($localUploads) )
+                mkdir( $localUploads, 0777 ); // Crear directorio si no existe
+
+            // Subir el archivo al servidor 
+            // Modo Múltiple
+            foreach($_FILES['file']['tmp_name'] as $key => $file) {
+                $tempFile   = $_FILES['file']['tmp_name'][$key];
+                $targetFile =  $uploadFolder. $_FILES['file']['name'][$key];
+                if ( move_uploaded_file($tempFile,$targetFile) ){
+                    // Mover el archivo a Uploads
+                    $previsualizador            = $localUploads . $_FILES['file']['name'][$key];
+                    $json['previsualizador']    = '';
+                    if ( !copy($targetFile, $previsualizador) )
+                        $json['previsualizador'] .= $_FILES['file']['name'][$key] . ',';
+                    // Guardar info en BD
+                    $this->model_preproyectos->registrar_documento( $preproyecto_id, $_FILES['file']['name'][$key] );
+                }
+                else
+                    $json['fallidos'] .= $_FILES['file']['name'][$key] . ',';
+            }
+        } else {
+            $json['exito'] = FALSE;
+            $json['error'] = 'No se recibió ningún archivo.';
+        }
+        return print(json_encode( $json ));
     }
 
 }
 
-/* End of file Actividades.php */
-/* Location: ./application/controllers/Actividades.php */
+/* End of file Preproyectos.php */
+/* Location: ./application/controllers/Preproyectos.php */

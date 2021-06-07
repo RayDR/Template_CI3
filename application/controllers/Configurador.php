@@ -30,6 +30,16 @@ class Configurador extends CI_Controller {
         $this->load->view( RUTA_TEMA . 'body', $data, FALSE );
     }
 
+    public function proyectos()
+    {
+        $data = array(
+            'titulo'        => 'Configuración - Proyectos '  . ' | ' . EMPRESA,
+            'menu'          => $this->model_catalogos->get_menus(),
+            'view'          => 'configurador/proyectos/index'
+        );
+        $this->load->view( RUTA_TEMA . 'body', $data, FALSE );
+    }
+
     public function usuarios()
     {
         $data = array(

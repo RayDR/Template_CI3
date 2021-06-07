@@ -1,10 +1,15 @@
+var inputs;
+
+//$(document).off('change','.objetivos').on('change','.objetivos',fajustar_meses);
 $(document).off('change','.meses').on('change','.meses',fcalcular_total);
 
 $(document).ready(function() {
     $('#guardar').click(fguardar);
     $('#area_origen').change(fget_ums);
+    
     $('#linea_accion').change(flinea_accion);
-    $('.objetivos').change(faAD_Objetivos);
+    $('#municipio').change(fget_localidades);
+    $('#localidad').select2();
 
     finicia_select2();
 });
@@ -86,12 +91,12 @@ function fguardar(e){
         });
         if ( ! errores ){
             respuesta   = fu_json_query(
-                url('Actividades/guardar', true, false),
+                url('Preproyectos/guardar', true, false),
                 datos 
             );
             if ( respuesta.exito ){
-                fu_notificacion('Se ha registrado la actividad exitosamente.', 'success');
-                window.location.replace( url('Actividades') );
+                fu_notificacion('Se ha registrado la preproyecto exitosamente.', 'success');
+                window.location.replace( url('Preproyectos') );
             } else
                 fu_notificacion(respuesta.mensaje, 'danger');
         } else {
@@ -99,7 +104,7 @@ function fguardar(e){
             fu_notificacion('Existen campos pendientes por llenar.', 'danger');    
         }
     } catch(e) {
-        fu_alerta('Ha ocurrido un error al guardar la actividad, intentelo más tarde.', 'danger');
+        fu_alerta('Ha ocurrido un error al guardar la preproyecto, intentelo más tarde.', 'danger');
     }
 
     $('#guardar').prop({disabled: false});
@@ -115,13 +120,12 @@ function flinea_accion(){
             <label class="h6"><span class="text-secondary">Estrategia:</span> <small class="font-weight-bold">${seleccion.data('estrategia')}</small></label>
         `);
     }
-    $('#programados').show();
 }
 
 function fget_ums(){
     var combinacion_area = $(this).val();
     if ( combinacion_area ){
-        var respuesta = fu_json_query(url('Actividades/select_unidades_medida', true, false), {combinacion_area: combinacion_area});
+        var respuesta = fu_json_query(url('Preproyectos/select_unidades_medida', true, false), {combinacion_area: combinacion_area});
         if ( respuesta ){
             if ( respuesta.exito ){
                 $('#unidad_medida').html('<option selected disabled>Seleccione una opción</option>');
@@ -135,6 +139,71 @@ function fget_ums(){
                 fu_notificacion(respuesta.mensaje, (!respuesta.exito)? 'danger' : 'warning');
         } else 
             fu_notificacion('No se obtuvo respuesta del servidor.', 'danger');
+    }
+}
+
+function fajustar_meses(){
+    var total = $(this).val(),
+        tipo  = $(this).data('tipo');       // Tipo de programado;
+    $(`#${tipo}_rebase`).html('');          // Limpiar errores
+    
+    var meses = $(`#programado-${tipo} .meses`);  
+
+    meses.each(function(index, mes) {       // Restablecer meses
+        $(mes).removeClass('is-valid').removeClass('is-invalid');
+        $(mes).attr({readonly: false});
+        $(mes).val(0);
+    });
+
+    if ( total <= 0 ){              // Bloquea
+        $(`#programado-${tipo} .meses`).val('').attr({readonly : true});
+    } else if ( total < 10000000000 ){      // Autodistribuye
+        let index = 1;
+        while( total > 0 ){
+            switch (index) {        // Agregar valor a mes
+                case 1:
+                    $(`#${tipo}_enero`).val( parseFloat($(`#${tipo}_enero`).val()) + 1 );
+                    break;
+                case 2:
+                    $(`#${tipo}_febrero`).val( parseFloat($(`#${tipo}_febrero`).val()) + 1 );
+                    break;
+                case 3:
+                    $(`#${tipo}_marzo`).val( parseFloat($(`#${tipo}_marzo`).val()) + 1 );
+                    break;
+                case 4:
+                    $(`#${tipo}_abril`).val( parseFloat($(`#${tipo}_abril`).val()) + 1 );
+                    break;
+                case 5:
+                    $(`#${tipo}_mayo`).val( parseFloat($(`#${tipo}_mayo`).val()) + 1 );
+                    break;
+                case 6:
+                    $(`#${tipo}_junio`).val( parseFloat($(`#${tipo}_junio`).val()) + 1 );
+                    break;
+                case 7:
+                    $(`#${tipo}_julio`).val( parseFloat($(`#${tipo}_julio`).val()) + 1 );
+                    break;
+                case 8:
+                    $(`#${tipo}_agosto`).val( parseFloat($(`#${tipo}_agosto`).val()) + 1 );
+                    break;
+                case 9:
+                    $(`#${tipo}_septiembre`).val( parseFloat($(`#${tipo}_septiembre`).val()) + 1 );
+                    break;
+                case 10:
+                    $(`#${tipo}_octubre`).val( parseFloat($(`#${tipo}_octubre`).val()) + 1 );
+                    break;
+                case 11:
+                    $(`#${tipo}_noviembre`).val( parseFloat($(`#${tipo}_noviembre`).val()) + 1 );
+                    break;
+                case 12:
+                    $(`#${tipo}_diciembre`).val( parseFloat($(`#${tipo}_diciembre`).val()) + 1 );
+                    break;
+            }
+            if ( index == 12 )  // Reiniciar Mes
+                index = 1;
+            else                // Cambiar de Mes 
+                index++;
+            total--;            // Restar total
+        }
     }
 }
 
@@ -177,10 +246,22 @@ function fejecuta_calculo_total(tipo){
     return exito; 
 }
 
-function faAD_Objetivos(){
-    var objetivo = $(this).val();
-    if ( $.isNumeric(objetivo) ){
-        if ( objetivo > 0 )
-            $(this).closest('.card').find('.meses').attr({readonly: false});
+function fget_localidades(){
+    var municipio = $(this).val();
+    if ( municipio ){
+        var respuesta = fu_json_query(url('Preproyectos/select_localidades', true, false), {municipio: municipio});
+        if ( respuesta ){
+            if ( respuesta.exito ){
+                $('#localidad').html('<option selected disabled>Seleccione una opción</option>');
+                respuesta.localidades.forEach( function(localidad, index) {
+                    $('#localidad').append(`
+                        <option value="${localidad.localidad_id}">${localidad.descripcion}</option>
+                    `);
+                });
+            }
+            if ( respuesta.mensaje )
+                fu_notificacion(respuesta.mensaje, (!respuesta.exito)? 'danger' : 'warning');
+        } else 
+            fu_notificacion('No se obtuvo respuesta del servidor.', 'danger');
     }
 }

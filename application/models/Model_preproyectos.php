@@ -1,19 +1,19 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Model_actividades extends CI_Model {
+class Model_preproyectos extends CI_Model {
 
     /**
-        * Obtener el listado de actividades
+        * Obtener el listado de preproyectos
         *
         * @access public
         * @param  array   $filtros          filtros a iterar
         * @param  boolean $tipo_retorno     Modo de retonro: 
         *                                       TRUE - Objeto
         *                                       FALSE - Array
-        * @return actividades
+        * @return preproyectos
     */
-    public function get_actividades($filtros = NULL, $tipo_retorno = TRUE){
+    public function get_preproyectos($filtros = NULL, $tipo_retorno = TRUE){
         try {           
             if ( is_array($filtros) ){
                 foreach ($filtros as $key => $filtro) {
@@ -21,73 +21,73 @@ class Model_actividades extends CI_Model {
                 }
             }
 
-            $actividades = $this->db->get('vw_proyecto_actividades');
+            $preproyectos = $this->db->get('preproyectos');
 
             if ( $tipo_retorno )
-                return $actividades->result();
+                return $preproyectos->result();
             else
-                return $actividades->result_array();
+                return $preproyectos->result_array();
         } catch (Exception $e) {
             return [];
         }
     }
 
     /**
-        * Obtener actividad por id
+        * Obtener preproyecto por id
         *
         * @access public
-        * @param  int     $actividad_id     ID
+        * @param  int     $preproyecto_id     ID
         * @param  array   $filtros          filtros a iterar
         * @param  boolean $tipo_retorno     Modo de retonro: 
         *                                       TRUE - Objeto
         *                                       FALSE - Array
-        * @return actividad
+        * @return preproyecto
     */
-    public function get_actividad($actividad_id, $filtros = NULL, $tipo_retorno = TRUE){
+    public function get_preproyecto($preproyecto_id, $filtros = NULL, $tipo_retorno = TRUE){
         try {           
             if ( is_array($filtros) ){
                 foreach ($filtros as $key => $filtro) {
                     $this->db->where($key, $filtro);
                 }
             }
-            $this->db->where('actividad_id', $actividad_id);
-            $actividades = $this->db->get('vw_proyecto_actividades');
+            $this->db->where('preproyecto_id', $preproyecto_id);
+            $preproyectos = $this->db->get('preproyectos');
 
             if ( $tipo_retorno )
-                return $actividades->row();
+                return $preproyectos->row();
             else
-                return $actividades->row_array();
+                return $preproyectos->row_array();
         } catch (Exception $e) {
             return [];
         }
     }
 
     /**
-        * Obtener el seguimiento de las actividades
+        * Obtener el seguimiento de las preproyectos
         *
         * @access public
-        * @param  int     $actividad_id     Identificador de actividad
+        * @param  int     preproyecto_id     Identificador de preproyecto
         * @param  array   $filtros          Filtros a iterar
         * @param  boolean $tipo_retorno     Modo de retonro: 
         *                                       TRUE - Objeto
         *                                       FALSE - Array
-        * @return actividades
+        * @return preproyectos
     */
-    public function get_seguimiento_actividades($actividad_id, $filtros = NULL, $tipo_retorno = TRUE){
+    public function get_seguimiento_preproyectos($preproyecto_id, $filtros = NULL, $tipo_retorno = TRUE){
         try {           
             if ( is_array($filtros) ){
                 foreach ($filtros as $key => $filtro) {
                     $this->db->where($key, $filtro);
                 }
             }
-            $this->db->where('actividad_id', $actividad_id);
+            $this->db->where('preproyecto_id', $preproyecto_id);
 
-            $actividades = $this->db->get('vw_seguimiento_actividades');
+            $preproyectos = $this->db->get('preproyectos');
 
             if ( $tipo_retorno )
-                return $actividades->result();
+                return $preproyectos->result();
             else
-                return $actividades->result_array();
+                return $preproyectos->result_array();
         } catch (Exception $e) {
             return [];
         }
@@ -98,33 +98,48 @@ class Model_actividades extends CI_Model {
         * Registrar una activiad nueva
         *
         * @access public
-        * @param  array   $datos                Datos a almacenar en actividades
+        * @param  array   $datos                Datos a almacenar en preproyectos
+        * @param  boolean $tipo_preproyecto       Proyecto o Preproyecto
         *
         * @return resultado[]
     */
-    public function set_nueva_actividad($datos, $tipo_actividad = TRUE){
+    public function set_nueva_preproyecto($datos, $tipo_preproyecto = TRUE){
         $resultado = array('exito' => TRUE);
         try {
             $this->db->trans_begin();
 
             if ( is_array($datos) ){
+                if ( !$tipo_preproyecto ){                    
+                    // Preproyecto
+                    $db_datos = array(
+                        'linea_accion_id'               => $datos['linea_accion'],
+                        'preproyecto'                     => $datos['detalle_preproyecto'],
+                        'cantidad_beneficiarios'        => $datos['programado_fisico']
+                    );
+                    $this->db->insert('preproyectos', $db_datos);
+                    $preproyecto = $this->db->insert_id();
+                    $resultado['preproyecto'] = $preproyecto;
+                }
+                // Preproyecto - Actividad
                 $db_datos = array(
                     'combinacion_area_id'           => $datos['area_origen'],
                     'linea_accion_id'               => $datos['linea_accion'],
                     'usuario_id'                    => $datos['usuario_id'],
                     'ejercicio'                     => $datos['ejercicio']
                 );
+                if ( isset($preproyecto) )
+                    $db_datos['preproyecto'] = $preproyecto;
                 if ( isset($datos['programa_presupuestario']) )
                     $db_datos['programa_presupuestario_id'] = $datos['programa_presupuestario'];
 
-                $this->db->insert('proyectos_actividades', $db_datos);
+                $this->db->insert('proyectos_preproyectos', $db_datos);
                 $proyecto = $this->db->insert_id();
                 $resultado['proyecto'] = $proyecto;
                 
-                // Creación de actividad
+                // Creación de preproyecto
                 $db_datos = array(
-                    'descripcion'           => $datos['detalle_actividad'],
-                    'proyecto_actividad_id' => $proyecto,
+                    'descripcion'           => $datos['detalle_preproyecto'],
+                    'proyecto_preproyecto_id' => $proyecto,
                     'unidad_medida_id'      => $datos['unidad_medida'],
                     'medicion_id'           => $datos['tipo_medicion'],
                     'beneficiado_id'        => $datos['grupo_beneficiado'],
@@ -133,22 +148,22 @@ class Model_actividades extends CI_Model {
                     'usuario_id'            => $datos['usuario_id'],
                     'unidad_medida_id'      => $datos['unidad_medida']
                 );
-                $this->db->insert('actividades', $db_datos);
-                $actividad = $this->db->insert_id();
-                $resultado['actividad'] = $actividad;
+                $this->db->insert('preproyectos', $db_datos);
+                $preproyecto = $this->db->insert_id();
+                $resultado['preproyecto'] = $preproyecto;
 
-                // Detalle de actividad
+                // Detalle de preproyecto
                 $meses_financieros = $datos['programado_financiero_mensual'];
                 foreach ($datos['programado_fisico_mensual'] as $key => $mes_fisico) {
                     $db_datos = array(
-                        'actividad_id'          => $actividad,
-                        'descripcion'           => $datos['detalle_actividad'],
+                        'preproyecto_id'          => $preproyecto,
+                        'descripcion'           => $datos['detalle_preproyecto'],
                         'mes'                   => $key + 1,
                         'programado_fisico'     => $mes_fisico,
                         'programado_financiero' => $meses_financieros[$key],
                         'usuario_id'            => $datos['usuario_id']
                     );
-                    $this->db->insert('actividades_detalladas', $db_datos);
+                    $this->db->insert('preproyectos_detalladas', $db_datos);
                 }
             } else
                 throw new Exception('La estructura de los datos es incorrecta.');
@@ -166,18 +181,18 @@ class Model_actividades extends CI_Model {
         * Actualizar reporte
         *
         * @access public
-        * @param  integer  $actividad_detallada_id      ID
+        * @param  integer  preproyecto_detallada_id      ID
         * @param  arrary   $datos                       Datos del documento
         *
         * @return resultado[]
     */
-    function actualizar_reporte($actividad_detallada_id, $datos){
+    function actualizar_reporte($preproyecto_detallada_id, $datos){
         $resultado = array('exito' => TRUE);
         try {
             $this->db->trans_begin();
 
-            $this->db->where( 'actividad_detallada_id', $actividad_detallada_id);
-            $this->db->update('actividades_detalladas', $datos);
+            $this->db->where( 'preproyecto_detallada_id', $preproyecto_detallada_id);
+            $this->db->update('preproyectos_detalladas', $datos);
 
             $this->db->trans_commit();
         } catch (Exception $e) {
@@ -189,15 +204,15 @@ class Model_actividades extends CI_Model {
     }
 
     /**
-        * Registrar documento de actividad
+        * Registrar documento de preproyecto
         *
         * @access public
-        * @param  integer  $actividad_detallada_id      ID
+        * @param  integer  preproyecto_detallada_id      ID
         * @param  string   $documento                   Nombre del documento
         *
         * @return resultado[]
     */
-    function registrar_documento($actividad_detallada_id, $documento){
+    function registrar_documento($preproyecto_detallada_id, $documento){
         $resultado = array('exito' => TRUE);
         try {
             $this->db->trans_begin();
@@ -205,8 +220,8 @@ class Model_actividades extends CI_Model {
             $db_datos = array(
                 'documento' => $documento
             );
-            $this->db->where('actividad_detallada_id', $actividad_detallada_id);
-            $this->db->update('actividades_detalladas', $db_datos);
+            $this->db->where('preproyecto_detallada_id', $preproyecto_detallada_id);
+            $this->db->update('preproyectos_detalladas', $db_datos);
 
             $this->db->trans_commit();
         } catch (Exception $e) {
@@ -219,5 +234,5 @@ class Model_actividades extends CI_Model {
 
 }
 
-/* End of file model_actividades.php */
-/* Location: ./application/models/model_actividades.php */
+/* End of file model_preproyectos.php */
+/* Location: ./application/models/model_preproyectos.php */
