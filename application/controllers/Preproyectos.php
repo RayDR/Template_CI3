@@ -53,10 +53,10 @@ class Preproyectos extends CI_Controller {
                      
         $data = array(
             'titulo'        => 'Registrar',
-            'programas'     =>  $this->model_catalogos->get_programas(),            
+            'programas'     => $this->model_catalogos->get_programas(),
             'municipios'    => $this->model_catalogos->get_municipios(),
             'l_accion'      => $this->model_catalogos->get_lineas_accion(),
-            'u_medida'      =>  $this->model_catalogos->get_unidades_medida($condicion),
+            'u_medida'      => $this->model_catalogos->get_unidades_medida($condicion),
             'inputs'        => $this->inputs_registro(),
             'view'          => 'preproyectos/registrar'
         );
@@ -70,38 +70,64 @@ class Preproyectos extends CI_Controller {
         $json = array('exito' => TRUE);
         $preproyecto_id = $this->input->post('preproyecto');
         if ( $preproyecto_id ){
-            $encabezado   = $this->model_preproyectos->get_preproyecto($preproyecto_id);
-            $detalles     = $this->model_preproyectos->get_seguimiento_preproyectos($preproyecto_id);
-            $data = array(
-                'titulo'    => 'Registrar',
-                'view'      => 'preproyectos/editar',
-                'encabezado'=> $encabezado,
-                'detalles'  => $detalles,
-            );
-            $json['html'] = $this->load->view( $data['view'], $data, TRUE );
+            $preproyecto    = $this->model_preproyectos->get_preproyecto($preproyecto_id);
+            $actividades    = $this->model_preproyectos->get_actividades_preproyecto($preproyecto_id);
+            if ( $preproyecto ){
+                // Área usuario
+                $area_usuario   = array('combinacion_area_id' => $this->session->userdata('combinacion_area'));
+                $combinacion    = $this->model_catalogos->get_areas( $area_usuario );
+
+                $condicion = ( $this->session->userdata('tuser') == 1 )? NULL : 
+                             array( 'direccion_id' => $combinacion->direccion_id );
+                             
+                $data = array(
+                    'titulo'        => 'Editar Preproyecto',
+                    'preproyecto'   => $preproyecto,
+                    'programas'     => $this->model_catalogos->get_programas(),
+                    'municipios'    => $this->model_catalogos->get_municipios(),
+                    'l_accion'      => $this->model_catalogos->get_lineas_accion(),
+                    'u_medida'      => $this->model_catalogos->get_unidades_medida($condicion),
+                    'inputs'        => $this->inputs_registro(),
+                    'view'          => 'preproyectos/editar'
+                );
+                $json['html'] = $this->load->view( $data['view'], $data, TRUE );
+            } else 
+                $json = array('exito' => FALSE, 'error' => 'No se recuperó información sobre este preproyecto.');
         } else 
             $json = array('exito' => FALSE, 'error' => 'No se recibió el folio de la preproyecto.');
         return print(json_encode($json));
     
     }
 
-    public function reporte()
+    public function actividades()
     {
         $json = array('exito' => TRUE);
         $preproyecto_id = $this->input->post('preproyecto');
         if ( $preproyecto_id ){
-            $encabezado   = $this->model_preproyectos->get_preproyecto($preproyecto_id);
-            $detalles     = $this->model_preproyectos->get_seguimiento_preproyectos($preproyecto_id);
-            if ( $encabezado && $detalles ){
+            $preproyecto    = $this->model_preproyectos->get_preproyecto($preproyecto_id);
+            $actividades    = $this->model_preproyectos->get_actividades_preproyecto($preproyecto_id);
+            if ( $preproyecto ){
+                // Área usuario
+                $area_usuario   = array('combinacion_area_id' => $this->session->userdata('combinacion_area'));
+                $combinacion    = $this->model_catalogos->get_areas( $area_usuario );
+
+                $condicion = ( $this->session->userdata('tuser') == 1 )? NULL : 
+                             array( 'direccion_id' => $combinacion->direccion_id );
+                             
                 $data = array(
-                    'titulo'    => 'Registrar',
-                    'view'      => 'preproyectos/reporte',
-                    'encabezado'=> $encabezado,
-                    'detalles'  => $detalles,
+                    'titulo'        => 'Actividades - Preproyecto',
+                    'preproyecto'   => $preproyecto,
+                    'actividades'   => $actividades,
+                    'programas'     => $this->model_catalogos->get_programas(),
+                    'municipios'    => $this->model_catalogos->get_municipios(),
+                    'l_accion'      => $this->model_catalogos->get_lineas_accion(),
+                    'u_medida'      => $this->model_catalogos->get_unidades_medida($condicion),
+                    'inputs'        => $this->inputs_actividad(),
+                    'view'          => 'preproyectos/actividades'
                 );
                 $json['html'] = $this->load->view( $data['view'], $data, TRUE );
             } else 
-                $json = array('exito' => FALSE, 'error' => 'No se recuperó información sobre esta preproyecto.');
+                $json = array('exito' => FALSE, 'error' => 'No se recuperó información sobre este preproyecto.');
         } else 
             $json = array('exito' => FALSE, 'error' => 'No se recibió el folio de la preproyecto.');
         return print(json_encode($json));    
@@ -122,10 +148,10 @@ class Preproyectos extends CI_Controller {
         $preproyecto_id = $this->input->post('preproyecto_id');
         if ( $preproyecto_id ){
             $data = array(
-                'titulo'    => 'Detalle de Actividad',
-                'encabezado'=> $this->model_preproyectos->get_preproyecto($preproyecto_id),
-                'detalles'  => $this->model_preproyectos->get_seguimiento_preproyectos($preproyecto_id),
-                'view'      => 'preproyectos/detalle_preproyecto'
+                'titulo'        => 'Detalle de Preproyecto',
+                'preproyecto'   => $this->model_preproyectos->get_preproyecto($preproyecto_id),
+                'actividades'   => $this->model_preproyectos->get_actividades_preproyecto($preproyecto_id),
+                'view'          => 'preproyectos/detalle_preproyecto'
             );
             $json['html'] = $this->load->view( $data['view'], $data, TRUE );
         } else 
@@ -165,11 +191,73 @@ class Preproyectos extends CI_Controller {
         return print(json_encode($json));
     }
 
+    public function guardar_edicion(){
+        $json   = array('exito' => TRUE);
+
+        $preproyecto_id = $this->input->post('preproyecto');
+        $preproyecto    = $this->model_preproyectos->get_preproyecto($preproyecto_id);
+
+        if ( $preproyecto ){
+            $datos  = array(
+                'linea_accion'              => $this->input->post('linea_accion'),
+                'municipio'                 => $this->input->post('municipio'),
+                'localidad'                 => $this->input->post('localidad'),
+                'detalle_preproyecto'       => $this->input->post('detalle_preproyecto'),
+                'unidad_medida'             => $this->input->post('unidad_medida'),
+                'tipo_medicion'             => $this->input->post('tipo_medicion'),
+                'grupo_beneficiado'         => $this->input->post('grupo_beneficiado'),
+                'cantidad_beneficiarios'    => $this->input->post('cantidad_beneficiarios'),
+                'inversion'                 => $this->input->post('inversion'),
+                'fecha_inicio'              => $this->input->post('fecha_inicio'),
+                'fecha_termino'             => $this->input->post('fecha_termino'),
+                'url'                       => $this->input->post('url'),
+                'usuario_id'                => $this->session->userdata('uid'),
+                'ejercicio'                 => date('Y')
+            );
+
+            $json = $this->model_preproyectos->editar_preproyecto($datos, FALSE);
+        } else
+            $json   = array('exito' => FALSE, 'error' => 'No s recibió el fólio de preproyecto');
+
+        return print(json_encode($json)); 
+    }
+
+    public function guardar_actividad(){
+        $json   = array('exito' => TRUE);
+
+        $preproyecto_id = $this->input->post('preproyecto');
+        $preproyecto    = $this->model_preproyectos->get_preproyecto($preproyecto_id);
+
+        if ( $preproyecto ){
+            $datos  = array(
+                'linea_accion'              => $this->input->post('linea_accion'),
+                'municipio'                 => $this->input->post('municipio'),
+                'localidad'                 => $this->input->post('localidad'),
+                'detalle_preproyecto'       => $this->input->post('detalle_preproyecto'),
+                'unidad_medida'             => $this->input->post('unidad_medida'),
+                'tipo_medicion'             => $this->input->post('tipo_medicion'),
+                'grupo_beneficiado'         => $this->input->post('grupo_beneficiado'),
+                'cantidad_beneficiarios'    => $this->input->post('cantidad_beneficiarios'),
+                'inversion'                 => $this->input->post('inversion'),
+                'fecha_inicio'              => $this->input->post('fecha_inicio'),
+                'fecha_termino'             => $this->input->post('fecha_termino'),
+                'url'                       => $this->input->post('url'),
+                'usuario_id'                => $this->session->userdata('uid'),
+                'ejercicio'                 => date('Y')
+            );
+
+            $json = $this->model_preproyectos->registrar_actividad($preproyecto_id, $datos, FALSE);
+        } else
+            $json   = array('exito' => FALSE, 'error' => 'No s recibió el fólio de preproyecto');
+
+        return print(json_encode($json)); 
+    }
+
     public function registrar_reporte(){
         $json = array('exito' => TRUE);
-        $preproyecto_detallada = $this->input->post('preproyecto_detallada');
+        $preproyecto = $this->input->post('preproyecto');
 
-        if ( $preproyecto_detallada ){
+        if ( $preproyecto ){
             $mes        = $this->input->post('mes');
             $fisico     = $this->input->post('fisico');
             $financiero = $this->input->post('financiero');
@@ -181,15 +269,15 @@ class Preproyectos extends CI_Controller {
                 'usuario_id'            => $this->session->userdata('uid'),
             );
 
-            $reporte = $this->model_preproyectos->actualizar_reporte($preproyecto_detallada, $datos);
+            $reporte = $this->model_preproyectos->actualizar_reporte($preproyecto, $datos);
             if ( $reporte ){
                 $json['exito'] = $reporte['exito'];
                 if ( isset($reporte['error']) )
                     $json['error'] = $reporte['error'];
             } else
-                $json = array('exito' => FALSE, 'error' => 'No se pudo realizar el reporte del mes.');
+                $json = array('exito' => FALSE, 'error' => 'No se pudo crear la actividad.');
         } else 
-            $json = array('exito' => FALSE, 'error' => 'No se recibió el mes a reportar.');
+            $json = array('exito' => FALSE, 'error' => 'No se recibió el folio del preproyecto.');
         return print(json_encode($json));
     }
 
@@ -295,6 +383,72 @@ class Preproyectos extends CI_Controller {
                 'nombre'=> 'linea_accion',
                 'texto' => 'Línea de Acción',
                 'tipo'  => 'select'
+            ],
+            [
+                'nombre'=> 'detalle_preproyecto',
+                'texto' => 'Detalle de la Actividad'
+            ],
+            [
+                'nombre'=> 'unidad_medida',
+                'texto' => 'Unidad de Medida',
+                'tipo'  => 'select'
+            ],
+            [
+                'nombre'=> 'tipo_medicion',
+                'texto' => 'Tipo de Medición',
+                'tipo'  => 'select'
+            ],
+            [
+                'nombre'=> 'grupo_beneficiado',
+                'texto' => 'Grupo Beneficiado',
+                'tipo'  => 'select'
+            ],
+            [
+                'nombre'=> 'cantidad_beneficiarios',
+                'texto' => 'Cantidad de Beneficiarios'
+            ],
+            [
+                'nombre'=> 'inversion',
+                'texto' => 'Inversión'
+            ],
+            [
+                'nombre'=> 'fecha_inicio',
+                'texto' => 'Fecha de Inicio'
+            ],
+            [
+                'nombre'=> 'fecha_termino',
+                'texto' => 'Fecha de Término'
+            ],
+            [
+                'nombre'=> 'url',
+                'texto' => 'URL'
+            ]
+        );
+    }
+
+    private function inputs_actividad(){
+        return array(
+            [
+                'nombre'=> 'linea_accion',
+                'texto' => 'Línea de Acción'
+            ],
+            [
+                'nombre'=> 'preproyecto',
+                'texto' => 'Folio de Preproyecto'
+            ],
+            [
+                'nombre'=> 'municipio',
+                'texto' => 'Municipio',
+                'tipo'  => 'select'
+            ],
+            [
+                'nombre'=> 'localidad',
+                'texto' => 'Localidad',
+                'tipo'  => 'select'
+            ],
+            [
+                'nombre'=> 'linea_accion',
+                'texto' => 'Línea de Acción'
             ],
             [
                 'nombre'=> 'detalle_preproyecto',

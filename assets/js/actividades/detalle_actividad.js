@@ -3,6 +3,11 @@ $(document).ready(function() {
 	$('#reporte').click(fda_mostrar_reporte);
 });
 
+$(document).on('mouseover','[data-bs-toggle="tooltip"]', function() {
+    $(this).tooltip("disable").tooltip("hide"); 
+    $(this).tooltip("enable").tooltip("show"); 
+});
+
 function fda_mostrar_editar(){
 	fu_notificacion('<i class="fas fa-spinner fa-pulse"></i>&nbsp;Cargando edición','info',1000);
 	var actividad = ( $(this).data('actividad_id') )? $(this).data('actividad_id') : $('#actividad_id').val();

@@ -904,7 +904,7 @@ CREATE TABLE `preproyectos` (
   `incluido` int(11) DEFAULT NULL,
   `usuario_id` int(11) DEFAULT NULL,
   `estatus_id` int(11) DEFAULT '1',
-  `usuario_id_moficia` int(11) DEFAULT NULL,
+  `usuario_id_modifica` int(11) DEFAULT NULL,
   `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `fecha_modificacion` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`preproyecto_id`),
@@ -914,7 +914,7 @@ CREATE TABLE `preproyectos` (
   KEY `fk_medicion_preproyecto` (`medicion_id`),
   KEY `fk_beneficiados_preproyecto` (`beneficiario_id`),
   KEY `fk_usuarios_preproyecto` (`usuario_id`),
-  KEY `fk_usuario_modifica_preproyecto` (`usuario_id_moficia`),
+  KEY `fk_usuario_modifica_preproyecto` (`usuario_id_modifica`),
   KEY `fk_estatus_preproyecto` (`estatus_id`),
   CONSTRAINT `fk_beneficiados_preproyecto` FOREIGN KEY (`beneficiario_id`) REFERENCES `beneficiados` (`beneficiado_id`),
   CONSTRAINT `fk_estatus_preproyecto` FOREIGN KEY (`estatus_id`) REFERENCES `preproyecto_estatus` (`estatus_preproyecto_id`),
@@ -923,7 +923,7 @@ CREATE TABLE `preproyectos` (
   CONSTRAINT `fk_medicion_preproyecto` FOREIGN KEY (`medicion_id`) REFERENCES `mediciones` (`medicion_id`),
   CONSTRAINT `fk_municipios_preproyecto` FOREIGN KEY (`municipio_id`) REFERENCES `municipios` (`municipio_id`),
   CONSTRAINT `fk_ums_preproyectos` FOREIGN KEY (`unidad_medida_id`) REFERENCES `unidades_medida` (`unidad_medida_id`),
-  CONSTRAINT `fk_usuario_modifica_preproyecto` FOREIGN KEY (`usuario_id_moficia`) REFERENCES `usuarios` (`usuario_id`),
+  CONSTRAINT `fk_usuario_modifica_preproyecto` FOREIGN KEY (`usuario_id_modifica`) REFERENCES `usuarios` (`usuario_id`),
   CONSTRAINT `fk_usuarios_preproyecto` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`usuario_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -946,26 +946,27 @@ DROP TABLE IF EXISTS `preproyectos_actividades`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `preproyectos_actividades` (
   `preproyecto_actividad_id` int(11) NOT NULL AUTO_INCREMENT,
-  `preproyecto_id` int(11) DEFAULT NULL,
-  `actividad` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `linea_accion_id` int(11) DEFAULT NULL,
+  `preproyecto_id` int(11) NOT NULL,
+  `actividad` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `linea_accion_id` int(11) NOT NULL,
   `municipio_id` int(11) DEFAULT NULL,
   `localidad_id` int(11) DEFAULT NULL,
   `unidad_medida_id` int(11) DEFAULT NULL,
   `medicion_id` int(11) DEFAULT NULL,
   `beneficiario_id` int(11) DEFAULT NULL,
   `cantidad_beneficiarios` int(11) DEFAULT NULL,
+  `documento` varchar(255) DEFAULT NULL,
   `inversion` float(11,2) DEFAULT NULL,
   `url` varchar(255) DEFAULT NULL,
-  `fecha_inicio` datetime DEFAULT NULL,
-  `fecha_termino` datetime DEFAULT NULL,
+  `fecha_inicio` datetime NOT NULL,
+  `fecha_termino` datetime NOT NULL,
   `seccion` int(11) DEFAULT NULL,
   `incluido` int(11) DEFAULT NULL,
-  `usuario_id` int(11) DEFAULT NULL,
+  `usuario_id` int(11) NOT NULL,
   `usuario_id_modifica` int(11) DEFAULT NULL,
   `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `fecha_modificacion` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-  `estatus_id` int(11) DEFAULT NULL,
+  `estatus_id` int(11) DEFAULT '1',
   PRIMARY KEY (`preproyecto_actividad_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1670,7 +1671,7 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `usuario_primer_apellido`,
  1 AS `usuario_segundo_apellido`,
  1 AS `usuario_nombre_completo`,
- 1 AS `usuario_id_moficia`,
+ 1 AS `usuario_id_modifica`,
  1 AS `usuario_modifico`,
  1 AS `usuario_modifico_nombres`,
  1 AS `usuario_modifico_primer_apellido`,
@@ -2327,7 +2328,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_preproyectos` AS select `preproyectos`.`preproyecto_id` AS `preproyecto_id`,`preproyectos`.`linea_accion_id` AS `linea_accion_id`,`lineas_accion`.`descripcion` AS `linea_accion`,`lineas_accion`.`ejercicio` AS `ejercicio`,`lineas_accion`.`objetivo_programa_id` AS `objetivo_programa_id`,`objetivos_programas`.`cve_objetivo` AS `cve_objetivo`,`objetivos_programas`.`descripcion` AS `objetivo`,`lineas_accion`.`estrategia_programa_id` AS `estrategia_programa_id`,`estrategias_programa`.`descripcion` AS `estrategia`,`preproyectos`.`fecha_inicio` AS `fecha_inicio`,`preproyectos`.`fecha_termino` AS `fecha_termino`,`preproyectos`.`actividad` AS `actividad`,`preproyectos`.`municipio_id` AS `municipio_id`,`municipios`.`descripcion` AS `municipio`,`preproyectos`.`localidad_id` AS `localidad_id`,`localidades`.`descripcion` AS `localidad`,`localidades`.`ambito_id` AS `ambito_localidad`,`preproyectos`.`unidad_medida_id` AS `unidad_medida_id`,`unidades_medida`.`cve_medida` AS `cve_medida`,`unidades_medida`.`descripcion` AS `unidad_medida`,`preproyectos`.`medicion_id` AS `medicion_id`,`mediciones`.`cve_medicion` AS `cve_medicion`,`mediciones`.`descripcion` AS `medicion`,`preproyectos`.`beneficiario_id` AS `beneficiario_id`,`beneficiados`.`descripcion` AS `beneficiados`,`preproyectos`.`cantidad_beneficiarios` AS `cantidad_beneficiarios`,`preproyectos`.`inversion` AS `inversion`,`preproyectos`.`url` AS `url`,`preproyectos`.`seccion` AS `seccion`,`preproyectos`.`incluido` AS `incluido`,`preproyectos`.`usuario_id` AS `usuario_id`,`usuarios`.`usuario` AS `usuario`,`usuarios`.`nombres` AS `usuario_nombres`,`usuarios`.`primer_apellido` AS `usuario_primer_apellido`,`usuarios`.`segundo_apellido` AS `usuario_segundo_apellido`,concat_ws(' ',`usuarios`.`nombres`,`usuarios`.`primer_apellido`,`usuarios`.`segundo_apellido`) AS `usuario_nombre_completo`,`preproyectos`.`usuario_id_moficia` AS `usuario_id_moficia`,`usuario_modifico`.`usuario` AS `usuario_modifico`,`usuario_modifico`.`nombres` AS `usuario_modifico_nombres`,`usuario_modifico`.`primer_apellido` AS `usuario_modifico_primer_apellido`,`usuario_modifico`.`segundo_apellido` AS `usuario_modifico_segundo_apellido`,concat_ws(' ',`usuario_modifico`.`nombres`,`usuario_modifico`.`primer_apellido`,`usuario_modifico`.`segundo_apellido`) AS `usuario_modifico_nombre_completo`,`preproyectos`.`fecha_creacion` AS `fecha_creacion`,`preproyectos`.`fecha_modificacion` AS `fecha_modificacion`,`preproyectos`.`estatus_id` AS `estatus_id`,`preproyecto_estatus`.`estatus` AS `estatus`,`preproyecto_estatus`.`estatus_clave` AS `estatus_clave`,`preproyecto_estatus`.`estatus_html` AS `estatus_html` from (((((((((((`preproyectos` join `lineas_accion` on((`lineas_accion`.`linea_accion_id` = `preproyectos`.`linea_accion_id`))) join `objetivos_programas` on((`objetivos_programas`.`objetivo_programa_id` = `lineas_accion`.`objetivo_programa_id`))) join `estrategias_programa` on((`estrategias_programa`.`estrategia_programa_id` = `lineas_accion`.`estrategia_programa_id`))) join `municipios` on((`municipios`.`municipio_id` = `preproyectos`.`municipio_id`))) join `localidades` on((`localidades`.`localidad_id` = `preproyectos`.`localidad_id`))) left join `unidades_medida` on((`unidades_medida`.`unidad_medida_id` = `preproyectos`.`unidad_medida_id`))) left join `mediciones` on((`mediciones`.`medicion_id` = `preproyectos`.`medicion_id`))) left join `beneficiados` on((`beneficiados`.`beneficiado_id` = `preproyectos`.`beneficiario_id`))) join `usuarios` on((`usuarios`.`usuario_id` = `preproyectos`.`usuario_id`))) join `preproyecto_estatus` on((`preproyecto_estatus`.`estatus_preproyecto_id` = `preproyectos`.`estatus_id`))) left join `usuarios` `usuario_modifico` on((`usuario_modifico`.`usuario_id` = `preproyectos`.`usuario_id_moficia`))) */;
+/*!50001 VIEW `vw_preproyectos` AS select `preproyectos`.`preproyecto_id` AS `preproyecto_id`,`preproyectos`.`linea_accion_id` AS `linea_accion_id`,`lineas_accion`.`descripcion` AS `linea_accion`,`lineas_accion`.`ejercicio` AS `ejercicio`,`lineas_accion`.`objetivo_programa_id` AS `objetivo_programa_id`,`objetivos_programas`.`cve_objetivo` AS `cve_objetivo`,`objetivos_programas`.`descripcion` AS `objetivo`,`lineas_accion`.`estrategia_programa_id` AS `estrategia_programa_id`,`estrategias_programa`.`descripcion` AS `estrategia`,`preproyectos`.`fecha_inicio` AS `fecha_inicio`,`preproyectos`.`fecha_termino` AS `fecha_termino`,`preproyectos`.`actividad` AS `actividad`,`preproyectos`.`municipio_id` AS `municipio_id`,`municipios`.`descripcion` AS `municipio`,`preproyectos`.`localidad_id` AS `localidad_id`,`localidades`.`descripcion` AS `localidad`,`localidades`.`ambito_id` AS `ambito_localidad`,`preproyectos`.`unidad_medida_id` AS `unidad_medida_id`,`unidades_medida`.`cve_medida` AS `cve_medida`,`unidades_medida`.`descripcion` AS `unidad_medida`,`preproyectos`.`medicion_id` AS `medicion_id`,`mediciones`.`cve_medicion` AS `cve_medicion`,`mediciones`.`descripcion` AS `medicion`,`preproyectos`.`beneficiario_id` AS `beneficiario_id`,`beneficiados`.`descripcion` AS `beneficiados`,`preproyectos`.`cantidad_beneficiarios` AS `cantidad_beneficiarios`,`preproyectos`.`inversion` AS `inversion`,`preproyectos`.`url` AS `url`,`preproyectos`.`seccion` AS `seccion`,`preproyectos`.`incluido` AS `incluido`,`preproyectos`.`usuario_id` AS `usuario_id`,`usuarios`.`usuario` AS `usuario`,`usuarios`.`nombres` AS `usuario_nombres`,`usuarios`.`primer_apellido` AS `usuario_primer_apellido`,`usuarios`.`segundo_apellido` AS `usuario_segundo_apellido`,concat_ws(' ',`usuarios`.`nombres`,`usuarios`.`primer_apellido`,`usuarios`.`segundo_apellido`) AS `usuario_nombre_completo`,`preproyectos`.`usuario_id_modifica` AS `usuario_id_modifica`,`usuario_modifico`.`usuario` AS `usuario_modifico`,`usuario_modifico`.`nombres` AS `usuario_modifico_nombres`,`usuario_modifico`.`primer_apellido` AS `usuario_modifico_primer_apellido`,`usuario_modifico`.`segundo_apellido` AS `usuario_modifico_segundo_apellido`,concat_ws(' ',`usuario_modifico`.`nombres`,`usuario_modifico`.`primer_apellido`,`usuario_modifico`.`segundo_apellido`) AS `usuario_modifico_nombre_completo`,`preproyectos`.`fecha_creacion` AS `fecha_creacion`,`preproyectos`.`fecha_modificacion` AS `fecha_modificacion`,`preproyectos`.`estatus_id` AS `estatus_id`,`preproyecto_estatus`.`estatus` AS `estatus`,`preproyecto_estatus`.`estatus_clave` AS `estatus_clave`,`preproyecto_estatus`.`estatus_html` AS `estatus_html` from (((((((((((`preproyectos` join `lineas_accion` on((`lineas_accion`.`linea_accion_id` = `preproyectos`.`linea_accion_id`))) join `objetivos_programas` on((`objetivos_programas`.`objetivo_programa_id` = `lineas_accion`.`objetivo_programa_id`))) join `estrategias_programa` on((`estrategias_programa`.`estrategia_programa_id` = `lineas_accion`.`estrategia_programa_id`))) join `municipios` on((`municipios`.`municipio_id` = `preproyectos`.`municipio_id`))) join `localidades` on((`localidades`.`localidad_id` = `preproyectos`.`localidad_id`))) left join `unidades_medida` on((`unidades_medida`.`unidad_medida_id` = `preproyectos`.`unidad_medida_id`))) left join `mediciones` on((`mediciones`.`medicion_id` = `preproyectos`.`medicion_id`))) left join `beneficiados` on((`beneficiados`.`beneficiado_id` = `preproyectos`.`beneficiario_id`))) join `usuarios` on((`usuarios`.`usuario_id` = `preproyectos`.`usuario_id`))) join `preproyecto_estatus` on((`preproyecto_estatus`.`estatus_preproyecto_id` = `preproyectos`.`estatus_id`))) left join `usuarios` `usuario_modifico` on((`usuario_modifico`.`usuario_id` = `preproyectos`.`usuario_id_modifica`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -2557,4 +2558,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-06-08  8:12:19
+-- Dump completed on 2021-06-08 15:32:26

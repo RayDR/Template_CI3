@@ -63,7 +63,7 @@ class Model_preproyectos extends CI_Model {
     }
 
     /**
-        * Obtener el seguimiento de las preproyectos
+        * Obtener listado de actividades dado un preproyecto
         *
         * @access public
         * @param  int     preproyecto_id     Identificador de preproyecto
@@ -73,7 +73,7 @@ class Model_preproyectos extends CI_Model {
         *                                       FALSE - Array
         * @return preproyectos
     */
-    public function get_seguimiento_preproyectos($preproyecto_id, $filtros = NULL, $tipo_retorno = TRUE){
+    public function get_actividades_preproyecto($preproyecto_id, $filtros = NULL, $tipo_retorno = TRUE){
         try {           
             if ( is_array($filtros) ){
                 foreach ($filtros as $key => $filtro) {
@@ -82,7 +82,7 @@ class Model_preproyectos extends CI_Model {
             }
             $this->db->where('preproyecto_id', $preproyecto_id);
 
-            $preproyectos = $this->db->get('vw_proyectos_actividades');
+            $preproyectos = $this->db->get('vw_preproyectos_actividades');
 
             if ( $tipo_retorno )
                 return $preproyectos->result();
@@ -139,21 +139,84 @@ class Model_preproyectos extends CI_Model {
     }
 
     /**
-        * Actualizar reporte
+        * Editar preproyecto
         *
         * @access public
-        * @param  integer  preproyecto_detallada_id      ID
-        * @param  arrary   $datos                       Datos del documento
+        * @param  integer  preproyecto_id       ID
+        * @param  arrary   $datos               Datos del documento
         *
         * @return resultado[]
     */
-    function actualizar_reporte($preproyecto_detallada_id, $datos){
+    function editar_preproyecto($preproyecto_id, $datos){
         $resultado = array('exito' => TRUE);
         try {
             $this->db->trans_begin();
 
-            $this->db->where( 'preproyecto_detallada_id', $preproyecto_detallada_id);
-            $this->db->update('preproyectos_detalladas', $datos);
+            if ( is_array($datos) ){
+                $db_datos = array(
+                    'municipio_id'              => $datos['municipio'],
+                    'localidad_id'              => $datos['localidad'],
+                    'linea_accion_id'           => $datos['linea_accion'],
+                    'actividad'                 => $datos['detalle_preproyecto'],
+                    'unidad_medida_id'          => $datos['unidad_medida'],
+                    'medicion_id'               => $datos['tipo_medicion'],
+                    'beneficiario_id'           => $datos['grupo_beneficiado'],
+                    'cantidad_beneficiarios'    => $datos['cantidad_beneficiarios'],
+                    'inversion'                 => $datos['inversion'],
+                    'fecha_inicio'              => $datos['fecha_inicio'],
+                    'fecha_termino'             => $datos['fecha_termino'],
+                    'url'                       => $datos['url'],
+                    'usuario_id_modifica'       => $datos['usuario_id'],
+                );
+                $this->db->where('preproyecto_id', $preproyecto_id);
+                $this->db->update('preproyectos', $db_datos);
+            } else
+                throw new Exception('La estructura de los datos es incorrecta.');
+
+            $this->db->trans_commit();
+        } catch (Exception $e) {
+            $this->db->trans_rollback();
+            $resultado['exito'] = FALSE;
+            $resultado['error'] = $e;
+        }
+        return $resultado;
+    }
+
+    /**
+        * Registra actividad de un preproyecto
+        *
+        * @access public
+        * @param  array   $datos                Datos a almacenar en preproyectos
+        *
+        * @return resultado[]
+    */
+    public function registrar_actividad($preproyecto_id, $datos){
+        $resultado = array('exito' => TRUE);
+        try {
+            $this->db->trans_begin();
+
+            if ( is_array($datos) ){
+                $db_datos = array(
+                    'preproyecto_id'            => $preproyecto_id,
+                    'municipio_id'              => $datos['municipio'],
+                    'localidad_id'              => $datos['localidad'],
+                    'linea_accion_id'           => $datos['linea_accion'],
+                    'actividad'                 => $datos['detalle_preproyecto'],
+                    'unidad_medida_id'          => $datos['unidad_medida'],
+                    'medicion_id'               => $datos['tipo_medicion'],
+                    'beneficiario_id'           => $datos['grupo_beneficiado'],
+                    'cantidad_beneficiarios'    => $datos['cantidad_beneficiarios'],
+                    'inversion'                 => $datos['inversion'],
+                    'fecha_inicio'              => $datos['fecha_inicio'],
+                    'fecha_termino'             => $datos['fecha_termino'],
+                    'url'                       => $datos['url'],
+                    'usuario_id'                => $datos['usuario_id'],
+                );
+                $this->db->insert('preproyectos_actividades', $db_datos);
+                $preproyecto = $this->db->insert_id();
+                $resultado['preproyecto'] = $preproyecto;
+            } else
+                throw new Exception('La estructura de los datos es incorrecta.');
 
             $this->db->trans_commit();
         } catch (Exception $e) {
@@ -168,12 +231,12 @@ class Model_preproyectos extends CI_Model {
         * Registrar documento de preproyecto
         *
         * @access public
-        * @param  integer  preproyecto_detallada_id      ID
+        * @param  integer  preproyecto_actividad_id      ID
         * @param  string   $documento                   Nombre del documento
         *
         * @return resultado[]
     */
-    function registrar_documento($preproyecto_detallada_id, $documento){
+    function registrar_documento($preproyecto_actividad_id, $documento){
         $resultado = array('exito' => TRUE);
         try {
             $this->db->trans_begin();
@@ -181,8 +244,8 @@ class Model_preproyectos extends CI_Model {
             $db_datos = array(
                 'documento' => $documento
             );
-            $this->db->where('preproyecto_detallada_id', $preproyecto_detallada_id);
-            $this->db->update('preproyectos_detalladas', $db_datos);
+            $this->db->where('preproyecto_actividad_id', $preproyecto_actividad_id);
+            $this->db->update('preproyectos_actividades', $db_datos);
 
             $this->db->trans_commit();
         } catch (Exception $e) {

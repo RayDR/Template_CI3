@@ -1,3 +1,6 @@
+<input type="hidden" id="linea_accion"   name="linea_accion"   value="<?= $preproyecto->linea_accion_id ?>" required>
+<input type="hidden" id="preproyecto"    name="preproyecto"    value="<?= $preproyecto->preproyecto_id ?>" required>
+
 <div class="py-4">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
@@ -8,8 +11,11 @@
     </nav>
     <div class="d-flex justify-content-between w-100 flex-wrap">
         <div class="mb-3 mb-lg-0">
-            <h1 class="h4">Editar Preproyecto</h1>
+            <h1 class="h4">Actividades - Preproyecto</h1>
         </div>
+    </div>    
+    <div class="shadow rounded border-light p-3 w-100">
+        <?php $this->load->view('preproyectos/ajax/historia_preproyecto', array('preproyecto' => $preproyecto, 'actividades' => $actividades), FALSE); ?>
     </div>
 </div>
 <div class="row">
@@ -37,16 +43,6 @@
                                     <option selected disabled>Seleccione un municipio primero</option>
                                 </select>
                             </div>
-                            <div class="col-12 mb-3">
-                                <label class="my-1 me-2" for="linea_accion">Línea de Acción</label>
-                                <select class="form-select" id="linea_accion" aria-label="Líneas de Acción" required>
-                                    <option selected disabled>Seleccione una opción</option>
-                                    <?php foreach ($l_accion as $key => $linea): ?>
-                                    <option value="<?= $linea->linea_accion_id ?>" data-objetivo="<?= $linea->objetivo_programa ?>" data-estrategia="<?= $linea->estrategia_programa ?>"><?= $linea->linea_accion ?></option>
-                                    <?php endforeach; ?>  
-                                </select>
-                            </div>
-                            <div id="datos_linea_accion" class="col-12"></div>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="my-1 me-2" for="unidad_medida">Unidad de Medida</label>
@@ -136,6 +132,8 @@
 </div>
 
 <script type="text/javascript">
-    var inputs = JSON.parse('<?php print(json_encode($inputs, JSON_HEX_TAG)); ?>');
+    var inputs          = JSON.parse('<?php print(json_encode($inputs, JSON_HEX_TAG)); ?>'),
+        lastMunicipio   = '<?= ($actividades)? $actividades[0]->municipio_id : $preproyecto->municipio_id  ?>',
+        lastLocalidad   = '<?= ($actividades)? $actividades[0]->localidad_id : $preproyecto->localidad_id  ?>';
 </script>
-<script src="<?= base_url('assets/js/preproyectos/editar.js') ?>" type="text/javascript" charset="utf-8" async defer></script>
+<script src="<?= base_url('assets/js/preproyectos/actividades.js') ?>" type="text/javascript" charset="utf-8" async defer></script>

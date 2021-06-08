@@ -5,8 +5,8 @@ var dt,
     vRegistro    = 'Preproyectos/registrar',
     vSeguimiento = 'Preproyectos/seguimiento';
 
-$(document).off('click.detalle', 'tbody tr')
-           .on('click.detalle' , 'tbody tr', fmostrar_detalle);
+$(document).off('click.detalle', `${dtNombre} tbody tr`)
+           .on('click.detalle' , `${dtNombre} tbody tr`, fmostrar_detalle);
 $(document).ready(function() {
     $('#nuevo_preproyecto').click( fnuevo_preproyecto );
     fCargar_DataTable();

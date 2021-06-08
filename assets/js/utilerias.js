@@ -510,3 +510,13 @@ function codifica_utf8( cadena ){
 function decodifica_utf8( cadena ){
   return decodeURIComponent( escape( window.atob( cadena ) ) );
 }
+
+// Funciones de formateo
+
+function fu_formatMxn( cantidad ){
+  return Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN'}).format(cantidad);
+}
+
+function fu_formatNum( cantidad ){
+  return Intl.NumberFormat('es-MX').format(cantidad);
+}

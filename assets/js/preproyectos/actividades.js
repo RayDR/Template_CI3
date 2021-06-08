@@ -1,6 +1,5 @@
 $(document).ready(function() {
-    $('#guardar').click(fguardar);    
-    $('#linea_accion').change(flinea_accion);
+    $('#guardar').click(fguardar);
     $('#municipio').change(fget_localidades);
 
     finicia_select2();
@@ -11,9 +10,10 @@ function finicia_select2(){
     // Cargar Select2 y establecer Centro como Opción por defecto
     $('#municipio').select2();
     // Autocargar alcance estatal
-    $.when($("#municipio").val('18').change()).then(function() {
-        $("#localidad").val($("#localidad option:not([disabled]):first").val()).select2();
+    $.when($("#municipio").val(lastMunicipio).change()).then(function() {
+        $("#localidad").val(lastLocalidad).select2();
     });
+
 }
 
 function fguardar(e){
@@ -44,7 +44,7 @@ function fguardar(e){
         });
         if ( ! errores ){
             respuesta   = fu_json_query(
-                url('Preproyectos/guardar_edicion', true, false),
+                url('Preproyectos/guardar_actividad', true, false),
                 datos 
             );
             if ( respuesta.exito ){
@@ -62,17 +62,6 @@ function fguardar(e){
 
     $('#guardar').prop({disabled: false});
     $('#guardar').html(`Guardar`);
-}
-
-function flinea_accion(){
-    var seleccion = $(this).find(':selected');
-    if ( seleccion ){
-        $('#datos_linea_accion').html(`
-            <label class="h6"><span class="text-secondary">Objetivo:</span> <small class="font-weight-bold">${seleccion.data('objetivo')}</small></label>
-            <br>
-            <label class="h6"><span class="text-secondary">Estrategia:</span> <small class="font-weight-bold">${seleccion.data('estrategia')}</small></label>
-        `);
-    }
 }
 
 function fget_localidades(){
