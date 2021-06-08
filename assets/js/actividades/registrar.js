@@ -4,7 +4,7 @@ $(document).ready(function() {
     $('#guardar').click(fguardar);
     $('#area_origen').change(fget_ums);
     $('#linea_accion').change(flinea_accion);
-    $('.objetivos').change(faAD_Objetivos);
+    $('.objetivos').change(faObjetivos);
 
     finicia_select2();
 });
@@ -17,18 +17,6 @@ function finicia_select2(){
     if ( datos_select2 ){
         if ( datos_select2.exito ){
             $('.areas_select2').select2({
-                data: datos_select2.result,
-                pagination: {
-                    'more': true
-                }
-            });
-        }
-    }
-    // Configurar Select2 de Proyectos
-    var datos_select2 = fu_json_query(url('Configurador/get_proyectos_select2', true, false));
-    if ( datos_select2 ){
-        if ( datos_select2.exito ){
-            $('.proyectos_select2').select2({
                 data: datos_select2.result,
                 pagination: {
                     'more': true
@@ -121,18 +109,18 @@ function flinea_accion(){
 function fget_ums(){
     var combinacion_area = $(this).val();
     if ( combinacion_area ){
-        var respuesta = fu_json_query(url('Actividades/select_unidades_medida', true, false), {combinacion_area: combinacion_area});
-        if ( respuesta ){
-            if ( respuesta.exito ){
+        var select2 = fu_json_query(url('Configurador/get_ums_select2', true, false), {combinacion_area: combinacion_area});
+        if ( select2 ){
+            if ( select2.exito ){
                 $('#unidad_medida').html('<option selected disabled>Seleccione una opción</option>');
-                respuesta.unidades_medida.forEach( function(unidad_medida, index) {
+                select2.result.forEach( function(unidad_medida, index) {
                     $('#unidad_medida').append(`
-                        <option value="${unidad_medida.unidad_medida_id}">${unidad_medida.descripcion} (${unidad_medida.cve_medida})</option>
+                        <option value="${unidad_medida.id}">${unidad_medida.text}</option>
                     `);
                 });
             }
-            if ( respuesta.mensaje )
-                fu_notificacion(respuesta.mensaje, (!respuesta.exito)? 'danger' : 'warning');
+            if ( select2.mensaje )
+                fu_notificacion(select2.mensaje, (!select2.exito)? 'danger' : 'warning');
         } else 
             fu_notificacion('No se obtuvo respuesta del servidor.', 'danger');
     }
@@ -177,7 +165,7 @@ function fejecuta_calculo_total(tipo){
     return exito; 
 }
 
-function faAD_Objetivos(){
+function faObjetivos(){
     var objetivo = $(this).val();
     if ( $.isNumeric(objetivo) ){
         if ( objetivo > 0 )

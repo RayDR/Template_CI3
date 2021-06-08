@@ -10,7 +10,10 @@ function finicia_select2(){
     $('#localidad').select2();
     // Cargar Select2 y establecer Centro como Opción por defecto
     $('#municipio').select2();
-    $('#municipio').val('4').trigger('change');
+    // Autocargar alcance estatal
+    $.when($("#municipio").val('18').change()).then(function() {
+        $("#localidad").val($("#localidad option:not([disabled]):first").val()).select2();
+    });
 }
 
 function fguardar(e){
@@ -35,8 +38,8 @@ function fguardar(e){
             if(  (valor == '' || valor == null || valor == undefined) && $(`#${input.nombre}`).attr('required') )
                 errores += `El campo <a href="#${input.nombre}">${input.texto}</a> es requerido.<br>`;
             else if ( input.nombre == 'inversion' || input.nombre == 'cantidad_beneficiada'  ){
-                if ( valor == 0 )
-                    errores += `El campo <a href="#${input.nombre}">${input.texto}</a> no puede ser 0.<br>`;
+                if ( valor < 0 )
+                    errores += `El campo <a href="#${input.nombre}">${input.texto}</a> no puede ser menor 0.<br>`;
             }
         });
         if ( ! errores ){
@@ -54,7 +57,6 @@ function fguardar(e){
             fu_notificacion('Existen campos pendientes por llenar.', 'danger');    
         }
     } catch(e) {
-        console.log(e);
         fu_alerta('Ha ocurrido un error al guardar la preproyecto, intentelo más tarde.', 'danger');
     }
 
@@ -85,6 +87,9 @@ function fget_localidades(){
                         <option value="${localidad.localidad_id}">${localidad.descripcion}</option>
                     `);
                 });
+                // Autocargar alcance estatal
+                if ( $("#municipio").val() == 18 )
+                    $("#localidad").val($("#localidad option:not([disabled]):first").val()).select2();
             }
             if ( respuesta.mensaje )
                 fu_notificacion(respuesta.mensaje, (!respuesta.exito)? 'danger' : 'warning');

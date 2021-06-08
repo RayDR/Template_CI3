@@ -51,9 +51,15 @@ function fCargar_DataTable(){
                 { data: 'actividad' },
                 { data: 'cantidad_beneficiarios' },
                 { data: 'inversion' },
+                { data: 'linea_accion' },
+                { data: 'objetivo' },
+                { data: 'estrategia' },
+                { data: 'municipio' },
+                { data: 'localidad' },
                 { data: 'fecha_inicio' },
                 { data: 'fecha_termino' },
-                { data: 'url' }
+                { data: 'url' },
+                { data: 'ejercicio' }
             ],
             drawCallback: function (settings) {
                 $('[data-toggle="tooltip"]').tooltip({ boundary: 'window' });

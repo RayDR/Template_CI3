@@ -26,11 +26,9 @@ class Preproyectos extends CI_Controller {
         }
     }
 
-/*
-|--------------------------------------------------------------------------
-| VISTAS 
-|--------------------------------------------------------------------------
-*/
+/*--------------------------------------------------------------------------*
+* ---- VISTAS 
+* --------------------------------------------------*/
 
     public function index()
     {
@@ -109,13 +107,15 @@ class Preproyectos extends CI_Controller {
         return print(json_encode($json));    
     }
 
-/*
-|--------------------------------------------------------------------------
-| AJAX 
-|--------------------------------------------------------------------------
-*/
+//  ------- FIN DE VISTAS ------
+
+/*--------------------------------------------------------------------------*
+* ---- FUNCIONES AJAX 
+* --------------------------------------------------*/
     
-    // -------------- VISTAS
+    /*------------------------------
+    * -- VISTAS AJAX
+    * ---------------------*/
 
     public function detalles_preproyecto(){
         $json = array('exito' => TRUE);
@@ -133,52 +133,9 @@ class Preproyectos extends CI_Controller {
         return print(json_encode($json));
     }
 
-    private function inputs_registro(){
-        return array(
-            [
-                'nombre'=> 'municipio',
-                'texto' => 'Municipio',
-                'tipo'  => 'select'
-            ],
-            [
-                'nombre'=> 'localidad',
-                'texto' => 'Localidad',
-                'tipo'  => 'select'
-            ],
-            [
-                'nombre'=> 'linea_accion',
-                'texto' => 'Línea de Acción',
-                'tipo'  => 'select'
-            ],
-            [
-                'nombre'=> 'detalle_preproyecto',
-                'texto' => 'Detalle de la Actividad'
-            ],
-            [
-                'nombre'=> 'cantidad_beneficiarios',
-                'texto' => 'Cantidad de Beneficiarios'
-            ],
-            [
-                'nombre'=> 'inversion',
-                'texto' => 'Inversión'
-            ],
-            [
-                'nombre'=> 'fecha_inicio',
-                'texto' => 'Fecha de Inicio'
-            ],
-            [
-                'nombre'=> 'fecha_termino',
-                'texto' => 'Fecha de Termino'
-            ],
-            [
-                'nombre'=> 'url',
-                'texto' => 'URL'
-            ]
-        );
-    }
-
-    // -------------- DATOS
-
+    /*------------------------------
+    * --- DATOS AJAX
+    * ---------------------*/
 
     public function datatable_preproyectos(){
         return print(json_encode( $this->model_preproyectos->get_preproyectos() ));
@@ -186,12 +143,14 @@ class Preproyectos extends CI_Controller {
 
     public function guardar(){
         $json = array('exito' => TRUE);
-
         $datos  = array(
             'linea_accion'              => $this->input->post('linea_accion'),
             'municipio'                 => $this->input->post('municipio'),
             'localidad'                 => $this->input->post('localidad'),
             'detalle_preproyecto'       => $this->input->post('detalle_preproyecto'),
+            'unidad_medida'             => $this->input->post('unidad_medida'),
+            'tipo_medicion'             => $this->input->post('tipo_medicion'),
+            'grupo_beneficiado'         => $this->input->post('grupo_beneficiado'),
             'cantidad_beneficiarios'    => $this->input->post('cantidad_beneficiarios'),
             'inversion'                 => $this->input->post('inversion'),
             'fecha_inicio'              => $this->input->post('fecha_inicio'),
@@ -312,6 +271,71 @@ class Preproyectos extends CI_Controller {
             $json['error'] = 'No se recibió ningún archivo.';
         }
         return print(json_encode( $json ));
+    }
+
+//  ------- FIN DE FUNCIONES AJAX ------
+
+/*--------------------------------------------------------------------------*
+* --- FUNCIONES DE ACCESO PRIVADO 
+* --------------------------------------------------------------------------*/
+
+    private function inputs_registro(){
+        return array(
+            [
+                'nombre'=> 'municipio',
+                'texto' => 'Municipio',
+                'tipo'  => 'select'
+            ],
+            [
+                'nombre'=> 'localidad',
+                'texto' => 'Localidad',
+                'tipo'  => 'select'
+            ],
+            [
+                'nombre'=> 'linea_accion',
+                'texto' => 'Línea de Acción',
+                'tipo'  => 'select'
+            ],
+            [
+                'nombre'=> 'detalle_preproyecto',
+                'texto' => 'Detalle de la Actividad'
+            ],
+            [
+                'nombre'=> 'unidad_medida',
+                'texto' => 'Unidad de Medida',
+                'tipo'  => 'select'
+            ],
+            [
+                'nombre'=> 'tipo_medicion',
+                'texto' => 'Tipo de Medición',
+                'tipo'  => 'select'
+            ],
+            [
+                'nombre'=> 'grupo_beneficiado',
+                'texto' => 'Grupo Beneficiado',
+                'tipo'  => 'select'
+            ],
+            [
+                'nombre'=> 'cantidad_beneficiarios',
+                'texto' => 'Cantidad de Beneficiarios'
+            ],
+            [
+                'nombre'=> 'inversion',
+                'texto' => 'Inversión'
+            ],
+            [
+                'nombre'=> 'fecha_inicio',
+                'texto' => 'Fecha de Inicio'
+            ],
+            [
+                'nombre'=> 'fecha_termino',
+                'texto' => 'Fecha de Término'
+            ],
+            [
+                'nombre'=> 'url',
+                'texto' => 'URL'
+            ]
+        );
     }
 
 }

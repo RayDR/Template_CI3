@@ -118,6 +118,14 @@
                         <label class="my-1 me-2" for="financiero-reporte">Valor financiero a reportar</label>
                         <input id="financiero-reporte" name="financiero_reporte" type="number" class="form-control" value="0" data-tipo="financiero" min="0" required>
                     </div>
+                    <div class="row mb-3">
+                        <div class="col-12 mb-3">
+                            <div>
+                                <label for="detalle_actividad">Reporte de Actividad</label>
+                                <textarea class="form-control" placeholder="Narrativa o justificación." id="detalle_actividad" name="detalle_actividad" rows="4"></textarea>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-12 mb-3">
                         <?php $this->load->view('actividades/ajax/cargar_documento'); ?>
                     </div>

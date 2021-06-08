@@ -18,21 +18,26 @@ function frep_guardar(e){
          'actividad_detallada':  $('#actividad_detallada_id').val(),
          'mes':                  $('#mes').val(),
          'fisico':               $('#fisico-reporte').val(),
-         'financiero':           $('#financiero-reporte').val()
+         'financiero':           $('#financiero-reporte').val(),
+         'narrativa':            $('#detalle_actividad').val(),
        };
 
    if ( $('#mes').val() == '' || $('#mes').val() == undefined || $('#mes').val() == null )
-      errores += 'Por favor, seleccione un <a href="#mes">mes</a> a reportar';
+      errores += 'Por favor, seleccione un <a href="#mes">mes</a> a reportar<br>';
    if ( $('#fisico-reporte').val() < 0 ) 
-      errores += 'La cantidad reportada física no puede ser menor de 0';
-   // else if ( $('#fisico-reporte').val() > $('#programado_fisico').val() )
-   //    errores += 'La cantidad reportada física no puede ser mayor a lo programado';
+      errores += 'La cantidad reportada <a href="#fisico-reporte">física</a> no puede ser menor de 0.<br>';
+
    if ( $('#financiero-reporte').val() < 0 ) 
-      errores += 'La cantidad reportada financiera no puede ser menor de 0';
-   // else if ( $('#financiero-reporte').val() > $('#programado_fisico').val() )
-   //    errores += 'La cantidad reportada financiera no puede ser mayor a lo programado';
+      errores += 'La cantidad reportada <a href="#financiero-reporte">financiera</a> no puede ser menor de 0.<br>';
+
    if ( $('#actividad_detallada_id').val() == null || $("#actividad_detallada_id").val() == undefined )
       $('#actividad_detallada_id').val($(this).find('option:selected').data('actividad_detallada'));
+
+   if ( $('#detalle_actividad').val() == '' )
+       errores += 'Por favor, escriba una <a href="#detalle_actividad">justificación o narrativa</a> de la actividad realizada.'; 
+
+console.log($('#detalle_actividad').val());
+   console.log(errores);
 
    if ( !errores ){
       respuesta   = fu_json_query(
@@ -48,14 +53,16 @@ function frep_guardar(e){
          );
          $(".progress-bar").animate({
             width: "100%"
-         });
-        
+         });        
+         
+         return $('#guardar').destroy();;
       } else
          fu_notificacion(respuesta.mensaje, 'danger', 5000);
+   } else
+      fu_alerta(errores,'danger');
+   $('#guardar').prop({disabled: false});
+   $('#guardar').html(`Guardar`);
 
-      $('#guardar').prop({disabled: false});
-      $('#guardar').html(`Guardar`);
-   }
 }
 
 function frep_reporte(e){

@@ -21,7 +21,7 @@ class Model_preproyectos extends CI_Model {
                 }
             }
 
-            $preproyectos = $this->db->get('preproyectos');
+            $preproyectos = $this->db->get('vw_preproyectos');
 
             if ( $tipo_retorno )
                 return $preproyectos->result();
@@ -51,7 +51,7 @@ class Model_preproyectos extends CI_Model {
                 }
             }
             $this->db->where('preproyecto_id', $preproyecto_id);
-            $preproyectos = $this->db->get('preproyectos');
+            $preproyectos = $this->db->get('vw_preproyectos');
 
             if ( $tipo_retorno )
                 return $preproyectos->row();
@@ -82,7 +82,7 @@ class Model_preproyectos extends CI_Model {
             }
             $this->db->where('preproyecto_id', $preproyecto_id);
 
-            $preproyectos = $this->db->get('preproyectos');
+            $preproyectos = $this->db->get('vw_proyectos_actividades');
 
             if ( $tipo_retorno )
                 return $preproyectos->result();
@@ -113,6 +113,9 @@ class Model_preproyectos extends CI_Model {
                     'localidad_id'              => $datos['localidad'],
                     'linea_accion_id'           => $datos['linea_accion'],
                     'actividad'                 => $datos['detalle_preproyecto'],
+                    'unidad_medida_id'          => $datos['unidad_medida'],
+                    'medicion_id'               => $datos['tipo_medicion'],
+                    'beneficiario_id'           => $datos['grupo_beneficiado'],
                     'cantidad_beneficiarios'    => $datos['cantidad_beneficiarios'],
                     'inversion'                 => $datos['inversion'],
                     'fecha_inicio'              => $datos['fecha_inicio'],

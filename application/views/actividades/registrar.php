@@ -57,7 +57,7 @@
                         <div class="col-12 mb-3">
                             <div>
                                 <label for="detalle_actividad">Detalle la Actividad</label>
-                                <textarea class="form-control" placeholder="¿Que actividades se desempeñaran?" id="detalle_actividad" rows="4"></textarea>
+                                <textarea class="form-control" placeholder="¿Que actividades se desempeñaran?" id="detalle_actividad" name="detalle_actividad" rows="4"></textarea>
                             </div>
                         </div>
                     </div>
@@ -89,6 +89,10 @@
                                 <option value="3">Ambos</option>
                                 <option value="4">No Aplica</option>
                             </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="cantidad_beneficiarios">Cantidad de Beneficiarios</label>
+                            <input type="number" class="form-control" id="cantidad_beneficiarios" value="0" required>
                         </div>
                     </div>
 

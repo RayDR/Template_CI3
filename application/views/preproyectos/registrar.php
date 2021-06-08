@@ -49,6 +49,34 @@
                             <div id="datos_linea_accion" class="col-12"></div>
                         </div>
                         <div class="col-md-6 mb-3">
+                            <label class="my-1 me-2" for="unidad_medida">Unidad de Medida</label>
+                            <select class="form-select" id="unidad_medida" aria-label="Default select example">
+                                <option selected disabled>Seleccione una opción</option>
+                                <?php foreach ($u_medida as $key => $um): ?>
+                                <option value="<?= $um->unidad_medida_id ?>"><?= $um->descripcion ?> (<?= $um->cve_medida ?>)</option>
+                                <?php endforeach; ?>  
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="my-1 me-2" for="tipo_medicion">Tipo de Medición</label>
+                            <select class="form-select" id="tipo_medicion" aria-label="Default select example">
+                                <option selected disabled>Seleccione una opción</option>
+                                <option value="1">Absoluto</option>
+                                <option value="2">Porcentaje</option>
+                                <option value="3">Promedio</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="my-1 me-2" for="grupo_beneficiado">Grupo Beneficiado</label>
+                            <select class="form-select" id="grupo_beneficiado" aria-label="Default select example">
+                                <option selected disabled>Seleccione una opción</option>
+                                <option value="1">Masculino</option>
+                                <option value="2">Femenino</option>
+                                <option value="3">Ambos</option>
+                                <option value="4">No Aplica</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
                             <label for="cantidad_beneficiarios">Cantidad de Beneficiarios</label>
                             <input type="number" class="form-control" id="cantidad_beneficiarios" value="0" required>
                         </div>
@@ -66,7 +94,7 @@
                         <div class="col-12 mb-3">
                             <div>
                                 <label for="detalle_preproyecto">Detalle de Actividad</label>
-                                <textarea class="form-control" placeholder="¿Que actividades se desempeñaran para este preproyecto?" id="detalle_preproyecto" rows="4"></textarea>
+                                <textarea class="form-control" placeholder="¿Que actividades se desempeñaran para este preproyecto?" id="detalle_preproyecto" name="detalle_preproyecto" rows="4" required></textarea>
                             </div>
                         </div>
                     </div>

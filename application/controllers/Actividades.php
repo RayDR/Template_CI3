@@ -26,12 +26,11 @@ class Actividades extends CI_Controller {
         }
     }
 
-/*
-|--------------------------------------------------------------------------
-| VISTAS 
-|--------------------------------------------------------------------------
-*/
+/*--------------------------------------------------------------------------*
+* ---- VISTAS 
+* --------------------------------------------------*/
 
+    // Listado
     public function index()
     {
         $data = array(
@@ -42,6 +41,7 @@ class Actividades extends CI_Controller {
         $this->load->view( RUTA_TEMA . 'body', $data, FALSE );
     }
 
+    // Vista de Registro
     public function registrar()
     {
         $json = array('exito' => TRUE);
@@ -62,10 +62,10 @@ class Actividades extends CI_Controller {
             'view'      => 'actividades/registrar'
         );
         $json['html'] = $this->load->view( $data['view'], $data, TRUE );
-        return print(json_encode($json));
-    
+        return print(json_encode($json));    
     }
 
+    // Vista de Edición de Actividad
     public function editar()
     {
         $json = array('exito' => TRUE);
@@ -82,10 +82,10 @@ class Actividades extends CI_Controller {
             $json['html'] = $this->load->view( $data['view'], $data, TRUE );
         } else 
             $json = array('exito' => FALSE, 'error' => 'No se recibió el folio de la actividad.');
-        return print(json_encode($json));
-    
+        return print(json_encode($json));    
     }
 
+    // Vista de Reporte de Actividad - Seguimiento
     public function reporte()
     {
         $json = array('exito' => TRUE);
@@ -107,14 +107,15 @@ class Actividades extends CI_Controller {
             $json = array('exito' => FALSE, 'error' => 'No se recibió el folio de la actividad.');
         return print(json_encode($json));    
     }
+//  ------- FIN DE VISTAS ------
 
-/*
-|--------------------------------------------------------------------------
-| AJAX 
-|--------------------------------------------------------------------------
-*/
-    
-    // -------------- VISTAS
+/*--------------------------------------------------------------------------*
+* ---- FUNCIONES AJAX 
+* --------------------------------------------------*/
+
+    /*------------------------------
+    * -- VISTAS AJAX
+    * ---------------------*/
 
     public function detalles_actividad(){
         $json = array('exito' => TRUE);
@@ -133,13 +134,16 @@ class Actividades extends CI_Controller {
     }
 
 
-    // -------------- DATOS
+    /*------------------------------
+    * --- DATOS AJAX
+    * ---------------------*/
 
-
+    // Datatable
     public function datatable_actividades(){
         return print(json_encode( $this->model_actividades->get_actividades() ));
     }
 
+    // Función de Guardado
     public function guardar(){
         $json = array('exito' => TRUE);
         $area_origen                    = $this->input->post('area_origen');
@@ -174,19 +178,17 @@ class Actividades extends CI_Controller {
         return print(json_encode($json));
     }
 
+    // Registro de Reporte - Seguimiento
     public function registrar_reporte(){
         $json = array('exito' => TRUE);
         $actividad_detallada = $this->input->post('actividad_detallada');
 
         if ( $actividad_detallada ){
-            $mes        = $this->input->post('mes');
-            $fisico     = $this->input->post('fisico');
-            $financiero = $this->input->post('financiero');
-
             $datos  = array(
-                'mes'                   => $mes,
-                'realizado_fisico'      => $fisico,
-                'realizado_financiero'  => $financiero,
+                'mes'                   => $this->input->post('mes'),
+                'realizado_fisico'      => $this->input->post('fisico'),
+                'realizado_financiero'  => $this->input->post('financiero'),
+                'descripcion'           => $this->input->post('narrativa'),
                 'usuario_id'            => $this->session->userdata('uid'),
             );
 
@@ -199,20 +201,6 @@ class Actividades extends CI_Controller {
                 $json = array('exito' => FALSE, 'error' => 'No se pudo realizar el reporte del mes.');
         } else 
             $json = array('exito' => FALSE, 'error' => 'No se recibió el mes a reportar.');
-        return print(json_encode($json));
-    }
-
-    public function select_unidades_medida(){
-        $json = array('exito' => TRUE);
-        $area_usuario   = array('combinacion_area_id' => $this->input->post('combinacion_area'));
-        $combinacion    = $this->model_catalogos->get_areas( $area_usuario );
-
-        $condicion = array( 'direccion_id' => $combinacion->direccion_id );
-        $json['unidades_medida'] = $this->model_catalogos->get_unidades_medida($condicion);
-
-        if ( !$json['unidades_medida'] )
-            $json['unidades_medida'] = $this->model_catalogos->get_unidades_medida();
-
         return print(json_encode($json));
     }
     
@@ -271,10 +259,11 @@ class Actividades extends CI_Controller {
         }
         return print(json_encode( $json ));
     }
+//  ------- FIN DE FUNCIONES AJAX ------
 
-/*  ----------------------------------------------------
-*  --- FUNCIONES PRIVADAS 
-*   ------------------------------------ */
+/*--------------------------------------------------------------------------*
+* --- FUNCIONES DE ACCESO PRIVADO 
+* --------------------------------------------------------------------------*/
     
     private function inputs_registro(){
         return array(
@@ -311,6 +300,10 @@ class Actividades extends CI_Controller {
                 'nombre'=> 'grupo_beneficiado',
                 'texto' => 'Grupo Beneficiado',
                 'tipo'  => 'select'
+            ],
+            [
+                'nombre'=> 'cantidad_beneficiarios',
+                'texto' => 'Cantidad Beneficiarios'
             ],
             [
                 'nombre'=> 'fisico_objetivo_anual',

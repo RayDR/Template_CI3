@@ -14,12 +14,10 @@ class Configurador extends CI_Controller {
         }
     }
 
+/*--------------------------------------------------------------------------*
+* ---- VISTAS 
+* --------------------------------------------------*/
 
-/*
-|--------------------------------------------------------------------------
-| VISTAS 
-|--------------------------------------------------------------------------
-*/
     public function programas()
     {
         $data = array(
@@ -50,15 +48,16 @@ class Configurador extends CI_Controller {
         $this->load->view( RUTA_TEMA . 'body', $data, FALSE );
     }
 
-/*
-|--------------------------------------------------------------------------
-| AJAX DATOS 
-|--------------------------------------------------------------------------
-*/
+//  ------- FIN DE VISTAS ------
 
+/*--------------------------------------------------------------------------*
+* ---- FUNCIONES AJAX 
+* --------------------------------------------------*/
+    
+    // Catálogo de Áreas - SELECT2
     public function get_areas_select2(){
-        $areas = $this->model_catalogos->get_areas();
         $json  = array('exito' => FALSE);
+        $areas = $this->model_catalogos->get_areas();
 
         if ( $areas ){
             $json['exito']  = TRUE;
@@ -96,15 +95,17 @@ class Configurador extends CI_Controller {
                     ));
                 }
             }
+        } else 
+            $json['mensaje'] = 'No se encontraron datos.';
 
-            $json['result'] = $resultados;
-        }
+        $json['result'] = $resultados;
         return print(json_encode($json));
     }
 
+    // Catálogo de Proyectos - SELECT2
     public function get_proyectos_select2(){
-        $areas = $this->model_catalogos->get_areas();
         $json  = array('exito' => FALSE);
+        $areas = $this->model_catalogos->get_areas();
 
         if ( $areas ){
             $json['exito']  = TRUE;
@@ -142,9 +143,39 @@ class Configurador extends CI_Controller {
                     ));
                 }
             }
+        } else 
+            $json['mensaje'] = 'No se encontraron datos.';
 
-            $json['result'] = $resultados;
-        }
+        $json['result'] = $resultados;
+        return print(json_encode($json));
+    }
+
+    // Catálogo de Unidades de Medida - SELECT2
+    public function get_ums_select2(){
+        $json  = array('exito' => FALSE);
+
+        $area_usuario   = array('combinacion_area_id' => $this->input->post('combinacion_area'));
+        $combinacion    = $this->model_catalogos->get_areas( $area_usuario );
+
+        $condicion  = array( 'direccion_id' => $combinacion->direccion_id );
+        $resultados = []; // Inicializar el array SELECT2
+        $ums        = $this->model_catalogos->get_unidades_medida($condicion);
+
+        if ( !$ums )
+            $ums = $this->model_catalogos->get_unidades_medida();
+
+        if ( $ums ){
+            $json['exito'] = TRUE;
+            foreach ($ums as $key => $um) {
+                array_push($resultados, array(
+                    'id'    => $um->unidad_medida_id,
+                    'text'  => $um->cve_medida . ' - ' . $um->descripcion
+                ));
+            } 
+        } else // Sin datos
+            $json['mensaje'] = 'No se encontraron datos.';
+        $json['result'] = $resultados;
+
         return print(json_encode($json));
     }
 
