@@ -2,7 +2,10 @@ $(document).ready(function() {
     $('#guardar').click(fguardar);    
     $('#linea_accion').change(flinea_accion);
     $('#municipio').change(fget_localidades);
+    $('#trimestre').change(fset_trimestre);
+    $('#url').blur(fset_url);
 
+    fcalcula_trimestre();
     finicia_select2();
 });
 

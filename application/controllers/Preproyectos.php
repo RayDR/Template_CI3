@@ -179,6 +179,9 @@ class Preproyectos extends CI_Controller {
             'grupo_beneficiado'         => $this->input->post('grupo_beneficiado'),
             'cantidad_beneficiarios'    => $this->input->post('cantidad_beneficiarios'),
             'inversion'                 => $this->input->post('inversion'),
+            'seccion'                   => $this->input->post('seccion'),
+            'incluido'                  => $this->input->post('incluido'),
+            'trimestre'                 => $this->input->post('trimestre'),
             'fecha_inicio'              => $this->input->post('fecha_inicio'),
             'fecha_termino'             => $this->input->post('fecha_termino'),
             'url'                       => $this->input->post('url'),
@@ -208,6 +211,9 @@ class Preproyectos extends CI_Controller {
                 'grupo_beneficiado'         => $this->input->post('grupo_beneficiado'),
                 'cantidad_beneficiarios'    => $this->input->post('cantidad_beneficiarios'),
                 'inversion'                 => $this->input->post('inversion'),
+                'seccion'                   => $this->input->post('seccion'),
+                'incluido'                  => $this->input->post('incluido'),
+                'trimestre'                 => $this->input->post('trimestre'),
                 'fecha_inicio'              => $this->input->post('fecha_inicio'),
                 'fecha_termino'             => $this->input->post('fecha_termino'),
                 'url'                       => $this->input->post('url'),
@@ -239,6 +245,9 @@ class Preproyectos extends CI_Controller {
                 'grupo_beneficiado'         => $this->input->post('grupo_beneficiado'),
                 'cantidad_beneficiarios'    => $this->input->post('cantidad_beneficiarios'),
                 'inversion'                 => $this->input->post('inversion'),
+                'seccion'                   => $this->input->post('seccion'),
+                'incluido'                  => $this->input->post('incluido'),
+                'trimestre'                 => $this->input->post('trimestre'),
                 'fecha_inicio'              => $this->input->post('fecha_inicio'),
                 'fecha_termino'             => $this->input->post('fecha_termino'),
                 'url'                       => $this->input->post('url'),
@@ -412,6 +421,10 @@ class Preproyectos extends CI_Controller {
                 'texto' => 'Inversión'
             ],
             [
+                'nombre'=> 'trimestre',
+                'texto' => 'Trimestre'
+            ],
+            [
                 'nombre'=> 'fecha_inicio',
                 'texto' => 'Fecha de Inicio'
             ],
@@ -420,8 +433,16 @@ class Preproyectos extends CI_Controller {
                 'texto' => 'Fecha de Término'
             ],
             [
+                'nombre'=> 'seccion',
+                'texto' => 'Número de Sección'
+            ],
+            [
                 'nombre'=> 'url',
                 'texto' => 'URL'
+            ],
+            [
+                'nombre'=> 'incluido',
+                'texto' => '¿Incluído?'
             ]
         );
     }
@@ -478,6 +499,10 @@ class Preproyectos extends CI_Controller {
                 'texto' => 'Inversión'
             ],
             [
+                'nombre'=> 'trimestre',
+                'texto' => 'Trimestre'
+            ],
+            [
                 'nombre'=> 'fecha_inicio',
                 'texto' => 'Fecha de Inicio'
             ],
@@ -486,8 +511,16 @@ class Preproyectos extends CI_Controller {
                 'texto' => 'Fecha de Término'
             ],
             [
+                'nombre'=> 'seccion',
+                'texto' => 'Número de Sección'
+            ],
+            [
                 'nombre'=> 'url',
                 'texto' => 'URL'
+            ],
+            [
+                'nombre'=> 'incluido',
+                'texto' => '¿Incluído?'
             ]
         );
     }

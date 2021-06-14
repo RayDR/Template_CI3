@@ -12,6 +12,7 @@
         </div>
     </div>
 </div>
+<?php print_r($preproyecto); ?>
 <div class="row">
     <div class="col-12 mb-4">
         <div class="card border-light shadow-sm components-section">
@@ -89,12 +90,25 @@
                                 <input type="number" class="form-control" min="0" step="any" id="inversion" value="0" required>
                             </div>
                         </div>  
-                    </div>
+                    </div>                    
+
                     <div class="row">
                         <div class="col-12 mb-3">
                             <div>
                                 <label for="detalle_preproyecto">Detalle de Actividad</label>
                                 <textarea class="form-control" placeholder="¿Que actividades se desempeñaran para este preproyecto?" id="detalle_preproyecto" name="detalle_preproyecto" rows="4" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="trimestre">Trimestre</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-calendar-day"></i>
+                                </span>
+                                <input class="form-control" id="trimestre" name="trimestre" type="number" min="1" max="4" step="1" required>
                             </div>
                         </div>
                     </div>
@@ -119,10 +133,29 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="seccion">Sección</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-hashtag"></i>
+                                </span>
+                                <input class="form-control" id="seccion" name="seccion" type="number" min="0">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mt-3 m-md-auto">
+                            <input class="form-check-input" type="checkbox" value="" id="incluido" name="incluido">
+                            <label class="form-check-label" for="incluido">
+                                Incluido
+                            </label>
+                        </div>
+                    </div>
+
                     <div class="row mt-3">
                         <div class="col-12 mb-3">
                             <label for="url">URL</label>
-                            <input type="url" class="form-control" id="url" name="url" placeholder="https://ejemplo.com"  pattern="https?://.+" onblur="validity.valid||(value='');">
+                            <input type="url" class="form-control" id="url" name="url" placeholder="https://ejemplo.com">
                         </div>  
                     </div>
 
@@ -136,6 +169,9 @@
 </div>
 
 <script type="text/javascript">
-    var inputs = JSON.parse('<?php print(json_encode($inputs, JSON_HEX_TAG)); ?>');
+    var inputs          = JSON.parse('<?php print(json_encode($inputs, JSON_HEX_TAG)); ?>'),
+        municipio       = <?= $preproyecto->municipio_id ?>,
+        localidad       = <?= $preproyecto->localidad_id ?>,
+        linea_accion    = <?= $preproyecto->linea_accion_id ?>;
 </script>
 <script src="<?= base_url('assets/js/preproyectos/editar.js') ?>" type="text/javascript" charset="utf-8" async defer></script>

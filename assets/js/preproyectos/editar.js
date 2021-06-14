@@ -2,6 +2,8 @@ $(document).ready(function() {
     $('#guardar').click(fguardar);    
     $('#linea_accion').change(flinea_accion);
     $('#municipio').change(fget_localidades);
+    $('#trimestre').change(fset_trimestre);
+    $('#url').blur(fset_url);
 
     finicia_select2();
 });
@@ -11,8 +13,8 @@ function finicia_select2(){
     // Cargar Select2 y establecer Centro como Opción por defecto
     $('#municipio').select2();
     // Autocargar alcance estatal
-    $.when($("#municipio").val('18').change()).then(function() {
-        $("#localidad").val($("#localidad option:not([disabled]):first").val()).select2();
+    $.when($("#municipio").val(municipio).change()).then(function() {
+        $("#localidad").val(localidad).select2();
     });
 }
 

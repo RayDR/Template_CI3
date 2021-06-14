@@ -78,8 +78,8 @@ function factualiza_datatable(mensaje = '', tipo = ''){
     if ( $.fn.dataTable.isDataTable(dtNombre) ) {        
         dt.ajax.reload(null, false);
         mensaje = ( mensaje == '' )? 'Tabla actualizada.': mensaje;
-        tipo    = ( tipo == '' )? 'success' : tipo;
-        fu_toast(mensaje, '', tipo);
+        tipo    = ( tipo == '' )? 'info' : tipo;
+        fu_notificacion(mensaje, tipo);
     }
 }
 

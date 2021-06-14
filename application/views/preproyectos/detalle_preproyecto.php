@@ -12,12 +12,12 @@
         color: #262B40;
     }
 </style>
-
+<!-- Detalle Preproyecto -->
 <input type="hidden" id="preproyecto_id" name="preproyecto_id" value="<?= $preproyecto->preproyecto_id ?>">
-
 <div class="container">
     <div class="text-white">
     <div class="card card-body shadow-sm mb-4 mb-lg-0 bg-transparent">
+        <!-- Botonera -->
         <div class="row d-flex justify-content-between">
             <div class="col my-auto">
                 <h2 class="h5 mb-4 text-center">DETALLE DE PREPROYECTO</h2>
@@ -43,6 +43,9 @@
                 </ul>
             </div>
         </div>
+        <!-- Fin de Botonera -->
+
+        <!-- Desplegable de Detalle del Preproyecto -->
         <ul class="list-group list-group-flush">
             <li class="list-group-item d-flex align-items-center justify-content-center px-0 bg-transparent">
                 <div class="accordion my-3 w-100" id="preproyecto">
@@ -79,6 +82,14 @@
                                 <table class="table w-100 bg-white">
                                     <tbody>
                                         <tr>
+                                            <th width="20%">Trimestre</th>
+                                            <td class="text-dark">
+                                                <b><?= $preproyecto->trimestre ?>: </b>
+                                                <br><b>Inicio:</b> <?= $preproyecto->fecha_inicio ?>
+                                                <br><b>Término:</b> <?= $preproyecto->fecha_termino ?>
+                                            </td>
+                                        </tr>
+                                        <tr>
                                             <th width="20%">Alcance</th>
                                             <td><?= ($preproyecto->ambito_localidad == 'E')? '' : $preproyecto->localidad .' - ' ?><b><?= $preproyecto->municipio ?></b></td>
                                         </tr>
@@ -90,10 +101,24 @@
                                             <th>Beneficiarios</th>
                                             <td id="beneficiarios"><?= $preproyecto->cantidad_beneficiarios ?></td>
                                         </tr>
+                                        <?php if( $preproyecto->seccion ): ?>
+                                        <tr>
+                                            <th>Sección</th>
+                                            <td><?= $preproyecto->seccion ?></td>
+                                        </tr>
+                                        <?php endif ?>
+                                        <?php if( $preproyecto->incluido ): ?>
+                                        <tr>
+                                            <th>Incluido</th>
+                                            <td><?= $preproyecto->incluido ?></td>
+                                        </tr>
+                                        <?php endif ?>
+                                        <?php if( $preproyecto->url ): ?>
                                         <tr>
                                             <th>URL</th>
-                                            <td><?= $preproyecto->url ?></td>
+                                            <td><a href="<?= $preproyecto->url ?>" target="_blank" class="card-link text-primary"><?= $preproyecto->url ?></a></td>
                                         </tr>
+                                        <?php endif ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -103,25 +128,40 @@
             </li>
         </ul>
     </div>
+    <!-- Fin del desplegable de Detalle del Preproyecto -->
 
+    <!-- Contenedor de Actividades de Preproyecto -->
     <div class="card card-body shadow-sm mb-4 mb-lg-0 bg-white">
         <div class="container">
             <h3 class="card-title text-dark h5">ACTIVIDADES</h3>
             <?php if ( $actividades ): ?>
             <div class="row">
                 <?php foreach ($actividades as $key => $actividad): ?>
-                <div class="col-12 col-lg-6">
+                <div class="col-12 col-lg-6 mb-3 opcion-detalles" data-target="#actividad-detalle<?= $key ?>">
                     <div class="card border-rounded shadow p-3">
-                        <div class="card-body">
+                        <div class="card-body text-dark">
                             <div class="d-none d-sm-block">
                                 <h2 class="h6 mb-0 text-dark"><strong class="h3 text-dark"><?= $key+1 ?>.</strong>&nbsp;<?= $actividad->actividad ?></h2>
                                 <h3 class="fw-extrabold mb-2 text-dark">Inversión: <?= $actividad->inversion ?></h3>
                             </div>
-                            <small class="text-dark">
+                            <small class="text-dark">                                
                                 <?= mdate('%d-%m-%Y', strtotime($actividad->fecha_inicio)) ?> -  <?= mdate('%d-%m-%Y', strtotime($actividad->fecha_termino)) ?>
                             </small> 
                             <div class="small d-flex mt-1 text-dark">
                                 <div>Alcance: <?= ($actividad->ambito_localidad == 'E')? '' : $actividad->localidad .' - ' ?><b><?= $actividad->municipio ?></b></div>
+                            </div>
+
+                            <legend class="h6 text-dark mt-3">Mas detalles</legend>
+                            <div id="actividad-detalle<?= $key ?>" style="display: none;">
+                                <div>Grupo Beneficiado: <?= $actividad->cantidad_beneficiarios ?> (<?= $actividad->beneficiados ?>, <?= $actividad->beneficiados ?>)</div>                                
+                                <div class="row">
+                                    <div class="col-6"><?php if ( $actividad->seccion ): ?> Sección: <?= $actividad->seccion ?><?php endif ?></div>
+                                    <div class="col-6">Incluido: <?= ( $actividad->incluido == 1 )? 'Sí' : 'No' ?></div>
+                                </div>
+                                
+                                <?php if ( $actividad->url ): ?>
+                                <div>URL: <a href="<?= $actividad->url ?>" target="_blank" class="card-link text-primary"><?= $actividad->url ?></a></div>
+                                <?php endif ?>
                             </div>
                         </div>
                     </div>
@@ -133,7 +173,12 @@
             <?php endif ?>
         </div>
     </div>
+    <!-- Fin de Contenedor de Actividades de Preproyecto -->
 </div>
+<!-- Detalle de Preproyecto -->
+
+
+<!-- Custom scripts - styles -->
 <script type="text/javascript" charset="utf-8" async defer>
 (function(){
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -150,4 +195,5 @@
 
 })();
 </script>
+
 <script src="<?= base_url('assets/js/preproyectos/detalle_preproyecto.js') ?>" type="text/javascript" charset="utf-8"></script>

@@ -126,6 +126,15 @@ function fCargar_DataTable(){
     }
 }
 
+function factualiza_datatable(mensaje = '', tipo = ''){
+    if ( $.fn.dataTable.isDataTable(dtNombre) ) {        
+        dt.ajax.reload(null, false);
+        mensaje = ( mensaje == '' )? 'Tabla actualizada.': mensaje;
+        tipo    = ( tipo == '' )? 'info' : tipo;
+        fu_notificacion(mensaje, tipo);
+    }
+}
+
 function fnueva_actividad(e){
     if ( e == null || e == undefined )
         return;

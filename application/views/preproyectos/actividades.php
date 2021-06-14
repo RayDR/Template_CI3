@@ -95,6 +95,18 @@
                         </div>
                     </div>
 
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="trimestre">Trimestre</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-calendar-day"></i>
+                                </span>
+                                <input class="form-control" id="trimestre" name="trimestre" type="number" min="1" max="4" step="1" required>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div class="col-md-6">
                             <label for="fecha_inicio">Fecha de Inicio</label>
@@ -115,10 +127,29 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="seccion">Sección</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-hashtag"></i>
+                                </span>
+                                <input class="form-control" id="seccion" name="seccion" type="number" min="0">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mt-3 m-md-auto">
+                            <input class="form-check-input" type="checkbox" value="" id="incluido" name="incluido">
+                            <label class="form-check-label" for="incluido">
+                                Incluido
+                            </label>
+                        </div>
+                    </div>
+                    
                     <div class="row mt-3">
                         <div class="col-12 mb-3">
                             <label for="url">URL</label>
-                            <input type="url" class="form-control" id="url" name="url" placeholder="https://ejemplo.com"  pattern="https?://.+" onblur="validity.valid||(value='');">
+                            <input type="url" class="form-control" id="url" name="url" placeholder="https://ejemplo.com">
                         </div>  
                     </div>
 

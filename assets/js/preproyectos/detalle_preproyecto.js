@@ -1,6 +1,9 @@
 $(document).ready(function() {
     $('#editar').click(fda_mostrar_editar);
     $('#actividad').click(fda_mostrar_actividades);
+
+    $('.opcion-detalles').hover(fda_mostrar_detalles);
+    $('.opcion-detalles').mouseleave(fda_ocultar_detalles);
 });
 
 $(document).on('mouseover','[data-bs-toggle="tooltip"]', function() {
@@ -32,4 +35,14 @@ function fda_mostrar_actividades(){
         } else 
             fu_notificacion('No se pudo cargar el actividades', 'danger');
     }, 10);
+}
+
+function fda_mostrar_detalles(){
+    var target = $(this).data('target');
+    $(target).show('slow');
+}
+
+function fda_ocultar_detalles(){
+    var target = $(this).data('target');
+    $(target).hide('fast');
 }

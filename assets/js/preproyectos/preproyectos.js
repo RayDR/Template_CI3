@@ -49,8 +49,18 @@ function fCargar_DataTable(){
             columns: [
                 { data: 'preproyecto_id' },
                 { data: 'actividad' },
-                { data: 'cantidad_beneficiarios' },
-                { data: 'inversion' },
+                { 
+                    data: null,
+                    render: function( data ){
+                        return fu_formatNum(data.cantidad_beneficiarios);
+                    }
+                },
+                { 
+                    data: null, 
+                    render: function( data ){
+                        return fu_formatMxn(data.inversion);
+                    }
+                },
                 { data: 'linea_accion' },
                 { data: 'objetivo' },
                 { data: 'estrategia' },
@@ -68,6 +78,15 @@ function fCargar_DataTable(){
                 url: "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json",
             }
         });
+    }
+}
+
+function factualiza_datatable(mensaje = '', tipo = ''){
+    if ( $.fn.dataTable.isDataTable(dtNombre) ) {        
+        dt.ajax.reload(null, false);
+        mensaje = ( mensaje == '' )? 'Tabla actualizada.': mensaje;
+        tipo    = ( tipo == '' )? 'info' : tipo;
+        fu_notificacion(mensaje, tipo);
     }
 }
 
@@ -92,4 +111,43 @@ function frecargar(){
     setTimeout(function() {
         window.location.replace( url('Preproyectos') ); 
     }, 1000);
+}
+
+function fcalcula_trimestre(){
+    var hoy = new Date(),
+        mes = hoy.getMonth() + 1,
+        trimestre;
+    if ( mes < 4 )
+        trimestre = 1;
+    else if ( mes < 7 )
+        trimestre = 2;
+    else if ( mes < 10 )
+        trimestre = 3;
+    else
+        trimestre = 4;
+    $('#trimestre').val(trimestre).trigger('change');
+}
+
+function fset_trimestre(){
+    var trimestre = $(this).val(),
+        fechas    = fu_valida_trimestre(trimestre);
+
+    if ( fechas ){
+        if ( fechas.inicio )
+            $('#fecha_inicio').val(`${fechas.inicio.getFullYear()}-${('0' + (fechas.inicio.getMonth() + 1)).slice(-2)}-${('0' + fechas.inicio.getDate()).slice(-2)}`);
+        if ( fechas.termino )
+            $('#fecha_termino').val(`${fechas.termino.getFullYear()}-${('0' + (fechas.termino.getMonth() + 1)).slice(-2)}-${('0' + fechas.termino.getDate()).slice(-2)}`);
+    } else {
+        fcalcula_trimestre();
+        fu_notificacion('No se pudo calcular el trimestre.', 'warning');
+    }
+}
+
+function fset_url(){
+    var url = $(this).val();
+    if ( url ){
+        if ( ! fu_valida_url(url) ) 
+            fu_notificacion('La URL no tiene el formato correcto.<br><b>Nota incluir http/https</b>', 'warning');
+    } else 
+        $('#url').val('');
 }

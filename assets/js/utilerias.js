@@ -16,10 +16,21 @@ const notyf = new Notyf({
   },
   types: [
     {
+      type: 'warning',
+      background: 'orange',
+      icon: {
+          className: 'fas fa-exclamation-circle',
+          tagName: 'span',
+          color: '#fff'
+      },
+      dismissible: true,
+      duration: 5000
+    },
+    {
       type: 'danger',
       background: 'red',
       icon: {
-          className: 'fas fa-info-circle',
+          className: 'fas fa-exclamation-triangle',
           tagName: 'span',
           color: '#fff'
       },
@@ -30,7 +41,7 @@ const notyf = new Notyf({
       type: 'info',
       background: 'black',
       icon: {
-          className: 'fas fa-comment-dots',
+          className: 'fas fa-info-circle',
           tagName: 'span',
           color: '#fff'
       },
@@ -499,6 +510,46 @@ function fu_valida_password(usuario, password){
       }
     );
   return valoraciones;
+}
+
+function fu_valida_url( url ){
+  var expression  = '^(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?';
+  var regex       = new RegExp(expression);
+  return regex.test(url);
+}
+
+function fu_valida_trimestre( trimestre ){
+  var resultado;
+  switch (trimestre) {
+    case '1':
+      resultado = {
+        inicio: new Date( new Date().getFullYear(), 00, 01), // 1ro. enero
+        termino: new Date( new Date().getFullYear(), 02, 31) // 31 de marzo
+      };
+      break;
+    case '2':
+      resultado = {
+        inicio: new Date( new Date().getFullYear(), 03, 01), // 1ro. de abril
+        termino: new Date( new Date().getFullYear(), 05, 30) // 30 de junio
+      };
+      break;
+    case '3':
+      resultado = {
+        inicio: new Date( new Date().getFullYear(), 06, 01), // 1ro. de julio
+        termino: new Date( new Date().getFullYear(), 08, 30) // 30 de septiembre
+      };
+      break;
+    case '4':
+      resultado = {
+        inicio: new Date( new Date().getFullYear(), 09, 01), // 1ro. octubre
+        termino: new Date( new Date().getFullYear(), 11, 31) // 31 de Diciembre
+      };
+      break;
+    default:
+      resultado = false;
+      break;
+  }
+  return resultado;
 }
 
 // Codificar UTF-8
