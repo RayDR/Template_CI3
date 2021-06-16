@@ -26,17 +26,11 @@
                     <tr>
                         <th class="">#</th>
                         <th class="">Preproyecto</th>
-                        <th class="">Beneficiarios</th>
-                        <th class="">Inversión</th>
                         <th class="">Línea de Acción</th>
                         <th class="">Objetivo</th>
                         <th class="">Estrategía</th>
-                        <th class="">Municipio</th>
-                        <th class="">Localidad</th>
-                        <th class="">Fecha Inicio</th>
-                        <th class="">Fecha Término</th>
-                        <th class="">URL</th>
                         <th class="">Ejercicio</th>
+                        <th class="">Estatus</th>
                     </tr>
                 </thead>
             </table>

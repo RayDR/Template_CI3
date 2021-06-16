@@ -49,27 +49,11 @@ function fCargar_DataTable(){
             columns: [
                 { data: 'preproyecto_id' },
                 { data: 'actividad' },
-                { 
-                    data: null,
-                    render: function( data ){
-                        return fu_formatNum(data.cantidad_beneficiarios);
-                    }
-                },
-                { 
-                    data: null, 
-                    render: function( data ){
-                        return fu_formatMxn(data.inversion);
-                    }
-                },
                 { data: 'linea_accion' },
                 { data: 'objetivo' },
                 { data: 'estrategia' },
-                { data: 'municipio' },
-                { data: 'localidad' },
-                { data: 'fecha_inicio' },
-                { data: 'fecha_termino' },
-                { data: 'url' },
-                { data: 'ejercicio' }
+                { data: 'ejercicio' },
+                { data: 'estatus' }
             ],
             drawCallback: function (settings) {
                 $('[data-toggle="tooltip"]').tooltip({ boundary: 'window' });
