@@ -109,18 +109,8 @@ class Model_preproyectos extends CI_Model {
 
             if ( is_array($datos) ){
                 $db_datos = array(
-                    'municipio_id'              => $datos['municipio'],
-                    'localidad_id'              => $datos['localidad'],
                     'linea_accion_id'           => $datos['linea_accion'],
                     'actividad'                 => $datos['detalle_preproyecto'],
-                    'unidad_medida_id'          => $datos['unidad_medida'],
-                    'medicion_id'               => $datos['tipo_medicion'],
-                    'beneficiario_id'           => $datos['grupo_beneficiado'],
-                    'cantidad_beneficiarios'    => $datos['cantidad_beneficiarios'],
-                    'inversion'                 => $datos['inversion'],
-                    'trimestre'                 => $datos['trimestre'],
-                    'fecha_inicio'              => $datos['fecha_inicio'],
-                    'fecha_termino'             => $datos['fecha_termino'],
                     'seccion'                   => $datos['seccion'],
                     'incluido'                  => ( $datos['incluido'] )? $datos['incluido'] : 0,
                     'url'                       => $datos['url'],
@@ -157,18 +147,8 @@ class Model_preproyectos extends CI_Model {
 
             if ( is_array($datos) ){
                 $db_datos = array(
-                    'municipio_id'              => $datos['municipio'],
-                    'localidad_id'              => $datos['localidad'],
                     'linea_accion_id'           => $datos['linea_accion'],
                     'actividad'                 => $datos['detalle_preproyecto'],
-                    'unidad_medida_id'          => $datos['unidad_medida'],
-                    'medicion_id'               => $datos['tipo_medicion'],
-                    'beneficiario_id'           => $datos['grupo_beneficiado'],
-                    'cantidad_beneficiarios'    => $datos['cantidad_beneficiarios'],
-                    'inversion'                 => $datos['inversion'],
-                    'trimestre'                 => $datos['trimestre'],
-                    'fecha_inicio'              => $datos['fecha_inicio'],
-                    'fecha_termino'             => $datos['fecha_termino'],
                     'seccion'                   => $datos['seccion'],
                     'incluido'                  => ( $datos['incluido'] )? $datos['incluido'] : 0,
                     'url'                       => $datos['url'],

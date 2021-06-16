@@ -171,19 +171,9 @@ class Preproyectos extends CI_Controller {
         $json = array('exito' => TRUE);
         $datos  = array(
             'linea_accion'              => $this->input->post('linea_accion'),
-            'municipio'                 => $this->input->post('municipio'),
-            'localidad'                 => $this->input->post('localidad'),
             'detalle_preproyecto'       => $this->input->post('detalle_preproyecto'),
-            'unidad_medida'             => $this->input->post('unidad_medida'),
-            'tipo_medicion'             => $this->input->post('tipo_medicion'),
-            'grupo_beneficiado'         => $this->input->post('grupo_beneficiado'),
-            'cantidad_beneficiarios'    => $this->input->post('cantidad_beneficiarios'),
-            'inversion'                 => $this->input->post('inversion'),
             'seccion'                   => $this->input->post('seccion'),
             'incluido'                  => $this->input->post('incluido'),
-            'trimestre'                 => $this->input->post('trimestre'),
-            'fecha_inicio'              => $this->input->post('fecha_inicio'),
-            'fecha_termino'             => $this->input->post('fecha_termino'),
             'url'                       => $this->input->post('url'),
             'usuario_id'                => $this->session->userdata('uid'),
             'ejercicio'                 => date('Y')
@@ -203,19 +193,9 @@ class Preproyectos extends CI_Controller {
         if ( $preproyecto ){
             $datos  = array(
                 'linea_accion'              => $this->input->post('linea_accion'),
-                'municipio'                 => $this->input->post('municipio'),
-                'localidad'                 => $this->input->post('localidad'),
                 'detalle_preproyecto'       => $this->input->post('detalle_preproyecto'),
-                'unidad_medida'             => $this->input->post('unidad_medida'),
-                'tipo_medicion'             => $this->input->post('tipo_medicion'),
-                'grupo_beneficiado'         => $this->input->post('grupo_beneficiado'),
-                'cantidad_beneficiarios'    => $this->input->post('cantidad_beneficiarios'),
-                'inversion'                 => $this->input->post('inversion'),
                 'seccion'                   => $this->input->post('seccion'),
                 'incluido'                  => $this->input->post('incluido'),
-                'trimestre'                 => $this->input->post('trimestre'),
-                'fecha_inicio'              => $this->input->post('fecha_inicio'),
-                'fecha_termino'             => $this->input->post('fecha_termino'),
                 'url'                       => $this->input->post('url'),
                 'usuario_id'                => $this->session->userdata('uid'),
                 'ejercicio'                 => date('Y')
@@ -379,58 +359,13 @@ class Preproyectos extends CI_Controller {
     private function inputs_registro(){
         return array(
             [
-                'nombre'=> 'municipio',
-                'texto' => 'Municipio',
-                'tipo'  => 'select'
-            ],
-            [
-                'nombre'=> 'localidad',
-                'texto' => 'Localidad',
-                'tipo'  => 'select'
-            ],
-            [
                 'nombre'=> 'linea_accion',
                 'texto' => 'Línea de Acción',
                 'tipo'  => 'select'
             ],
             [
                 'nombre'=> 'detalle_preproyecto',
-                'texto' => 'Detalle de la Actividad'
-            ],
-            [
-                'nombre'=> 'unidad_medida',
-                'texto' => 'Unidad de Medida',
-                'tipo'  => 'select'
-            ],
-            [
-                'nombre'=> 'tipo_medicion',
-                'texto' => 'Tipo de Medición',
-                'tipo'  => 'select'
-            ],
-            [
-                'nombre'=> 'grupo_beneficiado',
-                'texto' => 'Grupo Beneficiado',
-                'tipo'  => 'select'
-            ],
-            [
-                'nombre'=> 'cantidad_beneficiarios',
-                'texto' => 'Cantidad de Beneficiarios'
-            ],
-            [
-                'nombre'=> 'inversion',
-                'texto' => 'Inversión'
-            ],
-            [
-                'nombre'=> 'trimestre',
-                'texto' => 'Trimestre'
-            ],
-            [
-                'nombre'=> 'fecha_inicio',
-                'texto' => 'Fecha de Inicio'
-            ],
-            [
-                'nombre'=> 'fecha_termino',
-                'texto' => 'Fecha de Término'
+                'texto' => 'Descripción/Propuesta'
             ],
             [
                 'nombre'=> 'seccion',
