@@ -926,7 +926,7 @@ CREATE TABLE `preproyectos` (
   CONSTRAINT `fk_ums_preproyectos` FOREIGN KEY (`unidad_medida_id`) REFERENCES `unidades_medida` (`unidad_medida_id`),
   CONSTRAINT `fk_usuario_modifica_preproyecto` FOREIGN KEY (`usuario_id_modifica`) REFERENCES `usuarios` (`usuario_id`),
   CONSTRAINT `fk_usuarios_preproyecto` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`usuario_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -935,7 +935,6 @@ CREATE TABLE `preproyectos` (
 
 LOCK TABLES `preproyectos` WRITE;
 /*!40000 ALTER TABLE `preproyectos` DISABLE KEYS */;
-INSERT INTO `preproyectos` VALUES (1,5,'2021-04-01 00:00:00','2021-06-30 00:00:00','Esto es una inversión 1',18,2717,15,1,1,50,150000.00,'',NULL,NULL,1,1,NULL,1,'2021-06-14 17:52:24','2021-06-14 19:20:26'),(2,7,'2021-04-01 00:00:00','2021-06-30 00:00:00','Algo que hacer nada mas para sacar baro',4,872,54,3,3,150,350000.00,'https://youtu.be/FWwLZN3aRL0',55,1,1,1,NULL,2,'2021-06-14 18:21:16','2021-06-14 19:20:27');
 /*!40000 ALTER TABLE `preproyectos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -971,7 +970,7 @@ CREATE TABLE `preproyectos_actividades` (
   `fecha_modificacion` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `estatus_id` int(11) DEFAULT '1',
   PRIMARY KEY (`preproyecto_actividad_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -980,7 +979,6 @@ CREATE TABLE `preproyectos_actividades` (
 
 LOCK TABLES `preproyectos_actividades` WRITE;
 /*!40000 ALTER TABLE `preproyectos_actividades` DISABLE KEYS */;
-INSERT INTO `preproyectos_actividades` VALUES (1,2,'Mas dineros',7,4,872,42,1,1,35,NULL,15000.00,'',2,'2021-04-01 00:00:00','2021-04-30 00:00:00',1,1,1,NULL,'2021-06-14 18:44:52','2021-06-14 19:22:02',1),(2,2,'Esta es una actividad',7,4,872,42,2,2,150,NULL,350000.00,'http://aplicaciones.setab.gob.mx/aprendeencasa/sources/img/Verano/Verano-00.png',2,'2021-05-01 00:00:00','2021-01-30 00:00:00',15,1,1,NULL,'2021-06-14 18:47:06','2021-06-14 19:22:01',1),(3,2,'Vamos a detallar todavía',7,4,872,0,0,0,0,NULL,0.00,'',2,'2021-04-01 00:00:00','2021-06-30 00:00:00',0,0,1,NULL,'2021-06-14 18:48:55',NULL,1);
 /*!40000 ALTER TABLE `preproyectos_actividades` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -2564,4 +2562,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-06-14 15:44:41
+-- Dump completed on 2021-06-16 13:55:48
