@@ -6,7 +6,18 @@ $(document).ready(function() {
     $('#url').blur(fset_url);
 
     finicia_select2();
+    finicia_edicion();
 });
+
+function finicia_edicion(){
+    $('#linea_accion').val(linea_accion).trigger('change');
+    $('#unidad_medida').val(unidad_medida).trigger('change');
+    $('#tipo_medicion').val(tipo_medicion).trigger('change');
+    $('#grupo_beneficiado').val(gbeneficiado).trigger('change');
+
+    $('#fecha_inicio').val(fecha_inicio).trigger('change');
+    $('#fecha_termino').val(fecha_termino).trigger('change');
+}
 
 function finicia_select2(){    
     $('#localidad').select2();
@@ -44,6 +55,7 @@ function fguardar(e){
                     errores += `El campo <a href="#${input.nombre}">${input.texto}</a> no puede ser menor 0.<br>`;
             }
         });
+        datos['preproyecto'] = $('#preproyecto').val();
         if ( ! errores ){
             respuesta   = fu_json_query(
                 url('Preproyectos/guardar_edicion', true, false),
@@ -53,7 +65,7 @@ function fguardar(e){
                 fu_notificacion('Se ha registrado la preproyecto exitosamente.', 'success');
                 window.location.replace( url('Preproyectos') );
             } else
-                fu_notificacion(respuesta.mensaje, 'danger');
+                fu_notificacion(respuesta.error, 'danger');
         } else {
             fu_alerta(errores, 'danger');
             fu_notificacion('Existen campos pendientes por llenar.', 'danger');    

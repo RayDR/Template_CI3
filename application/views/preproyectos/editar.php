@@ -12,7 +12,7 @@
         </div>
     </div>
 </div>
-<?php print_r($preproyecto); ?>
+<input type="hidden" id="preproyecto" name="preproyecto" value="<?= $preproyecto->preproyecto_id ?>">
 <div class="row">
     <div class="col-12 mb-4">
         <div class="card border-light shadow-sm components-section">
@@ -79,7 +79,7 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="cantidad_beneficiarios">Cantidad de Beneficiarios</label>
-                            <input type="number" class="form-control" id="cantidad_beneficiarios" value="0" required>
+                            <input type="number" class="form-control" id="cantidad_beneficiarios" value="<?= $preproyecto->cantidad_beneficiarios ?>" required>
                         </div>
                         <div class="col-lg-6 mb-3">
                             <label for="inversion">Inversión</label>
@@ -87,7 +87,7 @@
                                 <span class="input-group-text">
                                     <i class="fas fa-dollar-sign"></i>
                                 </span>                                
-                                <input type="number" class="form-control" min="0" step="any" id="inversion" value="0" required>
+                                <input type="number" class="form-control" min="0" step="any" id="inversion" value="<?= $preproyecto->inversion ?>" required>
                             </div>
                         </div>  
                     </div>                    
@@ -96,7 +96,7 @@
                         <div class="col-12 mb-3">
                             <div>
                                 <label for="detalle_preproyecto">Detalle de Actividad</label>
-                                <textarea class="form-control" placeholder="¿Que actividades se desempeñaran para este preproyecto?" id="detalle_preproyecto" name="detalle_preproyecto" rows="4" required></textarea>
+                                <textarea class="form-control" placeholder="¿Que actividades se desempeñaran para este preproyecto?" id="detalle_preproyecto" name="detalle_preproyecto" rows="4" required><?= $preproyecto->actividad ?></textarea>
                             </div>
                         </div>
                     </div>
@@ -108,7 +108,7 @@
                                 <span class="input-group-text">
                                     <i class="fas fa-calendar-day"></i>
                                 </span>
-                                <input class="form-control" id="trimestre" name="trimestre" type="number" min="1" max="4" step="1" required>
+                                <input class="form-control" id="trimestre" name="trimestre" type="number" min="1" max="4" step="1" value="<?= $preproyecto->trimestre ?>" required>
                             </div>
                         </div>
                     </div>
@@ -120,7 +120,7 @@
                                 <span class="input-group-text">
                                     <i class="far fa-calendar-alt"></i>
                                 </span>
-                                <input data-datepicker="" class="form-control" id="fecha_inicio" name="fecha_inicio" type="date" placeholder="dd/mm/yyyy" required>
+                                <input data-datepicker="" class="form-control" id="fecha_inicio" name="fecha_inicio" type="date" placeholder="dd/mm/yyyy" value="<?= $preproyecto->fecha_inicio ?>" required>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -129,7 +129,7 @@
                                 <span class="input-group-text">
                                     <i class="far fa-calendar-check"></i>
                                 </span>
-                                <input data-datepicker="" class="form-control" id="fecha_termino" name="fecha_termino" type="date" placeholder="dd/mm/yyyy" required>
+                                <input data-datepicker="" class="form-control" id="fecha_termino" name="fecha_termino" type="date" placeholder="dd/mm/yyyy" value="<?= $preproyecto->fecha_termino ?>" required>
                             </div>
                         </div>
                     </div>
@@ -141,11 +141,11 @@
                                 <span class="input-group-text">
                                     <i class="fas fa-hashtag"></i>
                                 </span>
-                                <input class="form-control" id="seccion" name="seccion" type="number" min="0">
+                                <input class="form-control" id="seccion" name="seccion" type="number" value="<?= $preproyecto->seccion ?>" min="0">
                             </div>
                         </div>
                         <div class="col-md-6 mt-3 m-md-auto">
-                            <input class="form-check-input" type="checkbox" value="" id="incluido" name="incluido">
+                            <input class="form-check-input" type="checkbox" <?= ($preproyecto->incluido)? 'checked': '' ?> id="incluido" name="incluido">
                             <label class="form-check-label" for="incluido">
                                 Incluido
                             </label>
@@ -155,7 +155,7 @@
                     <div class="row mt-3">
                         <div class="col-12 mb-3">
                             <label for="url">URL</label>
-                            <input type="url" class="form-control" id="url" name="url" placeholder="https://ejemplo.com">
+                            <input type="url" class="form-control" id="url" name="url" value="<?= $preproyecto->url ?>" placeholder="https://ejemplo.com">
                         </div>  
                     </div>
 
@@ -172,6 +172,9 @@
     var inputs          = JSON.parse('<?php print(json_encode($inputs, JSON_HEX_TAG)); ?>'),
         municipio       = <?= $preproyecto->municipio_id ?>,
         localidad       = <?= $preproyecto->localidad_id ?>,
-        linea_accion    = <?= $preproyecto->linea_accion_id ?>;
+        linea_accion    = <?= $preproyecto->linea_accion_id ?>,
+        unidad_medida   = <?= $preproyecto->unidad_medida_id ?>,
+        tipo_medicion   = <?= $preproyecto->medicion_id ?>,
+        gbeneficiado    = <?= $preproyecto->beneficiario_id ?>;
 </script>
 <script src="<?= base_url('assets/js/preproyectos/editar.js') ?>" type="text/javascript" charset="utf-8" async defer></script>

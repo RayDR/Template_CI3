@@ -221,9 +221,9 @@ class Preproyectos extends CI_Controller {
                 'ejercicio'                 => date('Y')
             );
 
-            $json = $this->model_preproyectos->editar_preproyecto($datos, FALSE);
+            $json = $this->model_preproyectos->editar_preproyecto($preproyecto_id, $datos);
         } else
-            $json   = array('exito' => FALSE, 'error' => 'No s recibió el fólio de preproyecto');
+            $json   = array('exito' => FALSE, 'error' => 'No se recibió el fólio de preproyecto');
 
         return print(json_encode($json)); 
     }
@@ -257,7 +257,7 @@ class Preproyectos extends CI_Controller {
 
             $json = $this->model_preproyectos->registrar_actividad($preproyecto_id, $datos, FALSE);
         } else
-            $json   = array('exito' => FALSE, 'error' => 'No s recibió el fólio de preproyecto');
+            $json   = array('exito' => FALSE, 'error' => 'No se recibió el fólio de preproyecto');
 
         return print(json_encode($json)); 
     }
@@ -449,10 +449,6 @@ class Preproyectos extends CI_Controller {
 
     private function inputs_actividad(){
         return array(
-            [
-                'nombre'=> 'linea_accion',
-                'texto' => 'Línea de Acción'
-            ],
             [
                 'nombre'=> 'preproyecto',
                 'texto' => 'Folio de Preproyecto'
